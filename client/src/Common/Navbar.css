@@ -1,0 +1,38 @@
+.navbar.outer {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+
+    background: #fff;
+    display: flex;
+    padding: 10px 12px;
+}
+
+.border-bottom {
+    border-bottom: #bbb 1px solid;
+}
+
+.navbar.left {
+    display: flex;
+    margin-right: auto;
+    font-size: 28px;
+}
+
+.navbar.left > a {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 6px;
+}
+
+.navbar.right {
+    display: flex;
+    margin-left: auto;
+    font-size: 18px;
+}
+
+.navbar.right > a {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 15px;
+    text-transform: lowercase;
+}

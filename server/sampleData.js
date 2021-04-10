@@ -2,24 +2,29 @@ let utils = require('./utils');
 
 let users = [
     {
-      id: '1',
-      username: 'RobinWieruch',
+        id: '1',
+        username: 'RobinWieruch',
+        pfp_url: getRandomPfp(),
     },
     {
-      id: '2',
-      username: 'DaveDavids',
+        id: '2',
+        username: 'DaveDavids',
+        pfp_url: getRandomPfp(),
     },
     {
-      id: '3',
-      username: 'RonnyRon',
+        id: '3',
+        username: 'RonnyRon',
+        pfp_url: getRandomPfp(),
     },
     {
-      id: '4',
-      username: 'LaurieLor',
+        id: '4',
+        username: 'LaurieLor',
+        pfp_url: getRandomPfp(),
     },
     {
-      id: '5',
-      username: 'AliAj',
+        id: '5',
+        username: 'AliAj',
+        pfp_url: getRandomPfp(),
     },
 ];
 
@@ -61,6 +66,34 @@ let posts = [
     },
     {
         id: '6',
+        user_id: '2',
+        img_url: getRandomPost(),
+        timestamp: getRandomTimestamp(),
+        ranking: 0
+    },
+    {
+        id: '7',
+        user_id: '2',
+        img_url: getRandomPost(),
+        timestamp: getRandomTimestamp(),
+        ranking: 0
+    },
+    {
+        id: '8',
+        user_id: '2',
+        img_url: getRandomPost(),
+        timestamp: getRandomTimestamp(),
+        ranking: 0
+    },
+    {
+        id: '9',
+        user_id: '2',
+        img_url: getRandomPost(),
+        timestamp: getRandomTimestamp(),
+        ranking: 0
+    },
+    {
+        id: '10',
         user_id: '2',
         img_url: getRandomPost(),
         timestamp: getRandomTimestamp(),
@@ -192,6 +225,20 @@ let follows = [
 
 module.exports = {
     users, posts, likes, comments, follows
+}
+
+function getRandomPfp() {
+    let randomPfps = [
+        'https://techcrunch.com/wp-content/uploads/2015/09/11667534_10102203860243201_2713296330820668368_n.jpg?w=528',
+        'https://i.pinimg.com/originals/7d/1a/3f/7d1a3f77eee9f34782c6f88e97a6c888.jpg',
+        'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
+        'https://www.dailymoss.com/wp-content/uploads/2019/08/funny-profile-pic59.jpg',
+        'https://brandyourself.com/blog/wp-content/uploads/linkedin-profile-picture-tips.png',
+        'https://brandyourself.com/blog/wp-content/uploads/what-is-thought-leadership.png',
+    ];
+    let randomIndex = Math.trunc(Math.random() * randomPfps.length);
+    return randomPfps[randomIndex];
+
 }
 
 function getRandomPost() {

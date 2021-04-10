@@ -1,0 +1,15 @@
+.pnf-container {
+    display: flex;
+    flex-flow: column;
+    margin-top: 20px
+}
+
+.pnf-container > h2 {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pnf-container > span {
+    margin-left: auto;
+    margin-right: auto;
+}

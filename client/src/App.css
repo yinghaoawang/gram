@@ -1,0 +1,43 @@
+body {
+    color: #333;
+    font-family: 'Helvetica';
+    font-size: 16px;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #777;
+}
+
+a:visited {
+    text-decoration: none;
+    color: #777;
+}
+
+button {
+    margin: 2px 0;
+    padding: 7px 15px;
+    color: #fff;
+    background-color: #3721FF;
+    border: solid 1px transparent;
+    border-radius: 4px;
+}
+
+.button-lowkey {
+    color: #999;
+    background-color: #fff;
+    border: solid 1px #bbb;
+    border-radius: 4px;
+}
+
+.outermost-container {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1000px) {
+    .outermost-container {
+        width: auto;
+    }
+}

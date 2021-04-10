@@ -1,0 +1,30 @@
+footer {
+    height: 100px;
+}
+
+.content {
+    min-height: calc(100vh - 100px - 79px);
+}
+
+.footer-outer-container {
+    display: flex;
+    flex-flow: column nowrap;
+    font-size: 12px;
+    color: #888;
+    padding-top: 16px;
+}
+.footer-links {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
+
+.footer-links > a:not(:last-child) {
+    margin-right: 12px;
+}
+
+.footer-copyright {
+    margin-left: auto;
+    margin-right: auto;
+}

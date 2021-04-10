@@ -1,0 +1,156 @@
+/* User profile stuff */
+.user-profile .outer {
+    display: flex;
+}
+
+.top .column {
+    height: 100%;
+}
+
+.user-profile .top {
+    display: flex;
+    padding-top: 7px;
+    padding-bottom: 10px;
+}
+
+.user-profile > .top.column.one {
+    width: 36%;
+}
+
+.user-profile > .top.column.two {
+    width: 60%;
+    margin-top: 5px;
+}
+
+.pfp {
+    width: 180px;
+    height: 180px;
+    margin-left: auto;
+    margin-right: 90px;
+    margin-top: 0px;
+    border-radius: 100px;
+}
+
+.user-details > .row.one > .username {
+    font-size: 30px;
+    text-transform: lowercase;
+    margin-right: 30px !important;
+    font-weight: lighter;
+}
+
+.user-details .row {
+    display: flex;
+    padding: 12px;
+}
+
+.user-details.row > span {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.user-details > .row.one > span:not(:last-child) {
+    margin-right: 10px;
+}
+.user-details > .row.two > span:not(:last-child) {
+    margin-right: 26px;
+}
+.user-details > .row.three > span {
+}
+
+.about-user > .info-row {
+    margin-bottom: 5px;
+}
+
+.about-user > .nickname {
+    font-weight: bold;
+    color: #222;
+}
+
+.about-user > .group {
+    color: #888;
+}
+
+.about-user > .description {
+    line-height: 22px;
+    font-weight: lighter;
+}
+
+.follow > button {
+    font-weight: bold;
+    padding: 6px 18px;
+}
+
+/* Posts stuffs go here */
+.user-profile.posts {
+    margin-top: 40px;
+}
+
+.user-profile.posts > .post-row {
+    width: 1000px;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post-img-container {
+    margin: 0;
+}
+
+.post-img-container > img {
+    object-fit: cover;
+}
+
+.post-row {
+    display: flex;
+}
+
+.post-row > .post-square {
+    width: 32%;
+    margin-left: 12px;
+    margin-right: 12px;
+    margin-bottom: 22px;
+}
+
+.post-square:first-child {
+    margin-left: auto;
+}
+.post-square:last-child {
+    margin-right: auto;
+}
+
+
+@media (max-width: 700px) {
+    .user-profile.posts > .post-row {
+        width: 100%;
+    }
+    .post-row > .post-square {
+        margin-bottom: -4px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .post-square:first-child {
+        margin-left: auto;
+    }
+    .post-square:last-child {
+        margin-right: auto;
+    }
+}
+
+@media (min-width: 701px) and (max-width: 1000px) {
+    .user-profile.posts > .post-row {
+        width: 100%;
+    }
+    .post-row > .post-square {
+        width: 32%;
+        margin-bottom: 2px;
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+    .post-square:first-child {
+        margin-left: auto;
+    }
+    .post-square:last-child {
+        margin-right: auto;
+    }
+}
+

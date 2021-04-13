@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Redirect, Route, Link, Switch } from 'react-router-dom'
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Navbar from './Common/Navbar';
-import Footer from './Common/Footer';
-import PageNotFound from './Common/PageNotfound';
-import TopAccounts from './Users/TopAccounts';
-import UserProfile from './Users/UserProfile';
+import Navbar from './Components/Common/Navbar';
+import Footer from './Components/Common/Footer';
+import PageNotFound from './Components/Common/PageNotfound';
+import TopAccounts from './Components/Users/TopAccounts';
+import UserProfile from './Components/Users/UserProfile/UserProfile';
 import './App.css';
 
 class App extends React.Component {

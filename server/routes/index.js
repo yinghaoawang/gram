@@ -12,6 +12,20 @@ router.get('/users', function(req, res, next) {
   res.json({users: dataFetch.users.getAll()});
 });
 
+/*
+router.get('/user/:user_id/all', function(req, res, next) {
+    let user = dataFetch.users.getUserById(req.params.user_id);
+    let posts = dataFetch.users.getPostsByUserId(req.params.user_id);
+    posts.map((p) => updateRanking(p));
+    user.posts = posts;
+
+    res.json({
+        userId: req.params.user_id,
+        posts
+    });
+});
+*/
+
 router.get('/user/:user_id', function(req, res, next) {
     res.json({
         user: dataFetch.users.getUserById(req.params.user_id)

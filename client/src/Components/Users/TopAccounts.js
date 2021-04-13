@@ -5,33 +5,26 @@ import './TopAccounts.css';
 
 const apiPath = 'http://localhost:3030';
 
-class Users extends React.Component {
+class TopAccounts extends React.Component {
     constructor() {
         super();
         this.state = {
             users: [],
+            mounted: false // antipattern
         }
         this.fetchUsers = this.fetchUsers.bind(this);
     }
     async fetchUsers() {
         let data = await fetch(apiPath + '/users').then(d => d.json());
         let users = data.users;
-        users.map(async (user) => {
-            let data = await fetch(apiPath + '/user/' + user.id + '/posts').then(d => d.json());
-            let posts = data.posts;
-            posts.map(async (post, i) => {
-                let data = await fetch(apiPath + '/post/' + post.id + '/all').then(d => d.json());
-                posts[i] = post;
-            });
-            users.find(u => u.id == user.id).posts = posts;
-            await this.setState({ users });
-        });
+        if (this.mounted) await this.setState({ users }); // antipattern
     }
     componentDidMount() {
-        console.log('fetch');
+        this.mounted = true; // antipattern
         this.fetchUsers();
     }
     componentWillUnmount() {
+        this.mounted = false; // antipattern
     }
     render() {
         return (
@@ -55,18 +48,5 @@ class Users extends React.Component {
     }
 }
 
-export default Users;
+export default TopAccounts;
 
-/*
-                            <h5>Posts</h5>
-                            {
-                                user.posts ? user.posts.map((post) => {
-                                    return (
-                                        <div key={'post'+post.id}>
-                                            <h6>{new Date(post.timestamp).toLocaleDateString()}</h6>
-                                            <img width="200px" src={post.img_url}></img>
-                                        </div>
-                                )
-                                }) : ''
-                            }
-                            */

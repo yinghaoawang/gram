@@ -103,6 +103,77 @@ This was trickier than I thought. Making centered divs and links was easy, but m
 I ended up using min-height, which forced me to have the div of every component named "content". Makes the codebase more rigid, but I didn't want to waste more time
 on it.
 
+Added a bunch of links to make the footer look better. I built the "Top Accounts" page by changing the users page to just list all the users. I'm gonna have to make
+a ranking system for the users in the future.
+
 ##### 404 page
 I didn't have a route for the root page, so react didn't even render a "content" to push my footer to the bottom. I could just make a home page, but the footer still
 wouldn't sink to the bottom if I entered a wrong route. So I decided to make a 404 page next.
+
+Starting to get burnt out, maybe I should get more features done.
+
+### Rethinking MVP
+#### Frontend posts details
+I just said the frontend should look smooth, but I didn't think about how much features it would take to make it look nice.
+There would need to be a detailed post page with likes, comments, author details, and more. Clicking on posts on the home, explore,
+and profile page would all lead to opening up a floating page of that where if I click off of it, it takes me back to the original
+page (not really because I never really left the original page. That's gonna take a lot of work, but I do think it's important to have
+in the MVP. 
+
+#### Ranking system revisited
+The users are going to need a ranking system too. I was thinking it was needed for the explore page, but I think I can just put posts on that page
+sorted by ranking in desc. 
+
+The main thing for adding a user ranking system is suggestions for follows. Firstly, high ranking users are more likely to appear as suggestions, especially
+if you aren't following anybody. Then there might also be the need for an algorithm to see what are some
+follow (friend) suggestion algorithm (distance, etc. i'll have to do some research, but most likely not put this in the MVP).
+
+Did a bit of reserach. It's the users that you interact most with that show up more on your feed. So liking, commenting, even viewing for a long time will add
+points to their personal ranking towards you. Furthermore, if a post is relevant to your interests or search history, then it will also increase its chances
+to appear on your feed, as well as the user appearing in your suggestions.
+
+I'd need a way to categorize all posts, users, and a whole bunch of stuff. Definitely won't put anything too advanced in the MVP.
+
+#### Notifications and account/auth
+
+##### User Auth
+Very big feature, I think it's a must-have. Guests can register, users can create posts, like, and comment. They have their own personalized feed, it's gonna be
+simple at the start though.
+
+##### Notifications
+I think this feature is quite important. If a user likes your stuff, follows you, then you should get a notification. Gonna need tables for notifications of types.
+If it's read, then 
+
+##### Messaging
+Once user auth is implemented, it shouldn't be too hard, but the optimization might be a problem. Can deal with optimization later. Messaging should be fine for the MVP.
+
+##### Consensus
+I think we put all of these in the MVP
+
+#### Admin page
+Ability to suspend/delete posts, read reports (need to create reports too), suspend/delete users. Not sure if put in MVP, play it by ear.
+
+#### Overview
+1. Make a post page overlay
+2. User authentication
+3. Notifications for each user
+4. User to user relationship table for more ranking in feed
+5. User to user messaging, increases relationship points
+
+### 1.4
+#### Generating more random data
+First I decided to generate more random data and images, so I got random api image data from randomuser.me, and I got random image data from another api site for the posts.
+I also decided to randomly generate relationships for likes, 
+
+First thing I noticed is that loading large amount of high res images on a page is really slow. I'd want to speed it up, and a solution on the top of my head is to create a
+low res copy of a user uploaded file and have that show on the profile, and then it gets the high res photo when clicked on. I think this solution is good enough, and I won't
+do further research on this.
+
+I was also thinking about generating data where it simulates actual people and friends (clusters and friendships based on location, interests, mutuals, etc. basically likelihood
+to be friends/meet), but it would take too long, and I'm too dumb atm to do it in a timely manner as I'm trying to finish this so I can put it on my resume to get a job.
+Maybe i'll do something like this in the distant future.
+
+##### Using postgreSQL
+I was debating on creating the post modal or setting up and using a relationsl db on the server. I decided I should use db because I already started generating better random data,
+so storing the seed data into the db would be good. More importantly, it's more efficient to use data provided by db joins before I work on more front end pages that require fetching
+specific cross relational data from the server.

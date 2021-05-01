@@ -1,9 +1,15 @@
-.navbar.outer {
+.navbar > a, .navbar > a:visited {
+    color: #777;
+}
+
+.navbar-outermost-container {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-
     background: #fff;
+}
+
+.navbar.outer {
     display: flex;
     padding: 10px 12px;
     z-index: 10;

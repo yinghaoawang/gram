@@ -1,18 +1,39 @@
 body {
-    color: #333;
+    color: #666;
+    background-color: #fafafa;
     font-family: 'Helvetica';
     font-size: 16px;
     margin: 0;
 }
 
+h1, h2 {
+    font-size: 32px;
+    margin: 15px;
+    font-weight: bold;
+    color: #444;
+}
+
+h3 {
+    font-size: 18px;
+    margin: 15px;
+    font-weight: bold;
+    color: #888;
+}
+
+input[type=text], input[type=password], input[type=email] {
+    text-indent: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
 a {
     text-decoration: none;
-    color: #777;
+    color: #36618a
 }
 
 a:visited {
     text-decoration: none;
-    color: #777;
+    color: #36618a
 }
 
 button {
@@ -31,13 +52,13 @@ button {
     border-radius: 4px;
 }
 
-.outermost-container {
+.outermost-container, .navbar.outer {
     width: 1000px;
     margin: 0 auto;
 }
 
-@media (max-width: 1000px) {
-    .outermost-container {
+@media (max-width: 1000px){
+    .outermost-container, .navbar.outer {
         width: auto;
     }
 }

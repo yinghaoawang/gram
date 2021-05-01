@@ -2,6 +2,7 @@ footer {
     height: 100px;
 }
 
+
 .content {
     min-height: calc(100vh - 100px - 79px);
 }
@@ -19,6 +20,9 @@ footer {
     margin-bottom: 10px;
 }
 
+.footer-links > a, .footer-links > a:visited {
+    color: #777;
+}
 
 .footer-links > a:not(:last-child) {
     margin-right: 12px;

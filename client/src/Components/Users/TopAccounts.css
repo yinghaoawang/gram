@@ -17,3 +17,6 @@
 .users-list > span > a {
     margin-right: 20px;
 }
+.users-list > span > a, .users-list > span > a:visited {
+    color: #777;
+}

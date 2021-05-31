@@ -1,4 +1,5 @@
 const cache = require('./cache');
+const hashing = require('../hashing.js');
 const getUsersData = cache.getUsers;
 const getPostsData = cache.getPosts;
 const getLikesData = cache.getLikes;
@@ -6,9 +7,29 @@ const getCommentsData = cache.getComments;
 const getFollowsData = cache.getFollows;
 
 let users = {
+    addUser: async (userData) => {
+        try {
+            let hashedPassword = await hashing.hashPassword(userData.password);
+            userData.hashed_password = hashedPassword;
+            let user = await cache.addUser(userData);
+            if (user != null) {
+                console.error("User added: " + user);
+                return user;
+            } else {
+                throw new Error("Unable to add user");
+            }
+        } catch(e) {
+            console.error("Unable to add user: " + userData);
+            return null;
+        }
+
+    },
     getAll: () => getUsersData(),
     getUserById: (id) => {
         return getUsersData().find(user => user.id == id);
+    },
+    getUserByUsername: (username) => {
+        return getUsersData().find(user => user.username == username);
     },
     getPostsByUserId: (id) => getPostsData().filter(post => post.user_id == id),
     getLikesByUserId: (id) => getLikesData().filter(like => like.user_id == id),

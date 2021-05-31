@@ -8,6 +8,12 @@ const config = {
             database: process.env.PGDATABASE ?? 'gram',
             user: process.env.PGUSER ?? 'postgres',
             password: process.env.PGPASSWORD ?? 'password'
+        },
+        jwt: {
+            secret:  process.env.SECRET ?? 'secretAccessToken!@#.'
+        },
+        session: {
+            secret: process.env.SESSION_SECRET ?? 'superSessionToken^$%*'
         }
     }
 };

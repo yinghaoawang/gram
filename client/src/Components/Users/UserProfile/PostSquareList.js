@@ -10,7 +10,7 @@ const PostSquareList = ({posts}) => {
 
     const handleResize = () => {
         let imageWidth = 0;
-        let imgElement = document.getElementsByClassName('post-img-container')?.[0];
+        let imgElement = document.getElementsByClassName('post-image-container')?.[0];
         if (imgElement != null) {
             imageWidth = imgElement.offsetWidth;
             setImgWidth(imageWidth);
@@ -47,7 +47,7 @@ const PostSquareList = ({posts}) => {
                             let post = postRow[i];
                             return (
                                 <div key={'postrow' + i} className="post-square">
-                                <div className="post-img-container">
+                                <div className="post-image-container-wrapper">
                                 {post != null && (<PostSquare post={post} imgWidth={imgWidth} />)}
                                 </div>
                                 </div>

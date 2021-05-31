@@ -1,9 +1,6 @@
-.post-img-container {
+.post-image-container-wrapper {
+    display: flex;
     margin: 0;
-}
-
-.post-img-container > img {
-    object-fit: cover;
 }
 
 .post-row {

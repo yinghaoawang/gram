@@ -14,8 +14,9 @@ const UserProfileDetails = ({user}) => {
                 <div className="user-details">
                     <div className="row one">
                         <span className="username">{user.username}</span>
-                        <span className="follow"><button>Follow</button></span>
-                        <span className="message"><button className="button-lowkey">Message</button></span>
+                        <span>
+                            <button>Follow</button><button style={{marginLeft: '8px',}} className="button-lowkey">Message</button>
+                        </span>
                     </div>
 
                     <div className="row two">

@@ -177,3 +177,42 @@ Maybe i'll do something like this in the distant future.
 I was debating on creating the post modal or setting up and using a relationsl db on the server. I decided I should use db because I already started generating better random data,
 so storing the seed data into the db would be good. More importantly, it's more efficient to use data provided by db joins before I work on more front end pages that require fetching
 specific cross relational data from the server.
+
+I decided on a relational db rather than a NoSQL db because I read that relational is better for systems that have more relationships. Since the updates are common, and have
+many relationships, they would take longer on NoSQL than a relational model.
+
+First of all, I want to clean up the code on the server. I use business logic in the controllers. I'm gonna add models, and services to the server as read about
+[here](https://softwareontheroad.com/ideal-nodejs-project-structure/). After: I realized that I already kinda separated the business logic mostly into a service.
+I also feel like writing model classes would be redundant, so **I decided not to do that** either.
+
+##### Read through caching
+Took longer than I wanted to, but I finally stored the generated data onto the database. I created a cache file on the server, and the cache first gets all the data from the db.
+And the server just gets data from the cache.  I did this cus fetching from the server would be faster than fetching from the database... or would it... Found info on what I did
+[here](https://blog.bluzelle.com/things-you-should-know-about-database-caching-2e8451656c2d). I'm not sure what category would my version be. Ig it'll just first synchronize data
+with the server on first load, and then each modification would go through the cache first, and then the changes made to the cache are made to the database immediately (write through).
+
+##### Registration
+So I realized that to continue with the write through caching, I needed to update the cache per insertion action, and then run the db query after. So I decided that making a registration
+page on the frontend, and some user creation on the backend.
+
+Took me a bit to make the registration on the frontend. Wasn't very tricky, just ran into some weird css problems, and used some hacks. Margin-top works weird with min-height, so
+I just made an empty div with the height of a margin of wanted, and it acted as a margin.
+
+I spent a long ass time figuring out how to make it so that react actually refreshes every time I modify a css file (when webpack is serving it only recompiles one time after I modify a
+CSS file, and all subsequent times, there are like no changes). I spent a good amount of hours trying to figure out what's wrong, and eventually adding the line "cache: false" fixed
+the issue.
+
+##### Authorization tokens
+First I used the jsonwebtoken package to generate json web tokens for authentication. I also used bcrypt to hash the passwords. 
+
+Then I added middleware to check authorization headers. Also, I added my own validation functions for user creation. Spent a while doing that.
+
+Then I made it so that an http-only cookie is stored on the client after the client logs in or signs up (the http-only cookie is for preventing CSRF attacks). I needed to use a cookie
+parser to modify my middleware to read cookies from the client. In order to set cookies on the client, I also had to make sure that the client and the server are on the same domain-
+this should be not too hard in production, and in development I had to modify the webpack config to proxy requests to the server. All of this took a lot longer than I thought it would,
+I definitely took for granted create-react-app since it makes proxying a lot less confusing.
+
+So in order to use http-only cookies, I decided to get the user by going to a route on the api on every page to check if the user is logged in. So I go to /api/user/me on every route
+change, and it sets the global user in UserAuth. 
+
+I also added a spinner loading thing for when a user profile is loading since it takes a while.

@@ -1,3 +1,7 @@
+.navbar {
+    z-index: 99999;
+}
+
 .navbar > a, .navbar > a:visited {
     color: #777;
 }

@@ -1,6 +1,6 @@
 /* User profile stuff */
-.user-profile .outer {
-    display: flex;
+.user-profile.outer {
+    width: 100%;
 }
 
 .top .column {
@@ -95,6 +95,11 @@
 @media (max-width: 700px) {
     .user-profile.posts > .post-row {
         width: 100%;
+
+    }
+
+    .row.one {
+        flex-direction: column;
     }
 }
 

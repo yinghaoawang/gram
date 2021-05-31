@@ -18,9 +18,10 @@ let follows = data.follows;
 let comments = data.comments;
 let storeData = async (datas, tableName) => {
     let promises = [];
-    if (tableName == 'comments') console.log(datas);
     for (let datum of datas) {
-        if (tableName == 'comments' && datum.message.length > 254) console.log(datum.message.length);
+        if (tableName == 'comments' && datum.message.length > 255) {
+            datum.message = datum.message.substring(0,255);
+        }
         Object.keys(datum).filter(key => ['id'].includes(key)).forEach(key => delete datas[key]);
         let qS = [...Array(Object.keys(datum).length).keys()];
         qS.forEach((key, i) => {qS[i] = '$' + (key + 1)});
@@ -30,8 +31,11 @@ let storeData = async (datas, tableName) => {
             text: `insert into ${tableName} (${keys}) values (${qS}) on conflict (id) do nothing`,
             values: Object.values(datum)
         }
-        //console.log(query.text);
+        let query2 = {
+            text: `SELECT setval('${tableName}_id_seq', (SELECT MAX(id) FROM ${tableName}) + 1)`
+        }
         promises.push(db.query(query));
+        promises.push(db.query(query2));
     }
     return Promise.all(promises);
 }
@@ -42,7 +46,6 @@ let storeAll = async (options) => {
         res = await storeData(options.posts, 'posts');
         res = await storeData(options.likes, 'likes');
         res = await storeData(options.follows, 'follows');
-        console.log('comments');
         res = await storeData(options.comments, 'comments');
     } catch(e) {
         console.log(e);

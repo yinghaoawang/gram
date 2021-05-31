@@ -2,21 +2,104 @@ const express = require('express');
 const router = express.Router();
 const dataFetch = require('../services/fetchFromCache');
 const utils = require('../utils');
+const hashing = require('../hashing');
 const bodyParser = require('body-parser');
+const config = require('../config/config');
+const jwt = require('jsonwebtoken');
+const { authenticateJWT } = require('../middleware/auth');
+const { check } = require('../validator');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+
+const accessTokenSecret = config.jwt.secret;
+const sessionTokenSecret = config.session.secret;
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
+router.use(cookieParser());
+
+router.use(session({
+    secret: sessionTokenSecret,
+    httpOnly: true
+}))
+
+router.use(authenticateJWT);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.json({ title: 'Express' });
 });
 
-router.post('/users/create', function(req, res, next) {
-    console.log(req.body);
-    res.json({
-        good: 'morning',
-    });
+router.get('/users/me', async (req, res) => {
+    try {
+        console.log("hi");
+        if (req.user != null) {
+            console.log(req.user);
+            let user = await dataFetch.users.getUserById(req.user.id);
+            console.log(user);
+            res.status(200).json(user);
+
+        } else res.status(401).send('Not logged in');
+    } catch (e) {
+        console.error(e);
+        res.status(500).send(e.message);
+    }
+});
+
+router.post('/users/login', async (req, res) => {
+    try {
+        if (req.body.user == null) throw new Error('No user post data');
+        let userInfo = JSON.parse(req.body.user);
+        console.log(userInfo);
+        const { username, password } = userInfo;
+
+        const user = dataFetch.users.getUserByUsername(username);
+        let passwordCorrect = false;
+        if (user != null) passwordCorrect = await hashing.checkPassword(password, user.hashed_password);
+
+        if (user != null && passwordCorrect) {
+            // Generate an access token
+            const accessToken = jwt.sign({ id: user.id, username: user.username,  role: user.role }, accessTokenSecret,
+                {expiresIn: '10s'});
+            res.cookie('token', accessToken, { httpOnly: true, sameSite: "strict" });
+
+            res.status(200).json({token: accessToken});
+        } else {
+            res.status(400).send('Username or password incorrect');
+        }
+    } catch (e) {
+        console.error(e);
+        res.status(500).send(e.message);
+    }
+
+});
+
+router.post('/users/create', async function(req, res, next) {
+    try {
+        if (req.body.user == null) throw new Error('No user post data');
+        let userInfo = JSON.parse(req.body.user);
+        let { username, password, email } = userInfo;
+        let user = null;
+        if (check(password).isPassword() &&
+            check(username).isUsername() &&
+            check(email).isEmail()
+        ) {
+            user = await dataFetch.users.addUser(userInfo);
+        } else {
+            console.log("User details not valid");
+        }
+        if (user) {
+            const accessToken = jwt.sign({ id: user.id, username: user.username,  role: user.role }, accessTokenSecret,
+                {expiresIn: '10s'});
+            res.cookie('token', accessToken, { httpOnly: true, sameSite: "strict" });
+            res.status(200).json({token: accessToken});
+        } else {
+            res.status(401).send('Unable to create user');
+        }
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+
 });
 
 router.get('/users', function(req, res, next) {

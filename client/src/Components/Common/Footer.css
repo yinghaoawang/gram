@@ -5,6 +5,8 @@ footer {
 
 .content {
     min-height: calc(100vh - 100px - 79px);
+    display: flex;
+    justify-content: center;
 }
 
 .footer-outer-container {

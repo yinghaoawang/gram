@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 let utils = require('../../utils');
+let hashing = require('../../hashing');
 let randomComments = [
     `The year is 3169. An excavation is taking place on earth, the old home of mankind. 3 devices called per[unreadable] computers were found.
     [POSSIBLE EXPLOSIVE] No AMSX ports, at least 1200 years old. You power it up using an adapter you found.
@@ -32,13 +33,16 @@ let randomPosts = [
 let users = [
     {
         id: '1',
-        username: 'RobinWieruch',
+        username: 'alan',
+        email: 'alan@gmail.com',
+        role: 'admin',
         pfp_url: getRandomPfp(),
         created_at: getRandomTimestamp(),
     },
     {
         id: '2',
-        username: 'DaveDavids',
+        username: 'dave',
+        email: 'dave@gmail.com',
         pfp_url: getRandomPfp(),
         created_at: getRandomTimestamp(),
     },
@@ -67,11 +71,17 @@ let beginFetch = async (amt) => {
     await fetchPostImages(100);
     await fetchCommentMessages(20);
 
+    for (let i = 0; i < users.length; ++i) {
+        users[i].hashed_password = await hashing.hashPassword('password');
+    }
+
     let chunk = await axios.get('https://randomuser.me/api/?results=' + amt);
 
     let res = chunk.data.results;
     for (let i = 0; i < amt; ++i) {
         let user = {id: i + 6, username: res[i].login.username, pfp_url: res[i].picture.large, created_at: getRandomTimestamp()};
+        user.email = res[i].email;
+        user.hashed_password = await hashing.hashPassword(res[i].login.password);
         if (Math.random() > .75) {
             let r = Math.random();
             if (r > .25) user.nickname = res[i].name.last;

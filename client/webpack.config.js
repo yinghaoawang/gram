@@ -10,19 +10,31 @@ module.exports = {
     },
     module : {
         rules: [
-            { test: /\.(js)$/, use: 'babel-loader' },
-            { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+            { test: /\.(js|jsx)$/, exclude: /node_modules/, use: ['babel-loader'] },
+            { test: /\.css$/i,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            },
         ],
     },
+    cache: false,
     devServer: {
         historyApiFallback: true,
+        proxy: {
+            "/api": {
+                changeOrigin: true,
+                target: "http://localhost:3030",
+            }
+        }
     },
 
     mode: 'development',
 
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'public/index.html'
+            template: path.join(__dirname, 'public', 'index.html')
         })
     ],
 }

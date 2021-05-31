@@ -18,12 +18,15 @@ pool.query(`drop database if exists ${dbname}`
     postMakePool = new Pool(config.db);
     return postMakePool.query(`create table users (
         "id" serial primary key,
-        "username" varchar(35),
+        "username" varchar(35) unique not null,
+        "email" varchar(255) unique,
+        "role" varchar(10) default 'user',
+        "hashed_password" varchar(255) not null,
         "pfp_url" varchar(255),
         "nickname" varchar(35),
         "group" varchar(35),
         "description" text,
-        "created_at" timestamp
+        "created_at" timestamp default now()
     )`)
 }).then(() => {
     return postMakePool.query(`create table posts (
@@ -32,7 +35,7 @@ pool.query(`drop database if exists ${dbname}`
         "img_url" varchar(255),
         "description" varchar(255),
         "ranking" integer,
-        "created_at" timestamp
+        "created_at" timestamp default now()
     )`)
     console.log("created posts");
 }).then(() => 
@@ -40,7 +43,7 @@ pool.query(`drop database if exists ${dbname}`
         "id" serial primary key,
         "user_id" integer references users,
         "post_id" integer references posts,
-        "created_at" timestamp
+        "created_at" timestamp default now()
     )`)
 ).then(() => 
     postMakePool.query(`create table comments (
@@ -48,14 +51,14 @@ pool.query(`drop database if exists ${dbname}`
         "user_id" integer references users,
         "post_id" integer references posts,
         "message" varchar(255),
-        "created_at" timestamp
+        "created_at" timestamp default now()
     )`)
 ).then(() => 
     postMakePool.query(`create table follows (
         "id" serial primary key,
         "follower_id" integer references users,
         "following_id" integer references users,
-        "created_at" timestamp
+        "created_at" timestamp default now()
     )`)
 ).catch(err => {
     console.error(err);

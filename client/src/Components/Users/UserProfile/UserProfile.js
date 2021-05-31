@@ -5,7 +5,7 @@ import './UserProfile.css';
 import PostSquareList from './PostSquareList';
 import UserProfileDetails from './UserProfileDetails';
 
-const apiPath = 'http://localhost:3030';
+const apiPath = '/api';
 
 class UserProfile extends React.Component {
     constructor() {
@@ -13,17 +13,21 @@ class UserProfile extends React.Component {
         this.state = {
             user: null,
             imgWidth: 0,
+            loading: true
         }
         this.fetchUser = this.fetchUser.bind(this);
     }
     async fetchUser() {
-        let data = await fetch(apiPath + '/users/').then(d => d.json());
+
+        let data = await fetch(apiPath + '/users').then(d => d.json());
         let users = data.users;
         let user_id = this.props.match.params.user_id;
         if (user_id == null) return;
+
         let userData = await fetch(apiPath + '/user/' + user_id).then(d => d.json());
         let user = userData.user;
         if (user == null) return;
+
         let postData = await fetch(apiPath + '/user/' + user.id + '/posts').then(d => d.json());
         let posts = postData.posts;
         let followerData = await fetch(apiPath + '/user/' + user.id + '/followers').then(d => d.json());
@@ -52,7 +56,9 @@ class UserProfile extends React.Component {
             });
         }
         user.posts = posts;
-        await this.setState({ user });
+
+
+        await this.setState({ user, loading: false })
     }
     componentDidMount() {
         this.fetchUser();
@@ -61,10 +67,11 @@ class UserProfile extends React.Component {
     }
     render() {
         let user = this.state.user;
+        let loading = this.state.loading;
         return (
             <>
                 <div className="content">
-                    {user != null ? (
+                    { loading == false ? (
                         <div className="user-profile outer">
                             <div className="user-profile top info border-bottom">
                                 <UserProfileDetails user={user} />
@@ -73,10 +80,14 @@ class UserProfile extends React.Component {
                                 <PostSquareList posts={user.posts} />
                             </div>
                         </div>
-                    ) : null }
+                    ) :
+                        <div className="loading">
+                            <div className="loader-small"></div>
+                        </div>
+                     }
                 </div>
             </>
-        )
+        );
     }
 }
 

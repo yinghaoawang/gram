@@ -4,7 +4,8 @@ import './PostSquareList.css';
 
 let range = [0,1,2];
 
-const PostSquareList = ({posts}) => {
+const PostSquareList = ({posts, showModal}) => {
+    console.log(showModal);
     const [imgWidth, setImgWidth] = useState();
     const [windowSize, setWindowSize] = useState({width: window.innerWidth, height: window.innerHeight});
 
@@ -26,15 +27,16 @@ const PostSquareList = ({posts}) => {
     }, []);
 
     return (
+
         <>{
-            posts ? posts.reduce((a, v) => {
+            posts && posts.reduce((a, v, i) => {
                 // reduces the posts to rows of 3
                 if (a.length == 0) a[0] = [];
                 let latestRow = a[a.length - 1];
                 if (latestRow.length == 3) {
                     a.push([]);
-                    latestRow = a[a.length - 1];
                 }
+                v.index = i;
                 a[a.length - 1].push(v);
                 return a;
             }, [])
@@ -47,7 +49,7 @@ const PostSquareList = ({posts}) => {
                             let post = postRow[i];
                             return (
                                 <div key={'postrow' + i} className="post-square">
-                                <div className="post-image-container-wrapper">
+                                <div className="post-image-container-wrapper" onClick={e => showModal(post.index)}>
                                 {post != null && (<PostSquare post={post} imgWidth={imgWidth} />)}
                                 </div>
                                 </div>
@@ -56,7 +58,7 @@ const PostSquareList = ({posts}) => {
                     }
                     </div>
                 );
-            }) : ''
+            })
         }</>
     )
 }

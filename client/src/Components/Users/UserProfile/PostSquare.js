@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import './PostSquare.css';
 
 const LikeCommentTooltip = ({type, data, tooltipHeader}) => {
@@ -20,26 +21,39 @@ const LikeCommentTooltip = ({type, data, tooltipHeader}) => {
     )
 }
 
-const PostSquare = ({post, imgWidth}) => (
-    <>
-    { post != null
-        ? (<span className="post-image-container">
-                <img className="post-image" style={{width: imgWidth, height: imgWidth}} src={post.img_url}></img>
-                <span className="post-meta">
-                    {
-                        post.likes != null &&
-                        (<span style={{marginRight: '5px',}} className="likes-meta">69 likes</span>)
-                    }
-                    {
-                        post.comments != null &&
-                        (<span className="comments-meta">42 comments</span>)
-                    }
+class PostSquare extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            show: false
+        }
+    }
+
+    render() {
+        let post = this.props.post;
+        let imgWidth = this.props.imgWidth;
+        return (
+            <>
+                { post != null
+                    ? (<span className="post-image-container">
+                    <img className="post-image" style={{width: imgWidth, height: imgWidth}} src={post.img_url}></img>
+                    <span className="post-meta">
+                        {
+                            post.likes != null &&
+                            (<span style={{marginRight: '5px',}} className="likes-meta">{post.likes.length} likes</span>)
+                        }
+                        {
+                            post.comments != null &&
+                            (<span className="comments-meta">{post.comments.length} comments</span>)
+                        }
                 </span>
             </span>)
-        : <span style={{width: imgWidth, height: imgWidth}}></span>
+                    : <span style={{width: imgWidth, height: imgWidth}}></span>
+                }
+            </>
+        );
     }
-    </>
-)
+}
 
 /*
                 {post.likes != null &&

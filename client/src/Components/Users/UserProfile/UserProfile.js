@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import './UserProfile.css';
 import PostSquareList from './PostSquareList';
 import UserProfileDetails from './UserProfileDetails';
+import PostModal from "./PostModal";
+
 
 const apiPath = '/api';
 
@@ -13,12 +15,26 @@ class UserProfile extends React.Component {
         this.state = {
             user: null,
             imgWidth: 0,
-            loading: true
+            loading: true,
+            showingModal: false,
+            modalPostIndex: -1,
         }
         this.fetchUser = this.fetchUser.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
+    }
+    showModal(postIndex) {
+        this.setState({
+            showingModal: true,
+            modalPostIndex: postIndex
+        })
+    }
+    hideModal(e) {
+        this.setState({
+            showingModal: false,
+        })
     }
     async fetchUser() {
-
         let data = await fetch(apiPath + '/users').then(d => d.json());
         let users = data.users;
         let user_id = this.props.match.params.user_id;
@@ -61,7 +77,12 @@ class UserProfile extends React.Component {
         await this.setState({ user, loading: false })
     }
     componentDidMount() {
-        this.fetchUser();
+        try {
+            this.fetchUser();
+        } catch (e) {
+            console.error("Error: " + e.messsage);
+        }
+
     }
     componentWillUnmount() {
     }
@@ -72,14 +93,18 @@ class UserProfile extends React.Component {
             <>
                 <div className="content">
                     { loading == false ? (
-                        <div className="user-profile outer">
-                            <div className="user-profile top info border-bottom">
-                                <UserProfileDetails user={user} />
+                        <>
+
+                            <PostModal posts={user.posts} onClose={this.hideModal} postIndex={this.state.modalPostIndex} show={this.state.showingModal} />
+                            <div className="user-profile outer">
+                                <div className="user-profile top info border-bottom">
+                                    <UserProfileDetails user={user} />
+                                </div>
+                                <div className="user-profile bottom posts">
+                                    <PostSquareList showModal={this.showModal} posts={user.posts} />
+                                </div>
                             </div>
-                            <div className="user-profile bottom posts">
-                                <PostSquareList posts={user.posts} />
-                            </div>
-                        </div>
+                        </>
                     ) :
                         <div className="loading">
                             <div className="loader-small"></div>

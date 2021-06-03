@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import { Link } from 'react-router-dom';
-import ReactDOM from 'react-dom';
 import './TopAccounts.css';
 
 const apiPath = '/api';
@@ -11,7 +10,6 @@ class TopAccounts extends React.Component {
         this.state = {
             users: [],
             loading: true,
-            mounted: false // antipattern
         }
         this.fetchUsers = this.fetchUsers.bind(this);
     }

@@ -92,6 +92,24 @@
     margin-right: auto;
 }
 
+.no-posts {
+    text-align: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.no-posts > i {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.no-posts > h1 {
+    font-weight: normal;
+    color: #555;
+}
+
 @media (max-width: 700px) {
     .user-profile.posts > .post-row {
         width: 100%;

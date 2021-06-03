@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import ReactDOM from 'react-dom';
 import './UserProfile.css';
 import PostSquareList from './PostSquareList';
 import UserProfileDetails from './UserProfileDetails';
@@ -24,12 +22,16 @@ class UserProfile extends React.Component {
         this.hideModal = this.hideModal.bind(this);
     }
     showModal(postIndex) {
+        document.body.style.overflow = "hidden";
+
         this.setState({
             showingModal: true,
             modalPostIndex: postIndex
         })
     }
     hideModal(e) {
+        document.body.style.removeProperty('overflow');
+
         this.setState({
             showingModal: false,
         })
@@ -74,11 +76,13 @@ class UserProfile extends React.Component {
         user.posts = posts;
 
 
-        await this.setState({ user, loading: false })
+        if (this.mounted) await this.setState({ user, loading: false })
     }
     componentDidMount() {
+        this.mounted = false;
         try {
             this.fetchUser();
+            this.mounted = true;
         } catch (e) {
             console.error("Error: " + e.messsage);
         }
@@ -95,13 +99,21 @@ class UserProfile extends React.Component {
                     { loading == false ? (
                         <>
 
-                            <PostModal posts={user.posts} onClose={this.hideModal} postIndex={this.state.modalPostIndex} show={this.state.showingModal} />
+                            <PostModal user={user} posts={user.posts} onClose={this.hideModal} postIndex={this.state.modalPostIndex} show={this.state.showingModal} />
                             <div className="user-profile outer">
                                 <div className="user-profile top info border-bottom">
                                     <UserProfileDetails user={user} />
                                 </div>
                                 <div className="user-profile bottom posts">
-                                    <PostSquareList showModal={this.showModal} posts={user.posts} />
+                                    {
+                                        user.posts && user.posts.length > 0 ? <PostSquareList showModal={this.showModal} posts={user.posts} />
+                                            :
+                                            <div className="no-posts">
+                                                <i className="fas fa-4x fa-camera"></i>
+                                                <h1>No Posts Yet</h1>
+                                            </div>
+                                    }
+
                                 </div>
                             </div>
                         </>

@@ -40,11 +40,11 @@ class PostSquare extends React.Component {
                     <span className="post-meta">
                         {
                             post.likes != null &&
-                            (<span style={{marginRight: '5px',}} className="likes-meta">{post.likes.length} likes</span>)
+                            (<span className="meta likes-meta"><i className="fas fa-lg fa-heart"></i>{post.likes.length}</span>)
                         }
                         {
                             post.comments != null &&
-                            (<span className="comments-meta">{post.comments.length} comments</span>)
+                            (<span className="meta comments-meta"><i className="fas fa-lg fa-comment"></i>{post.comments.length}</span>)
                         }
                 </span>
             </span>)

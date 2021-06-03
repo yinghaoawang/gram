@@ -5,7 +5,6 @@ import './PostSquareList.css';
 let range = [0,1,2];
 
 const PostSquareList = ({posts, showModal}) => {
-    console.log(showModal);
     const [imgWidth, setImgWidth] = useState();
     const [windowSize, setWindowSize] = useState({width: window.innerWidth, height: window.innerHeight});
 

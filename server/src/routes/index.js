@@ -60,7 +60,7 @@ router.post('/users/login', async (req, res) => {
         if (user != null && passwordCorrect) {
             // Generate an access token
             const accessToken = jwt.sign({ id: user.id, username: user.username,  role: user.role }, accessTokenSecret,
-                {expiresIn: '10s'});
+                {expiresIn: '10h'});
             res.cookie('token', accessToken, { httpOnly: true, sameSite: "strict" });
 
             res.status(200).json({token: accessToken});
@@ -112,80 +112,34 @@ router.get('/user/:user_id', function(req, res, next) {
     });
 });
 
-router.get('/user/:user_id/posts', function(req, res, next) {
-    posts = dataFetch.users.getPostsByUserId(req.params.user_id);
-    posts.map((p) => updateRanking(p));
-
-    res.json({
-        userId: req.params.user_id,
-        posts
-    });
-});
-
-router.get('/user/:user_id/likes', function(req, res, next) {
-    res.json({
-        userId: req.params.user_id,
-        likes: dataFetch.users.getLikesbyUserId(req.params.user_id),
-    });
-});
-
-router.get('/user/:user_id/comments', function(req, res, next) {
-    res.json({
-        userId: req.params.user_id,
-        comments: dataFetch.users.getCommentsbyUserId(req.params.user_id),
-    });
-});
-
-router.get('/user/:user_id/followers', function(req, res, next) {
-    res.json({
-        userId: req.params.user_id,
-        followers: dataFetch.users.getFollowersByUserId(req.params.user_id),
-    });
-});
-
-router.get('/user/:user_id/following', function(req, res, next) {
-    res.json({
-        userId: req.params.user_id,
-        following: dataFetch.users.getFollowingByUserId(req.params.user_id),
-    });
-});
-
 router.get('/posts', function(req, res, next) {
-    let posts = dataFetch.posts.getAll();
+    let posts = {};
+    if (req.query.user_id) {
+        posts = dataFetch.posts.getPostsByUserId(req.query.user_id);
+    } else {
+        posts = dataFetch.posts.getAll();
+    }
     posts.map((post) => updateRanking(post));
     res.json({posts});
-});
 
+});
 
 router.get('/post/:post_id', function(req, res, next) {
     let post = dataFetch.posts.getPostById(req.params.post_id);
-    updateranking(post);
+    updateRanking(post);
     res.json({post});
-});
-
-router.get('/post/:post_id/all', function(req, res, next) {
-    let post = dataFetch.posts.getPostById(req.params.post_id);
-    post.likes = dataFetch.posts.getLikesByPostId(req.params.post_id);
-    post.comments = dataFetch.posts.getCommentsByPostId(req.params.post_id);
-    res.json({post});
-});
-
-router.get('/post/:post_id/likes', function(req, res, next) {
-    res.json({
-        postId: req.params.post_id,
-        likes: dataFetch.posts.getLikesByPostId(req.params.post_id),
-    });
-});
-
-router.get('/post/:post_id/comments', function(req, res, next) {
-    res.json({
-        postId: req.params.post_id,
-        comments: dataFetch.posts.getCommentsByPostId(req.params.post_id),
-    });
 });
 
 router.get('/likes', function(req, res, next) {
-  res.json({likes: dataFetch.likes.getAll()});
+    let likes = {};
+    if (req.query.user_id != null) {
+        likes = dataFetch.likes.getLikesByUserId(req.query.user_id);
+    } else if (req.query.post_id != null) {
+        likes = dataFetch.likes.getLikesByPostId(req.query.post_id)
+    } else {
+        dataFetch.likes.getAll();
+    }
+    res.json({likes});
 });
 
 router.get('/like/:like_id', function(req, res, next) {
@@ -194,15 +148,70 @@ router.get('/like/:like_id', function(req, res, next) {
     });
 });
 
+router.post('/likes/create', async function(req, res, next) {
+    try {
+        if (req.body.like == null) throw new Error('No like post data');
+        let likeInfo = JSON.parse(req.body.like);
+        let {user_id, post_id} = likeInfo;
+        let like = null;
+        if (Number.isInteger(user_id) && Number.isInteger(post_id)) {
+            like = await dataFetch.likes.addLike(likeInfo);
+        }
+        if (like) {
+            console.log(like);
+            res.status(200).json({like});
+        } else {
+            res.status(401).send("Unable to create like")
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
+    }
+});
+
+
 router.get('/comments', function(req, res, next) {
+    let comments = {};
+    if (req.query.user_id != null) {
+        comments = dataFetch.comments.getCommentsByUserId(req.query.user_id)
+    } else if (req.query.post_id != null) {
+        comments = dataFetch.comments.getCommentsByPostId(req.query.post_id)
+    } else {
+        comments = dataFetch.comments.getAll();
+    }
+    comments.sort((a,b) => a.created_at - b.created_at);
     res.json({
-        comments: dataFetch.comments.getAll(),
+        comments
     });
 });
 
 router.get('/comment/:comment_id', function(req, res, next) {
     res.json({
         comment: dataFetch.comments.getCommentById(req.params.comment_id),
+    });
+});
+
+router.get('/followers/', function(req, res, next) {
+    let followers = {};
+    if (req.query.user_id != null) {
+        followers = dataFetch.follows.getFollowersByUserId(req.query.user_id);
+    } else {
+        followers = dataFetch.follows.getAll();
+    }
+    res.json({
+        followers
+    });
+});
+
+router.get('/following/', function(req, res, next) {
+    let following = {};
+    if (req.query.user_id) {
+        following = dataFetch.follows.getFollowingByUserId(req.query.user_id);
+    } else {
+        following = dataFetch.follows.getAll();
+    }
+    res.json({
+        following
     });
 });
 
@@ -222,7 +231,7 @@ function calculateRanking(post) {
     let days = utils.diffDaysBetweenDates(postDate, new Date());
     let lambda = Math.log(2)/90;
     let baseRanking = 1000 * Math.pow(Math.E, -lambda * days);
-    let likes = dataFetch.posts.getLikesByPostId(post.id);
+    let likes = dataFetch.likes.getLikesByPostId(post.id);
     let likeRankingSum = 0;
     for (let like of likes) {
         let likeDate = utils.timestampToDate(like.timestamp);
@@ -236,3 +245,4 @@ function calculateRanking(post) {
 }
 
 module.exports = router;
+

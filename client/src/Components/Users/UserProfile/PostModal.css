@@ -88,6 +88,7 @@
 }
 
 .infobox-buttons > i {
+    cursor: pointer;
     font-size: 1.6rem;
     margin-right: 12px;
     color: #444;

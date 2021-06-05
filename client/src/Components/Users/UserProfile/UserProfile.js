@@ -37,8 +37,6 @@ class UserProfile extends React.Component {
         })
     }
     async fetchUser() {
-        let data = await fetch(apiPath + '/users').then(d => d.json());
-        let users = data.users;
         let user_id = this.props.match.params.user_id;
         if (user_id == null) return;
 
@@ -46,32 +44,39 @@ class UserProfile extends React.Component {
         let user = userData.user;
         if (user == null) return;
 
-        let postData = await fetch(apiPath + '/user/' + user.id + '/posts').then(d => d.json());
+        let postData = await fetch(apiPath + '/posts?user_id=' + user.id).then(d => d.json());
         let posts = postData.posts;
-        let followerData = await fetch(apiPath + '/user/' + user.id + '/followers').then(d => d.json());
+        let followerData = await fetch(apiPath + '/followers?user_id=' + user.id).then(d => d.json());
         let followers = followerData.followers;
-        let followingData = await fetch(apiPath + '/user/' + user.id + '/following').then(d => d.json());
+        let followingData = await fetch(apiPath + '/following?user_id=' + user.id).then(d => d.json());
         let following = followingData.following;
         user.followers = followers;
         user.following = following;
         for (let post of posts) {
-            let data = await fetch(apiPath + '/post/' + post.id + '/all').then(d => d.json());
+            let postLikesData = await fetch(apiPath + '/likes?post_id=' + post.id).then(d => d.json());
+            let postCommentsData = await fetch(apiPath + '/comments?post_id=' + post.id).then(d => d.json());
             post.likes = [];
-            data.post.likes.map(like => {
-                let like_user = users.find(u => u.id == like.user_id);
-                if (like_user != null) {
-                    like.user = like_user;
-                }
-                post.likes.push(like);
-            });
             post.comments = [];
-            data.post.comments.map(comment => {
-                let comment_user = users.find(u => u.id == comment.user_id);
-                if (comment_user != null) {
-                    comment.user = comment_user;
+
+            for (let like of postLikesData.likes) {
+                /*
+                let like_user = await fetch(apiPath + '/user/' + like.user_id).then(d => d.json());
+                if (like_user != null) {
+                    like.user = like_user.user;
                 }
+                 */
+                post.likes.push(like);
+            };
+
+            for (let comment of postCommentsData.comments) {
+                /*
+                let comment_user = await fetch(apiPath + '/user/' + comment.user_id).then(d => d.json());
+                if (comment_user != null) {
+                    comment.user = comment_user.user;
+                }
+                 */
                 post.comments.push(comment);
-            });
+            };
         }
         user.posts = posts;
 

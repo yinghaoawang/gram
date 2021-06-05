@@ -12,6 +12,10 @@ import AuthContext from "./AuthContext";
 
 @withRouter
 class App extends React.Component {
+    componentDidMount() {
+        this.onRouteChanged();
+    }
+
     componentDidUpdate(prevProps) {
         if (this.props.location != prevProps.location) {
             this.onRouteChanged();
@@ -25,13 +29,13 @@ class App extends React.Component {
             if (res.ok) {
                 let data = await res.json();
                 console.log(data);
-                if (!this.state.user || this.state.user.id != data.id) {
-                    this.setUser(data);
+                if (!this.state.currUser || this.state.currUser.id != data.id) {
+                    this.setCurrUser(data);
                 }
             } else {
                 if (res.status == 400) {
                     alert('Session expired, log in again.');
-                    this.setUser(null);
+                    this.setCurrUser(null);
                     this.props.history.push('/login');
                 }
             }
@@ -40,22 +44,22 @@ class App extends React.Component {
         };
     }
 
-    setUser(user) {
-        this.setState({user});
+    setCurrUser(currUser) {
+        this.setState({currUser});
     }
 
     constructor(props) {
         super(props);
         this.state = {
-            user: null,
+            currUser: null,
         }
-        this.setUser = this.setUser.bind(this);
+        this.setCurrUser = this.setCurrUser.bind(this);
     }
 
     render() {
 
         return (
-            <AuthContext.Provider value={{user: this.state.user, setUser: this.setUser}}>
+            <AuthContext.Provider value={{currUser: this.state.currUser, setCurrUser: this.setCurrUser}}>
 
                 <Navbar />
                 <div className="outermost-container">

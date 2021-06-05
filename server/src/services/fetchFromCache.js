@@ -31,42 +31,52 @@ let users = {
     getUserByUsername: (username) => {
         return getUsersData().find(user => user.username == username);
     },
-    getPostsByUserId: (id) => getPostsData().filter(post => post.user_id == id),
-    getLikesByUserId: (id) => getLikesData().filter(like => like.user_id == id),
-    getCommentsByUserId: (id) => getCommentsData().filter(comment => comment.user_id == id),
-    getFollowersByUserId: (id) => {
-        let follows = getFollowsData().filter(follow => follow.following_id == id);
-        return follows.map(follow => getUsersData().find(user => user.id == follow.follower_id));
 
-    },
-    getFollowingByUserId: (id) => {
-        let follows = getFollowsData().filter(follow => follow.follower_id == id);
-        return follows.map(follow => getUsersData().find(user => user.id == follow.following_id));
-    }
 }
 
 let posts = {
     getAll: () => getPostsData(),
     getPostById: (id) => getPostsData().find(post => post.id == id),
-    getLikesByPostId: (id) => getLikesData().filter(like => like.post_id == id),
-    getCommentsByPostId: (id) => getCommentsData().filter(comment => comment.post_id == id),
+    getPostsByUserId: (id) => getPostsData().filter(post => post.user_id == id),
+
     updatePostById: (id, options) => {
         for (key in options) getPostsData().find(post => post.id == id)[key] = options[key];
     },
 };
 let likes = {
+    addLike: async (likeData) => {
+        try {
+            let like = await cache.addLike(likeData);
+            if (like != null) {
+                console.error("Like added: " + JSON.stringify(like));
+                return like;
+            } else {
+                throw new Error("Unable to add like");
+            }
+        } catch(e) {
+            console.error("Unable to add like: " + likeData);
+            return null;
+        }
+    },
     getAll: () => getLikesData(),
     getLikeById: (id) => getLikesData().find(like => like.id == id),
+    getLikesByUserId: (id) => getLikesData().filter(like => like.user_id == id),
+    getLikesByPostId: (id) => getLikesData().filter(like => like.post_id == id),
 };
 
 let comments = {
     getAll: () => getCommentsData(),
+    getCommentsByPostId: (id) => getCommentsData().filter(comment => comment.post_id == id),
+    getCommentsByUserId: (id) => getCommentsData().filter(comment => comment.user_id == id),
     getCommentById: (id) => getCommentsData().find(comment => comment.id == id),
 };
 
-let follows = [
-]
+let follows = {
+    getAll: () => getFollowsData(),
+    getFollowingByUserId: (id) => getFollowsData().filter(follow => follow.following_id == id),
+    getFollowersByUserId: (id) => getFollowsData().filter(follow => follow.follower_id == id),
+}
 
 module.exports = {
-    users, posts, likes, comments
+    users, posts, likes, comments, follows
 }

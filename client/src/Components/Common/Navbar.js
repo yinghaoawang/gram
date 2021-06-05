@@ -23,7 +23,7 @@ class Navbar extends React.Component {
                     </div>
                     <div className="navbar right">
                         <AuthContext.Consumer>
-                            { value => value.user != null ?
+                            { value => value.currUser != null ?
                                 <>
                                     <Link to={'#'}>Home</Link>
                                     <Link to={'/top_accounts'}>Explore</Link>

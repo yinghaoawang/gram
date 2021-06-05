@@ -13,7 +13,7 @@ const check = (field) => {
             if (field.length < 5 || field.length > 22) return false;
             let re = /^[a-zA-Z0-9-_.]+$/;
             return re.test(field);
-        }
+        },
     }
 }
 

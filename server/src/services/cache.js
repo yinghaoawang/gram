@@ -24,12 +24,26 @@ db.query("select * from comments", []).then(data => {
 const addUser = async (userData) => {
     try {
         let { email, username, nickname, hashed_password } = userData;
-
         let values = [email, username, nickname, hashed_password];
         let query = `insert into users (email, username, nickname, hashed_password) values ($1, $2, $3, $4)`;
         let res = await db.query(query, values);
         let res2 = await db.query('select * from users where username = $1', [username]);
         users.push(res2.rows[0]);
+        return res2.rows[0];
+    } catch (err) {
+        console.error("error", err.message);
+        return null;
+    }
+}
+const addLike = async (likeData) => {
+    try {
+        let { user_id, post_id } = likeData;
+        let values = [user_id, post_id];
+        let query = `insert into likes (user_id, post_id) values ($1, $2) returning id`;
+        let res = await db.query(query, values);
+        let like_id = res.rows[0].id;
+        let res2 = await db.query('select * from likes where id = $1', [like_id]);
+        likes.push(res2.rows[0]);
         return res2.rows[0];
     } catch (err) {
         console.error("error", err.message);
@@ -49,5 +63,5 @@ const addComments = commentsToAdd => { comments = comments.concat(commentsToAdd)
 
 module.exports = {
     getUsers, getFollows, getPosts, getLikes, getComments, //addUsers, addFollows, addPosts, addLikes, addComments,
-    addUser
+    addUser, addLike
 };

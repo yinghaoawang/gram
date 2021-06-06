@@ -1,7 +1,93 @@
 import React from 'react';
+import AuthContext from "../../../AuthContext";
 import './UserProfileDetails.css';
+const apiPath = '/api';
 
 const UserProfileDetails = ({user}) => {
+    const [followerCount, setFollowerCount] = React.useState(user.followers.length);
+    const [userIsFollowing, setUserIsFollowing] = React.useState(false);
+    const [toggleUserLoading, setToggleUserLoading] = React.useState(false);
+    const [pageLoaded, setPageLoaded] = React.useState(false);
+    const context = React.useContext(AuthContext);
+    let updateUserFollowing = async () => {
+        try {
+            let res = await fetch(apiPath + '/follows?following_id=' + user.id + '&follower_id=' + context.currUser.id);
+            if (res.ok) {
+                let followsData = await res.json();
+                console.log(followsData);
+                if (followsData.follows.length > 0) {
+                    // that means i am following
+                    setUserIsFollowing(true);
+                } else {
+                    setUserIsFollowing(false);
+                }
+            } else {
+                console.error('Not OK', res);
+                setUserIsFollowing(false);
+            }
+        } catch (e) {
+            console.error(e);
+            setUserIsFollowing(false);
+        }
+
+    };
+    let unfollowUser = async () => {
+        if (context.currUser == null) return;
+        try {
+            let url = apiPath + '/follows/delete';
+            let data = {following_id : user.id, follower_id: context.currUser.id}
+            let res = await fetch(url,
+                {method: "DELETE", body: new URLSearchParams({follow: JSON.stringify(data)})},
+            );
+            if (res.ok) {
+                let followData = await res.json();
+                console.log('OK ' + JSON.stringify(followData));
+                setFollowerCount(followerCount - 1);
+                setUserIsFollowing(false);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    let followUser = async () => {
+        if (context.currUser == null) return;
+        try {
+            let url = apiPath + '/follows/create';
+            let data = {following_id : user.id, follower_id: context.currUser.id}
+            let res = await fetch(url,
+                {method: "POST", body: new URLSearchParams({follow: JSON.stringify(data)})},
+            );
+            if (res.ok) {
+                let followData = await res.json();
+                console.log('OK ' + JSON.stringify(followData));
+                setFollowerCount(followerCount + 1);
+                setUserIsFollowing(true);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    let toggleFollow = async () => {
+        if (toggleUserLoading) return;
+        await updateUserFollowing();
+        setToggleUserLoading(true);
+        try {
+            if (userIsFollowing) {
+                await unfollowUser();
+            } else {
+                await followUser();
+            }
+            setToggleUserLoading(false);
+        } catch (e) {
+            console.log("error following: " + e.message)
+            setToggleUserLoading(false);
+        }
+    }
+
+    React.useEffect(async () => {
+        await updateUserFollowing();
+        setPageLoaded(true);
+    }, []);
     return (<>
         {user != null && (
             <>
@@ -12,14 +98,27 @@ const UserProfileDetails = ({user}) => {
                 <div className="user-details">
                     <div className="row one">
                         <span className="username">{user.username}</span>
+                        {pageLoaded &&
                         <span>
-                            <button>Follow</button><button style={{marginLeft: '8px',}} className="button-lowkey">Message</button>
+                            <button onClick={e => toggleFollow()} className={'follow-button' + (userIsFollowing ? ' button-warning' : '')}>
+                                {toggleUserLoading ?
+                                    <i className="fa fa-spinner fa-spin"></i>
+                                    :
+                                    <>{userIsFollowing ? 'Unfollow' : 'Follow'}</>
+                                }
+
+
+                            </button>
+                            {userIsFollowing && context.currUser &&
+                                <button style={{marginLeft: '8px',}} className="message-button button-lowkey">Message</button>
+                            }
                         </span>
+                        }
                     </div>
 
                     <div className="row two">
                         <span className="post-count"><strong>{user.posts != null ? user.posts.length : 0}</strong> posts</span>
-                        <span className="follower-count"><strong>{user.followers != null ? user.followers.length : 0}</strong> followers</span>
+                        <span className="follower-count"><strong>{user.followers != null ? followerCount : 0}</strong> followers</span>
                         <span className="following-count"><strong>{user.following != null ? user.following.length: 0}</strong> following</span>
                     </div>
 

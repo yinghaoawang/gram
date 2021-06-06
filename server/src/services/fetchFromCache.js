@@ -64,7 +64,7 @@ let likes = {
     },
     getAll: () => getLikesData(),
     getLikeById: (id) => getLikesData().find(like => like.id == id),
-    getLikesByUserId: (id) => getLikesData().filter(like => like.user_id == id),
+    getLikesByUserId: (id) => getLikesData().re(like => like.user_id == id),
     getLikesByPostId: (id) => getLikesData().filter(like => like.post_id == id),
     getLikes: (options) => getLikesData().filter(like => {
         for (const [key, value] of Object.entries(options)) {
@@ -91,9 +91,15 @@ let comments = {
 };
 
 let follows = {
+    addFollow: async (followData) => {
+        return await cache.addFollow(followData);
+    },
+    removeFollow: async (followData) => {
+        return await cache.removeFollow(followData);
+    },
     getAll: () => getFollowsData(),
-    getFollowingByUserId: (id) => getFollowsData().filter(follow => follow.following_id == id),
-    getFollowersByUserId: (id) => getFollowsData().filter(follow => follow.follower_id == id),
+    getFollowingByUserId: (id) => getFollowsData().filter(follow => follow.follower_id == id),
+    getFollowersByUserId: (id) => getFollowsData().filter(follow => follow.following_id == id),
     getFollows: (options) => getFollowsData().filter(follow => {
         for (const [key, value] of Object.entries(options)) {
             if (follow[key] != value) return false;

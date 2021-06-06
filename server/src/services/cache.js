@@ -57,7 +57,7 @@ const removeLike = async (likeData) => {
         let values = [id];
         let query = `delete from likes where id = $1 returning *`;
         let res = await db.query(query, values);
-        console.log('deleted: ' + res.rows[0]);
+        console.log('deleted: ' + JSON.stringify(res.rows[0]));
         for (let i = 0; i < likes.length; ++i) {
             let like = likes[i];
             if (like.id == id) {
@@ -89,6 +89,57 @@ const addComment = async (commentData) => {
     }
 }
 
+const addFollow = async (followData) => {
+    try {
+        let { follower_id, following_id } = followData;
+        let values = [follower_id, following_id];
+        let query = `insert into follows (follower_id, following_id) values ($1, $2) returning id`;
+        let res = await db.query(query, values);
+        let follow_id = res.rows[0].id;
+        let res2 = await db.query('select * from follows where id = $1', [follow_id]);
+        follows.push(res2.rows[0]);
+        return res2.rows[0];
+    } catch (err) {
+        console.error("error", err.message);
+        return null;
+    }
+}
+
+const removeFollow = async (followData) => {
+    try {
+        let { follower_id, following_id } = followData;
+        let values = [follower_id, following_id];
+        let query = `delete from follows where follower_id = $1 and following_id = $2 returning *`;
+        let res = await db.query(query, values);
+        console.log('deleted: '  + JSON.stringify(res.rows[0]));
+        if (res.rows[0] == null) {
+            for (let i = 0; i < follows.length; ++i) {
+                let follow = follows[i];
+                if (follow.follower_id == follower_id && follow.following_id == following_id) {
+                    console.log("clearing cache of follow meant to be deleted");
+                    follows.splice(i, 1);
+                }
+            }
+            return null;
+        } else {
+            for (let i = 0; i < follows.length; ++i) {
+                let follow = follows[i];
+                if (follow.id == res.rows[0].id) {
+                    console.log('follow found, splicing 1');
+                    follows.splice(i, 1);
+                    break;
+                }
+            }
+            return res.rows[0];
+        }
+
+
+    } catch (err) {
+        console.error("error", err.message);
+        return null;
+    }
+}
+
 const getUsers = () => users;
 const getComments = () => comments;
 const getLikes = () => likes;
@@ -97,5 +148,6 @@ const getPosts = () => posts;
 
 module.exports = {
     getUsers, getFollows, getPosts, getLikes, getComments, //addUsers, addFollows, addPosts, addLikes, addComments,
-    addUser, addLike, removeLike, addComment
+    addUser, addLike, removeLike, addComment, addFollow,
+    removeFollow
 };

@@ -1,2 +1,6 @@
-@media (max-width: 700px) {
+.follow-button {
+    width: 80px;
+}
+.message-button {
+    width: 80px;
 }

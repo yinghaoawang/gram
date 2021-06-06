@@ -80,7 +80,7 @@
 }
 
 .infobox-post-button.disabled {
-    cursor: none;
+    cursor: default;
     color: #555555;
 }
 

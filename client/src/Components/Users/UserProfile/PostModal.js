@@ -39,6 +39,7 @@ class PostModal extends React.Component {
         await this.setState({currCommentsLoaded: false});
         this.updateUserLikePost();
         this.updateCurrComments();
+
     }
 
     updateUserLikePost() {
@@ -167,7 +168,9 @@ class PostModal extends React.Component {
                 });
             }
         };
+
         if (this.state.postIndex == originalPostIndex) await this.setState({currCommentsLoaded: true});
+        this.scrollBox.scrollTop = this.scrollBox.scrollHeight;
     }
 
     async goPrevPost() {
@@ -241,7 +244,7 @@ class PostModal extends React.Component {
                                         {posts != null && postIndex != null ? (<>
                                             <div className="infobox-scrolling-comments infobox-border-bottom">
                                                 {this.state.currCommentsLoaded ?
-                                                <div className="infobox-comment-container">
+                                                <div className="infobox-comment-container" ref={(input) => { this.scrollBox = input; }}>
                                                     {
                                                         posts[postIndex].comments.map(comment => {
                                                             if (comment.user == null) return '';
@@ -259,7 +262,7 @@ class PostModal extends React.Component {
 
                                                                         <div className="infobox-comment-date">{this.printDateDiff(comment.created_at, Date.now())}d</div>
                                                                     </div>
-                                                                    <div className="infobox-comment-right-margin"><i className="far fa-xs fa-heart"></i></div>
+                                                                    {false &&<div className="infobox-comment-right-margin"> <i className="far fa-xs fa-heart"></i></div> }
                                                                 </div>
                                                             );
                                                         })
@@ -283,7 +286,7 @@ class PostModal extends React.Component {
                                             <div className="infobox-add-comment infobox-center-items">
                                                 {
                                                     !this.state.commentBeingPosted ?
-                                                        <textarea className="infobox-textarea comment-font " disabled={this.state.commentBeingPosted} spellCheck="false" ref={(input) => { this.postBox = input; }}  placeholder="Add a comment..."></textarea>
+                                                        <textarea className="infobox-textarea comment-font " disabled={this.state.commentBeingPosted || this.context.currUser == null} spellCheck="false" ref={(input) => { this.postBox = input; }}  placeholder="Add a comment..."></textarea>
                                                         : <div className="infobox-textarea-loading">
                                                             <div className="floatingBarsG">
                                                                 <div className="blockG" id="rotateG_01"></div>
@@ -297,7 +300,7 @@ class PostModal extends React.Component {
                                                             </div>
                                                         </div>
                                                 }
-                                                <a onClick={e => this.postComment(this.postBox.value)} className={"infobox-post-button unselectable" + (this.state.commentBeingPosted && " disabled")}>Post</a>
+                                                <a onClick={e => this.postComment(this.postBox.value)} className={"infobox-post-button unselectable" + ((this.state.commentBeingPosted || this.context.currUser == null) && " disabled")}>Post</a>
                                             </div>
                                             </>): ''
                                         }

@@ -191,7 +191,6 @@ router.delete('/likes/delete', async function(req, res, next) {
     }
 });
 
-
 router.get('/comments', function(req, res, next) {
     let comments = {};
     if (req.query.user_id != null) {
@@ -234,28 +233,105 @@ router.get('/comment/:comment_id', function(req, res, next) {
     });
 });
 
-router.get('/followers/', function(req, res, next) {
-    let followers = {};
-    if (req.query.user_id != null) {
-        followers = dataFetch.follows.getFollowersByUserId(req.query.user_id);
-    } else {
-        followers = dataFetch.follows.getAll();
+router.get('/follows/', function(req, res, next) {
+    try {
+        let follows = {};
+        if (req.query.id != null) {
+            follows = dataFetch.follows.getFollows({id: req.query.id});
+        } else if (req.query.follower_id != null && req.query.following_id != null) {
+            follows = dataFetch.follows.getFollows({follower_id: req.query.follower_id, following_id: req.query.following_id});
+        } else {
+            follows = dataFetch.follows.getAll();
+        }
+
+        if (follows) {
+            console.log(follows);
+            res.status(200).json({follows});
+        } else {
+            res.status(401).send("Unable to get follows")
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
     }
-    res.json({
-        followers
-    });
+});
+
+router.post('/follows/create', async function(req, res, next) {
+    try {
+        if (req.body.follow == null) throw new Error('No follow data');
+        let followInfo = JSON.parse(req.body.follow);
+        let {follower_id, following_id} = followInfo;
+        let follow = null;
+        if (Number.isInteger(follower_id) && Number.isInteger(following_id)) {
+            let followExists = await dataFetch.follows.getFollows(followInfo);
+            console.log('follow exists:' + JSON.stringify(followExists));
+            if (followExists && followExists.length == 0) follow = await dataFetch.follows.addFollow(followInfo);
+        }
+        if (follow) {
+            console.log(follow);
+            res.status(200).json({follow});
+        } else {
+            res.status(401).send("Unable to create follow")
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
+    }
+});
+
+router.delete('/follows/delete', async function(req, res, next) {
+    try {
+        if (req.body.follow == null) throw new Error('No like post data');
+        let followInfo = JSON.parse(req.body.follow);
+        let {follower_id, following_id} = followInfo;
+        let follow = null;
+        if (Number.isInteger(follower_id) && Number.isInteger(following_id)) {
+            follow = await dataFetch.follows.removeFollow(followInfo);
+        }
+        if (follow) {
+            console.log(follow);
+            res.status(200).json({follow});
+        } else {
+            res.status(401).send("Unable to delete follow")
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
+    }
+});
+
+router.get('/followers/', function(req, res, next) {
+    try {
+        let followers = {};
+        if (req.query.user_id != null) {
+            followers = dataFetch.follows.getFollowersByUserId(req.query.user_id);
+        } else {
+            followers = dataFetch.follows.getAll();
+        }
+        res.json({
+            followers
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
+    }
 });
 
 router.get('/following/', function(req, res, next) {
-    let following = {};
-    if (req.query.user_id) {
-        following = dataFetch.follows.getFollowingByUserId(req.query.user_id);
-    } else {
-        following = dataFetch.follows.getAll();
+    try {
+        let following = {};
+        if (req.query.user_id) {
+            following = dataFetch.follows.getFollowingByUserId(req.query.user_id);
+        } else {
+            following = dataFetch.follows.getAll();
+        }
+        res.json({
+            following
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
     }
-    res.json({
-        following
-    });
 });
 
 function updateRanking(post) {

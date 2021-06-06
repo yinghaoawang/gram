@@ -50,18 +50,52 @@ const addLike = async (likeData) => {
         return null;
     }
 }
+
+const removeLike = async (likeData) => {
+    try {
+        let { id } = likeData;
+        let values = [id];
+        let query = `delete from likes where id = $1 returning *`;
+        let res = await db.query(query, values);
+        console.log('deleted: ' + res.rows[0]);
+        for (let i = 0; i < likes.length; ++i) {
+            let like = likes[i];
+            if (like.id == id) {
+                console.log('like found, splicing 1');
+                likes.splice(i, 1);
+                break;
+            }
+        }
+        return res;
+    } catch (err) {
+        console.error("error", err.message);
+        return null;
+    }
+}
+
+const addComment = async (commentData) => {
+    try {
+        let { user_id, post_id, message } = commentData;
+        let values = [user_id, post_id, message];
+        let query = `insert into comments (user_id, post_id, message) values ($1, $2, $3) returning id`;
+        let res = await db.query(query, values);
+        let comment_id = res.rows[0].id;
+        let res2 = await db.query('select * from comments where id = $1', [comment_id]);
+        comments.push(res2.rows[0]);
+        return res2.rows[0];
+    } catch (err) {
+        console.error("error", err.message);
+        return null;
+    }
+}
+
 const getUsers = () => users;
 const getComments = () => comments;
 const getLikes = () => likes;
 const getFollows = () => follows;
 const getPosts = () => posts;
-const addUsers = usersToAdd => { users = users.concat(usersToAdd); }
-const addFollows = followstoAdd => { follows = follows.concat(followstoAdd); }
-const addPosts = postsToAdd => { posts = posts.concat(postsToAdd); }
-const addLikes = likesToAdd => { likes = likes.concat(likesToAdd); }
-const addComments = commentsToAdd => { comments = comments.concat(commentsToAdd); }
 
 module.exports = {
     getUsers, getFollows, getPosts, getLikes, getComments, //addUsers, addFollows, addPosts, addLikes, addComments,
-    addUser, addLike
+    addUser, addLike, removeLike, addComment
 };

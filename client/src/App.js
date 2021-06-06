@@ -7,6 +7,7 @@ import TopAccounts from './Components/Users/TopAccounts';
 import UserProfile from './Components/Users/UserProfile/UserProfile';
 import SignUp from './Components/Auth/SignUp';
 import Login from './Components/Auth/Login';
+import Home from './Components/Users/Home';
 import './App.css';
 import AuthContext from "./AuthContext";
 
@@ -23,6 +24,7 @@ class App extends React.Component {
     }
     async onRouteChanged() {
         try {
+            this.setUserLoaded(false);
             let res = await fetch('/api/users/me', {
                 method: "GET",
             });
@@ -39,8 +41,10 @@ class App extends React.Component {
                     this.props.history.push('/login');
                 }
             }
+            this.setUserLoaded(true);
         } catch(err) {
             console.error('err', err);
+            this.setUserLoaded(true);
         };
     }
 
@@ -48,10 +52,15 @@ class App extends React.Component {
         this.setState({currUser});
     }
 
+    setUserLoaded(userLoaded) {
+        this.setState({userLoaded});
+    }
+
     constructor(props) {
         super(props);
         this.state = {
             currUser: null,
+            userLoaded: false,
         }
         this.setCurrUser = this.setCurrUser.bind(this);
     }
@@ -59,11 +68,12 @@ class App extends React.Component {
     render() {
 
         return (
-            <AuthContext.Provider value={{currUser: this.state.currUser, setCurrUser: this.setCurrUser}}>
+            <AuthContext.Provider value={{currUser: this.state.currUser, userLoaded: this.state.userLoaded, setUserLoaded: this.setUserLoaded, setCurrUser: this.setCurrUser}}>
 
                 <Navbar />
                 <div className="outermost-container">
                     <Switch>
+                            <Route exact path='/' component={Home} />
                             <Route path='/signup' component={SignUp} />
                             <Route path='/login' component={Login} />
                             <Route path='/top_accounts' component={TopAccounts} />

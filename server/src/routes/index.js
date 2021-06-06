@@ -155,13 +155,35 @@ router.post('/likes/create', async function(req, res, next) {
         let {user_id, post_id} = likeInfo;
         let like = null;
         if (Number.isInteger(user_id) && Number.isInteger(post_id)) {
-            like = await dataFetch.likes.addLike(likeInfo);
+            let likeExists = await dataFetch.likes.getLikes(likeInfo);
+            console.log('like exists:' + JSON.stringify(likeExists));
+            if (likeExists && likeExists.length == 0) like = await dataFetch.likes.addLike(likeInfo);
+        }
+        if (like) {
+            res.status(200).json({like});
+        } else {
+            res.status(401).send("Unable to create like")
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
+    }
+});
+
+router.delete('/likes/delete', async function(req, res, next) {
+    try {
+        if (req.body.like == null) throw new Error('No like post data');
+        let likeInfo = JSON.parse(req.body.like);
+        let {id} = likeInfo;
+        let like = null;
+        if (Number.isInteger(id)) {
+            like = await dataFetch.likes.removeLike(likeInfo);
         }
         if (like) {
             console.log(like);
             res.status(200).json({like});
         } else {
-            res.status(401).send("Unable to create like")
+            res.status(401).send("Unable to delete like")
         }
     } catch (e) {
         console.log(e);
@@ -183,6 +205,27 @@ router.get('/comments', function(req, res, next) {
     res.json({
         comments
     });
+});
+
+router.post('/comments/create', async function(req, res, next) {
+    try {
+        if (req.body.comment == null) throw new Error('No comment data');
+        let commentInfo = JSON.parse(req.body.comment);
+        let {user_id, post_id, message} = commentInfo;
+        let comment = null;
+        if (Number.isInteger(user_id) && Number.isInteger(post_id)) {
+            comment = await dataFetch.comments.addComment(commentInfo);
+        }
+        if (comment) {
+            console.log(comment);
+            res.status(200).json({comment});
+        } else {
+            res.status(401).send("Unable to create like")
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
+    }
 });
 
 router.get('/comment/:comment_id', function(req, res, next) {

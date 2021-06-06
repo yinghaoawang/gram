@@ -40,7 +40,9 @@ button {
     margin: 2px 0;
     padding: 7px 15px;
     color: #fff;
-    background-color: #3721FF;
+    /*background-color: #3721FF;*/
+    background-color: rgb(0, 150, 250);
+
     border: solid 1px transparent;
     border-radius: 4px;
     cursor: pointer;
@@ -110,7 +112,115 @@ textarea {
     height: 50px;
 }
 
+.loader-xsmall {
+    border: 5px solid #f3f3f3;
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+    border-top: 5px solid #555;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+
+.floatingBarsG{
+    position:relative;
+    width:22px;
+    height:27px;
+    margin:auto;
+}
+
+.blockG{
+    position:absolute;
+    background-color:rgb(255,255,255);
+    width:3px;
+    height:8px;
+    border-radius:3px 3px 0 0;
+    transform:scale(0.4);
+    animation-name:fadeG;
+    -webkit-animation-name:fadeG;
+    animation-duration:1.2s;
+    -webkit-animation-duration:1.2s;
+    animation-iteration-count:infinite;
+    -webkit-animation-iteration-count:infinite;
+    animation-direction:normal;
+    -webkit-animation-direction:normal;
+}
+
+#rotateG_01{
+    left:0;
+    top:10px;
+    animation-delay:0s;
+    transform:rotate(-90deg);
+    -webkit-transform:rotate(-90deg);
+}
+
+#rotateG_02{
+    left:3px;
+    top:3px;
+    animation-delay:0.15s;
+    transform:rotate(-45deg);
+    -webkit-transform:rotate(-45deg);
+}
+
+#rotateG_03{
+    left:9px;
+    top:1px;
+    animation-delay:0.3s;
+    transform:rotate(0deg);
+    -webkit-transform:rotate(0deg);
+}
+
+#rotateG_04{
+    right:3px;
+    top:3px;
+    animation-delay:0.45s;
+    transform:rotate(45deg);
+    -webkit-transform:rotate(45deg);
+}
+
+#rotateG_05{
+    right:0;
+    top:10px;
+    animation-delay:0.6s;
+    transform:rotate(90deg);
+    -webkit-transform:rotate(90deg);
+}
+
+#rotateG_06{
+    right:3px;
+    bottom:2px;
+    animation-delay:0.75s;
+    transform:rotate(135deg);
+    -webkit-transform:rotate(135deg);
+}
+
+#rotateG_07{
+    bottom:0;
+    left:9px;
+    animation-delay:0.9s;
+    transform:rotate(180deg);
+    -webkit-transform:rotate(180deg);
+}
+
+#rotateG_08{
+    left:3px;
+    bottom:2px;
+    animation-delay:1.05s;
+    transform:rotate(-135deg);
+    -webkit-transform:rotate(-135deg);
+}
+
+@keyframes fadeG{
+    0%{
+        background-color:#222222;
+    }
+    100%{
+        background-color:rgb(255,255,255);
+    }
 }

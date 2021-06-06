@@ -25,7 +25,7 @@ class Navbar extends React.Component {
                         <AuthContext.Consumer>
                             { value => value.currUser != null ?
                                 <>
-                                    <Link to={'#'}>Home</Link>
+                                    <Link to={'/'}>Home</Link>
                                     <Link to={'/top_accounts'}>Explore</Link>
                                     <Link to={'#'}>Notifications</Link>
                                     <Link to={'#'}>Account</Link>

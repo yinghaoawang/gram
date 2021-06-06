@@ -16,7 +16,9 @@ class Login extends React.Component{
     }
     static contextType = AuthContext;
     async componentDidUpdate() {
-        if (this.context.user != null) this.props.history.push('/');
+        if (this.context.userLoaded && this.context.currUser != null) {
+            this.props.history.push('/');
+        }
     }
 
     handleSubmit(e) {

@@ -35,7 +35,7 @@ const ModalButtonRight = (props) => {
 const InfoboxTextAreaLoader = (props) => {
     return (<>{
         props.loading &&
-        <div className="infobox-textarea-loading">
+        <div className={"infobox-textarea-loading " + (props.useVertical ? 'vertical' : '')}>
             <div className="floatingBarsG">
                 <div className="blockG" id="rotateG_01"></div>
                 <div className="blockG" id="rotateG_02"></div>
@@ -54,31 +54,43 @@ const InfoboxAddCommentArea = (props) => {
     return <div className="infobox-add-comment infobox-center-items">
         <textarea className={"infobox-textarea comment-font " + (props.commentBeingPosted && 'comment-posting')} spellCheck="false" ref={props.innerRef}  placeholder="Add a comment..."></textarea>
 
-        <InfoboxTextAreaLoader loading={props.commentBeingPosted} />
+        <InfoboxTextAreaLoader useVertical={props.useVertical} loading={props.commentBeingPosted} />
 
         <a onClick={e => props.postCommentFn(props.innerRef.current.value)} className={"infobox-post-button unselectable" + ((props.commentBeingPosted || props.currUser == null) && " disabled")}>Post</a>
     </div>;
 }
 
+const InfoboxButtonsArea = props => {
+    return <div className="infobox-buttons infobox-center-items">
+        <i onClick={props.toggleLikeFn} className={(props.userLikesPost ? "post-liked fas" : "far") + " fa-lg fa-heart"}></i>
+        <i onClick={props.clickCommentBtnFn} className="far fa-lg fa-comment"></i>
+    </div>;
+}
+
+const InfoboxLikesArea = props => {
+    return <div className="infobox-likes infobox-bold infobox-center-items">
+        {props.currPost.likes.length} likes
+    </div>;
+}
+
+const InfoboxDateArea = props => {
+    return <div className="infobox-date infobox-center-items infobox-border-bottom">
+        {printDate(props.currPost.created_at)}
+    </div>;
+}
+
 const InfoboxDetailsArea = props => {
     return <>
-        <div className="infobox-buttons infobox-center-items">
-            <i onClick={props.toggleLikeFn} className={(props.userLikesPost ? "post-liked fas" : "far") + " fa-lg fa-heart"}></i>
-            <i onClick={props.clickCommentBtnFn} className="far fa-lg fa-comment"></i>
-        </div>
-        <div className="infobox-likes infobox-bold infobox-center-items">
-            {props.currPost.likes.length} likes
-        </div>
-        <div className="infobox-date infobox-center-items infobox-border-bottom">
-            {printDate(props.currPost.created_at)}
-        </div>
+        <InfoboxButtonsArea toggleLikeFn={props.toggleLikeFn} userLikesPost={props.userLikesPost} clickCommentBtnFn={props.clickCommentBtnFn} />
+        <InfoboxLikesArea currPost={props.currPost} />
+        <InfoboxDateArea currPost={props.currPost} />
     </>;
 }
 
 const InfoboxScrollingCommentsArea = props => {
-    return <div className="infobox-scrolling-comments infobox-border-bottom">
+    return <div className={"infobox-scrolling-comments infobox-border-bottom " + (props.useVertical ? 'vertical' : '')}>
         {props.currCommentsLoaded ?
-            <div className="infobox-comment-container" ref={props.innerRef}>
+            <div className={"infobox-comment-container " + (props.useVertical ? 'vertical' : '')} ref={props.innerRef}>
                 {
                     props.currPost.comments.map(comment => {
                         if (comment.user == null) return '';
@@ -122,8 +134,39 @@ const InfoboxPostUserHeaderArea = props => {
     </>;
 }
 
+const PostContentVertical = props => {
+    return <div className="vertical-post-inner">
+        <div onClick={e => {console.log("TODO remove this"); if (props.currPost) console.log(props.currPost.ranking)}} style={{opacity: 0, position: 'absolute'}}>Ranking:{props.currPost && props.currPost.ranking}</div>
+        <div className="vertical-post-inner-top">
+            <div className="infobox-top infobox-border-bottom">
+                <InfoboxPostUserHeaderArea user={props.user} />
+
+            </div>
+
+        </div>
+        <div className="vertical-post-inner-middle">
+            <img className="vertical post-img" src={props.currPost != null ? props.currPost.img_url : ''}></img>
+        </div>
+        <div className="vertical-post-inner-bottom">
+
+            <div className="infobox-bottom">
+                {props.currPost && <>
+                    <InfoboxButtonsArea toggleLikeFn={props.toggleLikeFn} userLikesPost={props.userLikesPost} clickCommentBtnFn={props.clickCommentBtnFn} />
+                    <InfoboxLikesArea currPost={props.currPost} />
+                    <InfoboxScrollingCommentsArea useVertical={true} innerRef={props.scrollBoxRef} currPost={props.currPost} currCommentsLoaded={props.currCommentsLoaded} />
+                    <InfoboxDateArea currPost={props.currPost} />
+                    <InfoboxAddCommentArea useVertical={true} postCommentFn={props.postCommentFn} commentBeingPosted={props.commentBeingPosted} innerRef={props.postBoxRef} currUser={props.currUser} />
+                </>
+                }
+            </div>
+        </div>
+
+    </div>
+}
+
 const PostContent = props => {
     return <div className="post-inner">
+        <div onClick={e => {console.log("TODO remove this"); if (props.currPost) console.log(props.currPost.ranking)}} style={{opacity: 0, position: 'absolute'}}>Ranking:{props.currPost && props.currPost.ranking}</div>
         <div className="post-inner-left">
             <img className="post-img" src={props.currPost != null ? props.currPost.img_url : ''}></img>
         </div>
@@ -148,5 +191,5 @@ const PostContent = props => {
 export {
     ModalButtonLeft, ModalButtonRight,
     InfoboxPostUserHeaderArea, InfoboxScrollingCommentsArea, InfoboxDetailsArea, InfoboxAddCommentArea, InfoboxTextAreaLoader,
-    PostContent
+    PostContent, PostContentVertical
 };

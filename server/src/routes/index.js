@@ -32,11 +32,8 @@ router.get('/', function(req, res, next) {
 
 router.get('/users/me', async (req, res) => {
     try {
-        console.log("hi");
         if (req.user != null) {
-            console.log(req.user);
             let user = await dataFetch.users.getUserById(req.user.id);
-            console.log(user);
             res.status(200).json(user);
 
         } else res.status(401).send('Not logged in');
@@ -50,7 +47,6 @@ router.post('/users/login', async (req, res) => {
     try {
         if (req.body.user == null) throw new Error('No user post data');
         let userInfo = JSON.parse(req.body.user);
-        console.log(userInfo);
         const { username, password } = userInfo;
 
         const user = dataFetch.users.getUserByUsername(username);
@@ -116,6 +112,8 @@ router.get('/posts', function(req, res, next) {
     let posts = {};
     if (req.query.user_id) {
         posts = dataFetch.posts.getPostsByUserId(req.query.user_id);
+    } else if (req.query.follower_id != null) {
+        posts = dataFetch.posts.getPostsByFollowerId(req.query.follower_id);
     } else {
         posts = dataFetch.posts.getAll();
     }
@@ -180,7 +178,6 @@ router.delete('/likes/delete', async function(req, res, next) {
             like = await dataFetch.likes.removeLike(likeInfo);
         }
         if (like) {
-            console.log(like);
             res.status(200).json({like});
         } else {
             res.status(401).send("Unable to delete like")
@@ -197,7 +194,7 @@ router.get('/comments', function(req, res, next) {
         comments = dataFetch.comments.getCommentsByUserId(req.query.user_id)
     } else if (req.query.post_id != null) {
         comments = dataFetch.comments.getCommentsByPostId(req.query.post_id)
-    } else {
+    }  else {
         comments = dataFetch.comments.getAll();
     }
     comments.sort((a,b) => a.created_at - b.created_at);
@@ -216,7 +213,6 @@ router.post('/comments/create', async function(req, res, next) {
             comment = await dataFetch.comments.addComment(commentInfo);
         }
         if (comment) {
-            console.log(comment);
             res.status(200).json({comment});
         } else {
             res.status(401).send("Unable to create like")
@@ -245,7 +241,6 @@ router.get('/follows/', function(req, res, next) {
         }
 
         if (follows) {
-            console.log(follows);
             res.status(200).json({follows});
         } else {
             res.status(401).send("Unable to get follows")
@@ -268,7 +263,6 @@ router.post('/follows/create', async function(req, res, next) {
             if (followExists && followExists.length == 0) follow = await dataFetch.follows.addFollow(followInfo);
         }
         if (follow) {
-            console.log(follow);
             res.status(200).json({follow});
         } else {
             res.status(401).send("Unable to create follow")
@@ -289,7 +283,6 @@ router.delete('/follows/delete', async function(req, res, next) {
             follow = await dataFetch.follows.removeFollow(followInfo);
         }
         if (follow) {
-            console.log(follow);
             res.status(200).json({follow});
         } else {
             res.status(401).send("Unable to delete follow")
@@ -341,25 +334,31 @@ function updateRanking(post) {
         return;
     }
     let ranking = calculateRanking(post);
+    console.log('ranking' + ranking);
     dataFetch.posts.updatePostById(post.id, { ranking })
 };
 
 
 function calculateRanking(post) {
-    let postDate = utils.timestampToDate(post.timestamp);
+    let postDate = utils.timestampToDate(post.created_at);
     let days = utils.diffDaysBetweenDates(postDate, new Date());
     let lambda = Math.log(2)/90;
+    console.log(post);
+    console.log('timestamp', post.created_at);
+    console.log(postDate, days, lambda);
     let baseRanking = 1000 * Math.pow(Math.E, -lambda * days);
     let likes = dataFetch.likes.getLikesByPostId(post.id);
     let likeRankingSum = 0;
     for (let like of likes) {
-        let likeDate = utils.timestampToDate(like.timestamp);
+        let likeDate = utils.timestampToDate(like.created_at);
         let days = utils.diffDaysBetweenDates(likeDate, new Date());
         let lambda = Math.log(2)/90;
         let likeRanking = 100 * Math.pow(Math.E, -lambda * days);
         likeRankingSum += likeRanking;
     }
-    let totalRanking = baseRanking + likeRankingSum;
+    console.log('base', baseRanking);
+    console.log('like', likeRankingSum);
+    let totalRanking = Math.floor(baseRanking + likeRankingSum);
     return totalRanking;
 }
 

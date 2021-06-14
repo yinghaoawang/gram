@@ -251,7 +251,12 @@ user's profile.
         - Pushed the post details page every time I was on a new post on the user profile page (by clicking next/prev post or clicking a different post)
         - Pushed the user profile page every time I close the modal window
         - For post details: on route change, refresh the page (because the post won't reload if it's the same route, i.e /post/4 and /post/7 won't reload)
-    
+3. I completely refactored the modal page into smaller components. This made it easy to make things work seamlessly with the user details page. Not sure if I did a bad job
+refactoring because there is A LOT of prop passing (2-3 levels, but there are many props being passed in)
 #### Home Page
 ###### We're all caught up now on updating this history log
 - Now it's time to make the page with infinite scrolling, and gives you content based on who you're following, and it's sorted by a post's ranking.
+    - Since I refactored the modal page, I'll just use the post content component for each post.. but idk what to do about the comment being posted
+      and like being liked state flag.
+        - Solved by creating a separate component that holds state for each post. The user details page just holds one of these components, whereas the homepage should
+          hold multiple

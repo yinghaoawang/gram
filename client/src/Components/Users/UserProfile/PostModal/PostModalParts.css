@@ -1,3 +1,10 @@
+.vertical-post-inner {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    border: 1px solid rgb(219, 219, 219);
+}
+
 .post-inner {
     width: 935px;
 
@@ -125,7 +132,12 @@ a.infobox-link {
     height: calc(100% - 72px);
 }
 
+.vertical.post-img {
+}
 
+.vertical.infobox-scrolling-comments {
+    height: 100px;
+}
 
 .infobox-scrolling-comments {
     display: flex;

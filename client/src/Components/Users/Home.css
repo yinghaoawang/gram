@@ -1,0 +1,9 @@
+.post-listings {
+    display: flex;
+    flex-direction: column;
+    margin-top: 60px;
+}
+
+.post-listings > * {
+    margin-bottom: 60px;
+}

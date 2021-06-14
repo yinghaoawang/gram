@@ -44,6 +44,16 @@ let posts = {
     getAll: () => getPostsData(),
     getPostById: (id) => getPostsData().find(post => post.id == id),
     getPostsByUserId: (id) => getPostsData().filter(post => post.user_id == id),
+    getPostsByFollowerId: (id) => {
+        let following = follows.getFollowingByUserId(id);
+        console.log(following);
+        let posts = getPostsData();
+        let res = [];
+        for (let follow of following) {
+            for (let post of posts) if (follow.following_id == post.user_id) res.push(post);
+        };
+        return res;
+    },
     getPosts: (options) => getPostsData().filter(post => {
         for (const [key, value] of Object.entries(options)) {
             if (post[key] != value) return false;
@@ -51,8 +61,16 @@ let posts = {
         return true;
     }),
 
-    updatePostById: (id, options) => {
-        for (key in options) getPostsData().find(post => post.id == id)[key] = options[key];
+    updatePostById: async (id, options) => {
+        try {
+            let res = await cache.updatePostById(id, options);
+            for (let key in options) getPostsData().find(post => post.id == id)[key] = options[key];
+            return res;
+        } catch (e) {
+            console.error('error', e.message);
+            return null;
+        }
+
     },
 };
 let likes = {

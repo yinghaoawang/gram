@@ -89,6 +89,23 @@ const addComment = async (commentData) => {
     }
 }
 
+const updatePostById = async (postId, postData) => {
+    try {
+        let { user_id, img_url, description, ranking } = postData;
+        let values = [user_id, img_url, description, ranking, postId];
+        //for (let value of values) if (value == null) value = null;
+        let query = `update posts set user_id=coalesce($1,user_id), img_url=coalesce($2,img_url), description=coalesce($3,description), ranking=coalesce($4,ranking) where id=$5 returning id`;
+        let res = await db.query(query, values);
+        let post_id = res.rows[0].id;
+        let res2 = await db.query('select * from posts where id = $1', [post_id]);
+
+        return res2.rows[0];
+    } catch (err) {
+        console.error("error", err.message);
+        return null;
+    }
+}
+
 const addFollow = async (followData) => {
     try {
         let { follower_id, following_id } = followData;
@@ -148,6 +165,7 @@ const getPosts = () => posts;
 
 module.exports = {
     getUsers, getFollows, getPosts, getLikes, getComments, //addUsers, addFollows, addPosts, addLikes, addComments,
-    addUser, addLike, removeLike, addComment, addFollow,
-    removeFollow
+    addUser, addLike, addComment, addFollow,
+    removeFollow, removeLike,
+    updatePostById
 };

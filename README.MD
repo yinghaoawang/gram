@@ -216,3 +216,42 @@ So in order to use http-only cookies, I decided to get the user by going to a ro
 change, and it sets the global user in UserAuth. 
 
 I also added a spinner loading thing for when a user profile is loading since it takes a while.
+
+#### Modal Window in User Profile
+###### I haven't updated this log for 2 weeks, so i'll be writing based on my commit data
+1. I created the frontend for a modal window. It's a separate component, and it opens when an image box is clicked on a
+user's profile.
+   - I had some trouble making the comment/info box scale based on the image size given min/max height parameters.
+    Eventually I just set guaranteed height rather than both a scaling width and height.
+    - Spent 6+ hours trying to figure out how to make a flex box item not expand past a parent's flex box item's height.
+        - So I was trying to have a scroll bar for the comments, but it would always expand infinitely. Learned that I had to use a set height AND all
+        the parent items had to have a set height as well
+2. Added liking posts.
+   - It was tricky because the modal window is allowed to switch posts with the left and right chevrons, and the post liking happens asynchronously, so if the
+    post changes to a different post, then i'd have to stop the request. I decided that clicking the like button sends a request to create a like, and once it's completed,
+    the icon is filled in, and the like number increases by one.
+    - I had to update likes on the caching system, and i'm starting to see the inefficiency/pointlessness of it.
+3. Added unliking posts.
+    - This one was easier because I ended up copying and pasting a lot of the code on both server and client side to send/get requests. Instead of a create post request,
+    I used a delete request.
+    - Made it so that you can't send a like/unlike request when a request already exists which was surprisingly important
+4. Added posting comments.
+    - This was also kinda easy since I copied a lot of the liking post code.
+5. Sped up the loading of a user profile
+    - Before it'd take about 10+ seconds to load a page with 10+ posts because it was fetching all the user data associated with all the
+    user's posts' comments. I shaved off a lot of time (maybe average 2 second load times) by making fetch requests to all the comments' users
+    when the modal displays the current post
+
+#### Finishing up User Profile
+1. Made the follow/unfollow buttons work. Pretty easy since I borrowed code from liking/unliking posts.
+2. Created post details route, and instagram-esque browser history pushing.
+    - When clicking on a post on a user profile, a modal window opens, and the address bar updates to the address of details of the post, BUT we're still on the
+    user profile page. It was tricking learning how to do that, but I learned that you can manipulate the browser's history with window.history.
+    Note that props.history reloads the page
+        - Pushed the post details page every time I was on a new post on the user profile page (by clicking next/prev post or clicking a different post)
+        - Pushed the user profile page every time I close the modal window
+        - For post details: on route change, refresh the page (because the post won't reload if it's the same route, i.e /post/4 and /post/7 won't reload)
+    
+#### Home Page
+###### We're all caught up now on updating this history log
+- Now it's time to make the page with infinite scrolling, and gives you content based on who you're following, and it's sorted by a post's ranking.

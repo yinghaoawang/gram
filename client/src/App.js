@@ -8,6 +8,8 @@ import UserProfile from './Components/Users/UserProfile/UserProfile';
 import SignUp from './Components/Auth/SignUp';
 import Login from './Components/Auth/Login';
 import Home from './Components/Users/Home';
+import Terms from './Components/Terms';
+import PostDetails from "./Components/Posts/PostDetails";
 import './App.css';
 import AuthContext from "./AuthContext";
 
@@ -74,10 +76,12 @@ class App extends React.Component {
                 <div className="outermost-container">
                     <Switch>
                             <Route exact path='/' component={Home} />
+                            <Route path='/terms' component={Terms} />
                             <Route path='/signup' component={SignUp} />
                             <Route path='/login' component={Login} />
                             <Route path='/top_accounts' component={TopAccounts} />
                             <Route path='/user/:user_id' component={UserProfile} />
+                            <Route path='/post/:post_id' component={PostDetails} />
                             <Route path='/404' component={PageNotFound} />
                             <Redirect to='/404' />
                     </Switch>

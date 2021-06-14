@@ -2,7 +2,7 @@ import React from 'react';
 import './UserProfile.css';
 import PostSquareList from './PostSquareList';
 import UserProfileDetails from './UserProfileDetails';
-import PostModal from "./PostModal";
+import PostModal from "./PostModal/PostModal";
 
 
 const apiPath = '/api';
@@ -34,7 +34,9 @@ class UserProfile extends React.Component {
 
         this.setState({
             showingModal: false,
+            modalPostIndex: -1,
         })
+
     }
     async fetchUser() {
         let user_id = this.props.match.params.user_id;
@@ -104,7 +106,7 @@ class UserProfile extends React.Component {
                     { loading == false ? (
                         <>
 
-                            <PostModal user={user} posts={user.posts} onClose={this.hideModal} postIndex={this.state.modalPostIndex} show={this.state.showingModal} />
+                            <PostModal originalUrl={`/user/${this.props.match.params.user_id}`} user={user} posts={user.posts} onClose={this.hideModal} postIndex={this.state.modalPostIndex} show={this.state.showingModal} />
                             <div className="user-profile outer">
                                 <div className="user-profile top info border-bottom">
                                     <UserProfileDetails user={user} />

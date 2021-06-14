@@ -1,0 +1,152 @@
+import React from 'react';
+import {Link} from "react-router-dom";
+import './PostModalParts.css';
+
+const printDate = (date) => {
+    let d = new Date(date);
+    let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+}
+const printDateDiff = (startDate, endDate) => {
+    const diffInMs   = new Date(endDate) - new Date(startDate)
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+    return Math.floor(diffInDays);
+}
+
+const ModalButtonLeft = (props) => {
+    return <div className="modal-button modal-left-button">
+        {
+            props.postIndex > 0 ? (<i onClick={props.onClick} className="fas fa-chevron-left"></i>)
+                : (<i style={{opacity: 0}} className="fas fa-chevron-left click-through"></i>)
+        }
+    </div>;
+}
+
+const ModalButtonRight = (props) => {
+    return <div className="modal-button modal-right-button">
+        {
+            props.postIndex < props.maxIndex ? <i onClick={props.onClick} className="fas fa-chevron-right"></i>
+                : (<i style={{opacity: 0}} className="fas fa-chevron-left click-through"></i>)
+        }
+
+    </div>;
+}
+
+const InfoboxTextAreaLoader = (props) => {
+    return (<>{
+        props.loading &&
+        <div className="infobox-textarea-loading">
+            <div className="floatingBarsG">
+                <div className="blockG" id="rotateG_01"></div>
+                <div className="blockG" id="rotateG_02"></div>
+                <div className="blockG" id="rotateG_03"></div>
+                <div className="blockG" id="rotateG_04"></div>
+                <div className="blockG" id="rotateG_05"></div>
+                <div className="blockG" id="rotateG_06"></div>
+                <div className="blockG" id="rotateG_07"></div>
+                <div className="blockG" id="rotateG_08"></div>
+            </div>
+        </div>
+    }</>);
+};
+
+const InfoboxAddCommentArea = (props) => {
+    return <div className="infobox-add-comment infobox-center-items">
+        <textarea className={"infobox-textarea comment-font " + (props.commentBeingPosted && 'comment-posting')} spellCheck="false" ref={props.innerRef}  placeholder="Add a comment..."></textarea>
+
+        <InfoboxTextAreaLoader loading={props.commentBeingPosted} />
+
+        <a onClick={e => props.postCommentFn(props.innerRef.current.value)} className={"infobox-post-button unselectable" + ((props.commentBeingPosted || props.currUser == null) && " disabled")}>Post</a>
+    </div>;
+}
+
+const InfoboxDetailsArea = props => {
+    return <>
+        <div className="infobox-buttons infobox-center-items">
+            <i onClick={props.toggleLikeFn} className={(props.userLikesPost ? "post-liked fas" : "far") + " fa-lg fa-heart"}></i>
+            <i onClick={props.clickCommentBtnFn} className="far fa-lg fa-comment"></i>
+        </div>
+        <div className="infobox-likes infobox-bold infobox-center-items">
+            {props.currPost.likes.length} likes
+        </div>
+        <div className="infobox-date infobox-center-items infobox-border-bottom">
+            {printDate(props.currPost.created_at)}
+        </div>
+    </>;
+}
+
+const InfoboxScrollingCommentsArea = props => {
+    return <div className="infobox-scrolling-comments infobox-border-bottom">
+        {props.currCommentsLoaded ?
+            <div className="infobox-comment-container" ref={props.innerRef}>
+                {
+                    props.currPost.comments.map(comment => {
+                        if (comment.user == null) return '';
+                        return (
+                            <div key={"post"+props.currPost.id+"comment"+comment.id} className="infobox-comment">
+                                <div className="infobox-comment-left">
+                                    <Link to={'/user/' +comment.user.id} onClick={(e) => {e.preventDefault(); window.location.href='/user/' +comment.user.id}}>
+                                        <img src={comment.user.pfp_url}></img>
+                                    </Link>
+                                </div>
+                                <div style={{display:"inline"}} className="infobox-comment-right comment-font">
+                                    <Link to={'/user/' +comment.user.id} onClick={(e) => {e.preventDefault(); window.location.href='/user/' +comment.user.id}}>
+                                        <span className="infobox-bold">{comment.user.username}</span>
+                                    </Link>&nbsp;<span>{comment.message}</span>
+
+                                    <div className="infobox-comment-date">{printDateDiff(comment.created_at, Date.now())}d</div>
+                                </div>
+                                {false &&<div className="infobox-comment-right-margin"> <i className="far fa-xs fa-heart"></i></div> }
+                            </div>
+                        );
+                    })
+                }
+            </div>:
+            (<div className="loading" style={{display:'flex', alignItems:'center'}}>
+                <div className="loader-xsmall"></div>
+            </div>)}
+
+    </div>
+}
+
+const InfoboxPostUserHeaderArea = props => {
+    return <>
+        { props.user &&
+        <div className="infobox-header">
+            <Link to={'/user/' + props.user.id} className="infobox-link infobox-bold infobox-center-items" onClick={e => {e.preventDefault(); window.location.href='/user/' + props.user.id}}>
+                <img className="infobox-pfp" src={props.user.pfp_url}></img>
+                <span className="infobox-username">{props.user.username}</span>
+            </Link>
+        </div>
+        }
+    </>;
+}
+
+const PostContent = props => {
+    return <div className="post-inner">
+        <div className="post-inner-left">
+            <img className="post-img" src={props.currPost != null ? props.currPost.img_url : ''}></img>
+        </div>
+        <div className="post-inner-right">
+            <div className="infobox-top infobox-border-bottom">
+                <InfoboxPostUserHeaderArea user={props.user} />
+
+            </div>
+            <div className="infobox-bottom">
+                {props.currPost && <>
+                    <InfoboxScrollingCommentsArea innerRef={props.scrollBoxRef} currPost={props.currPost} currCommentsLoaded={props.currCommentsLoaded} />
+                    <InfoboxDetailsArea currPost={props.currPost} toggleLikeFn={props.toggleLikeFn} userLikesPost={props.userLikesPost} clickCommentBtnFn={props.clickCommentBtnFn} />
+                    <InfoboxAddCommentArea postCommentFn={props.postCommentFn} commentBeingPosted={props.commentBeingPosted} innerRef={props.postBoxRef} currUser={props.currUser} />
+                </>
+                }
+            </div>
+        </div>
+
+    </div>
+}
+
+export {
+    ModalButtonLeft, ModalButtonRight,
+    InfoboxPostUserHeaderArea, InfoboxScrollingCommentsArea, InfoboxDetailsArea, InfoboxAddCommentArea, InfoboxTextAreaLoader,
+    PostContent
+};

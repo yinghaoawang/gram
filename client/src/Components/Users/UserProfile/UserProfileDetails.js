@@ -10,6 +10,7 @@ const UserProfileDetails = ({user}) => {
     const [pageLoaded, setPageLoaded] = React.useState(false);
     const context = React.useContext(AuthContext);
     let updateUserFollowing = async () => {
+        if (context.currUser == null) return;
         try {
             let res = await fetch(apiPath + '/follows?following_id=' + user.id + '&follower_id=' + context.currUser.id);
             if (res.ok) {
@@ -68,6 +69,7 @@ const UserProfileDetails = ({user}) => {
         }
     }
     let toggleFollow = async () => {
+        if (context.currUser == null) return;
         if (toggleUserLoading) return;
         await updateUserFollowing();
         setToggleUserLoading(true);

@@ -74,7 +74,11 @@ class PostContentWithState extends React.Component {
         await this.fetchUser();
         await this.updateUserLikePost();
         await this.setState({loading: false})
-        await this.updateCurrComments();
+        this.updateCurrComments();
+        if (this.props.onPostLoaded) {
+            console.log('on post loaded');
+            this.props.onPostLoaded();
+        }
     }
 
     updateUserLikePost() {
@@ -201,7 +205,7 @@ class PostContentWithState extends React.Component {
         let currPost = this.state.currPost;
         let user = this.state.user;
         return (
-            <>
+            <div style={this.props.hidden ? {opacity: 0, position: 'absolute'} : {}}>
             {
                 this.props.useVertical ?
                     <PostContentVertical scrollBoxRef={this.scrollBox} postBoxRef={this.postBox} currPost={currPost} currCommentsLoaded={this.state.currCommentsLoaded}
@@ -212,7 +216,7 @@ class PostContentWithState extends React.Component {
                                    toggleLikeFn={e => this.toggleLike() } userLikesPost={this.state.userLikesPost} clickCommentBtnFn={(e => {this.postBox.current.focus()}).bind(this)}
                                    postCommentFn={this.postComment} commentBeingPosted={this.state.commentBeingPosted} currUser={this.context.currUser} user={user} />
             }
-            </>
+            </div>
 
         );
     }

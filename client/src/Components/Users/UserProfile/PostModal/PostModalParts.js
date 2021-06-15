@@ -51,8 +51,8 @@ const InfoboxTextAreaLoader = (props) => {
 };
 
 const InfoboxAddCommentArea = (props) => {
-    return <div className="infobox-add-comment infobox-center-items">
-        <textarea className={"infobox-textarea comment-font " + (props.commentBeingPosted && 'comment-posting')} spellCheck="false" ref={props.innerRef}  placeholder="Add a comment..."></textarea>
+    return <div className={"infobox-add-comment infobox-center-items " + (props.useVertical ? 'vertical' : '')}>
+        <textarea className={"infobox-textarea comment-font " + (props.commentBeingPosted ? 'comment-posting ' : '') + (props.useVertical ? 'vertical ' : '')} spellCheck="false" ref={props.innerRef}  placeholder="Add a comment..."></textarea>
 
         <InfoboxTextAreaLoader useVertical={props.useVertical} loading={props.commentBeingPosted} />
 
@@ -61,20 +61,20 @@ const InfoboxAddCommentArea = (props) => {
 }
 
 const InfoboxButtonsArea = props => {
-    return <div className="infobox-buttons infobox-center-items">
+    return <div className={"infobox-buttons infobox-center-items " + (props.useVertical ? 'vertical ' : '')}>
         <i onClick={props.toggleLikeFn} className={(props.userLikesPost ? "post-liked fas" : "far") + " fa-lg fa-heart"}></i>
         <i onClick={props.clickCommentBtnFn} className="far fa-lg fa-comment"></i>
     </div>;
 }
 
 const InfoboxLikesArea = props => {
-    return <div className="infobox-likes infobox-bold infobox-center-items">
+    return <div className={"infobox-likes infobox-bold infobox-center-items " + (props.useVertical ? 'infobox-border-bottom vertical ' : '')} >
         {props.currPost.likes.length} likes
     </div>;
 }
 
 const InfoboxDateArea = props => {
-    return <div className="infobox-date infobox-center-items infobox-border-bottom">
+    return <div className={"infobox-date infobox-center-items infobox-border-bottom " + (props.useVertical ? 'vertical ' : '')}>
         {printDate(props.currPost.created_at)}
     </div>;
 }
@@ -88,9 +88,9 @@ const InfoboxDetailsArea = props => {
 }
 
 const InfoboxScrollingCommentsArea = props => {
-    return <div className={"infobox-scrolling-comments infobox-border-bottom " + (props.useVertical ? 'vertical' : '')}>
+    return <div className={"infobox-scrolling-comments " + (props.useVertical ? 'vertical ' : 'infobox-border-bottom ')}>
         {props.currCommentsLoaded ?
-            <div className={"infobox-comment-container " + (props.useVertical ? 'vertical' : '')} ref={props.innerRef}>
+            <div className={"infobox-comment-container " + (props.useVertical ? 'vertical ' : '')} ref={props.innerRef}>
                 {
                     props.currPost.comments.map(comment => {
                         if (comment.user == null) return '';
@@ -124,7 +124,7 @@ const InfoboxScrollingCommentsArea = props => {
 const InfoboxPostUserHeaderArea = props => {
     return <>
         { props.user &&
-        <div className="infobox-header">
+        <div className={"infobox-header " + (props.useVertical ? 'vertical ' : '')}>
             <Link to={'/user/' + props.user.id} className="infobox-link infobox-bold infobox-center-items" onClick={e => {e.preventDefault(); window.location.href='/user/' + props.user.id}}>
                 <img className="infobox-pfp" src={props.user.pfp_url}></img>
                 <span className="infobox-username">{props.user.username}</span>
@@ -138,9 +138,8 @@ const PostContentVertical = props => {
     return <div className="vertical-post-inner">
         <div onClick={e => {console.log("TODO remove this"); if (props.currPost) console.log(props.currPost.ranking)}} style={{opacity: 0, position: 'absolute'}}>Ranking:{props.currPost && props.currPost.ranking}</div>
         <div className="vertical-post-inner-top">
-            <div className="infobox-top infobox-border-bottom">
-                <InfoboxPostUserHeaderArea user={props.user} />
-
+            <div className="infobox-top infobox-border-bottom vertical">
+                <InfoboxPostUserHeaderArea useVertical={true} user={props.user} />
             </div>
 
         </div>
@@ -149,12 +148,12 @@ const PostContentVertical = props => {
         </div>
         <div className="vertical-post-inner-bottom">
 
-            <div className="infobox-bottom">
+            <div className={"infobox-bottom vertical"}>
                 {props.currPost && <>
-                    <InfoboxButtonsArea toggleLikeFn={props.toggleLikeFn} userLikesPost={props.userLikesPost} clickCommentBtnFn={props.clickCommentBtnFn} />
-                    <InfoboxLikesArea currPost={props.currPost} />
+                    <InfoboxButtonsArea useVertical={true} toggleLikeFn={props.toggleLikeFn} userLikesPost={props.userLikesPost} clickCommentBtnFn={props.clickCommentBtnFn} />
+                    <InfoboxLikesArea useVertical={true} currPost={props.currPost} />
                     <InfoboxScrollingCommentsArea useVertical={true} innerRef={props.scrollBoxRef} currPost={props.currPost} currCommentsLoaded={props.currCommentsLoaded} />
-                    <InfoboxDateArea currPost={props.currPost} />
+                    <InfoboxDateArea useVertical={true} currPost={props.currPost} />
                     <InfoboxAddCommentArea useVertical={true} postCommentFn={props.postCommentFn} commentBeingPosted={props.commentBeingPosted} innerRef={props.postBoxRef} currUser={props.currUser} />
                 </>
                 }

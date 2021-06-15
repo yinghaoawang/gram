@@ -13,17 +13,26 @@ class Home extends React.Component {
             loading: true,
             showCount: -1,
             posts: [],
+            postsLoaded: 0,
         }
         this.loadMore = this.loadMore.bind(this);
+        this.onPostLoaded = this.onPostLoaded.bind(this);
+        this.initialShowCount = 10;
+        this.incrementShowCount = 10;
     }
 
     static contextType = AuthContext;
 
+    onPostLoaded() {
+        this.setState({postsLoaded: this.state.postsLoaded + 1});
+    }
+
     loadMore(){
         if (this.loading) return;
-        if (window.innerHeight + document.documentElement.scrollTop === document.scrollingElement.scrollHeight) {
+        if (window.innerHeight + document.documentElement.scrollTop === document.scrollingElement.scrollHeight
+            && this.state.postsLoaded == this.state.showCount) {
             // Do load more content here!
-            let nextCount = Math.min(this.state.showCount + 10, this.state.posts.length);
+            let nextCount = Math.min(this.state.showCount + this.incrementShowCount, this.state.posts.length);
             this.setState({showCount: nextCount});
         }
     }
@@ -47,7 +56,7 @@ class Home extends React.Component {
             fetch(apiPath + '/posts?follower_id=' + this.context.currUser.id).then(d => d.json()).then((data) => {
                 let posts = data.posts;
                 posts.sort((a, b) => b.ranking-a.ranking);
-                this.setState({posts, showCount: 10});
+                this.setState({posts, showCount: this.initialShowCount});
             });
             this.setState({loading: false});
         }
@@ -58,18 +67,31 @@ class Home extends React.Component {
         let posts = this.state.posts;
         return (
             <div className='content'>
-                { loading == false ? (<div className="post-listings">
-                    {
-                        posts && this.state.showCount != -1 && posts.map((post, index) => {
-                            if (index >= this.state.showCount) return '';
-                            else return <PostContentWithState key={'homepost'+post.id} useVertical={true} postId={post.id} />
-                        })
+                <div className="home-container">
+                    {loading == false ? (<div className="post-listings">
+                        {
+                            posts && this.state.showCount != -1 && posts.map((post, index) => {
+                                if (index >= this.state.showCount) return '';
+                                else return (
+                                    <>{/*this.state.postsLoaded + "/" + this.state.showCount + " ||| " + index + ">" + this.state.showCount + "-" + this.incrementShowCount*/}
+                                        <PostContentWithState hidden={this.state.postsLoaded < this.state.showCount && index > this.state.showCount - this.incrementShowCount - 1}
+                                          key={'homepost' + post.id}
+                                          onPostLoaded={this.onPostLoaded} useVertical={true}
+                                          postId={post.id}/>
+                                    </>
+                                )
+                            })
+                        }
+                    </div>) : ''
                     }
-                </div>) : (
-                    <div className="loading">
-                        <div className="loader-small"></div>
-                    </div>
-                )}
+                    <>
+                    { (loading == true || this.state.postsLoaded < this.state.showCount) &&
+                        <div className={"loading"}>
+                            <div className="loader-small"></div>
+                        </div>
+                    }
+                    </>
+                </div>
             </div>
         )
     }

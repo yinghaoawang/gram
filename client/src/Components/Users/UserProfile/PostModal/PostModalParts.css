@@ -42,7 +42,8 @@
     filter: brightness(125%);
 }
 
-.post-inner-left {
+.post-inner-left, .vertical-post-inner-middle {
+    justify-content: center;
     display: flex;
     background-color: #000;
 }
@@ -80,6 +81,11 @@ i.post-liked {
 .infobox-header {
     width: 100%;
     padding: 16px;
+}
+
+.infobox-header.vertical {
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .infobox-buttons > i {
@@ -122,6 +128,10 @@ a.infobox-link {
     height: 72px;
 }
 
+.infobox-top.vertical {
+    height: 65px;
+}
+
 .infobox-center-items {
     display: flex;
     align-items: center;
@@ -132,11 +142,15 @@ a.infobox-link {
     height: calc(100% - 72px);
 }
 
+.vertical.infobox-bottom {
+    height: inherit;
+}
+
 .vertical.post-img {
 }
 
 .vertical.infobox-scrolling-comments {
-    height: 100px;
+    height: 80px;
 }
 
 .infobox-scrolling-comments {
@@ -208,12 +222,21 @@ a.infobox-link {
     padding-top: 4px;
 }
 
+.infobox-buttons.vertical {
+    margin-top: 0;
+}
+
 .infobox-likes {
     flex-shrink: 0;
     height: 22px;
     margin-bottom: 1px;
     padding-left: 16px;
     padding-right: 16px;
+}
+
+.infobox-likes.vertical {
+    padding-bottom: 4px;
+    margin-button: 0;
 }
 
 .infobox-date {
@@ -225,6 +248,15 @@ a.infobox-link {
     font-size: 10px;
     color: rgb(142, 142, 142);
     padding-bottom: 7px;
+}
+
+.infobox-date.vertical {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.infobox-add-comment.vertical {
+    height: 45px;
 }
 
 .infobox-add-comment {
@@ -241,6 +273,10 @@ a.infobox-link {
     height: 80%
 }
 
+.infobox-textarea.vertical {
+    overflow: hidden;
+}
+
 .infobox-textarea.comment-posting {
     color: #aaa;
 }
@@ -251,6 +287,15 @@ a.infobox-link {
     display: flex;
     justify-content: center;
 }
+
+.vertical.infobox-textarea-loading {
+    position: absolute;
+    width: calc(600px * .85);
+    display: flex;
+    justify-content: center;
+}
+
+
 
 @media (max-width: 1050px) {
     .post-inner {

@@ -5,33 +5,6 @@ import './PostSquareList.css';
 let range = [0,1,2];
 
 const PostSquareList = React.forwardRef(({posts, showModal}, ref) => {
-    const [imgWidth, setImgWidth] = useState();
-    //const [windowSize, setWindowSize] = useState({width: window.innerWidth, height: window.innerHeight});
-
-    const handleResize = () => {
-        let imageWidth = 0;
-        let imgElement = document.getElementsByClassName('post-image-container')?.[0];
-        if (imgElement != null) {
-            imageWidth = imgElement.offsetWidth;
-            setImgWidth(imageWidth);
-        }
-    }
-    const handleResizePtr = handleResize;
-
-    React.useImperativeHandle(ref, () => ({
-        handleResize() {
-            handleResizePtr();
-        }
-    }));
-
-    useEffect(() => {
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
     return (
         <>{
             posts && posts.reduce((a, v, i) => {
@@ -56,7 +29,7 @@ const PostSquareList = React.forwardRef(({posts, showModal}, ref) => {
                             else return (
                                 <div key={'postrow' + i} className="post-square">
                                 <div className="post-image-container-wrapper" onClick={e => showModal(post.index)}>
-                                {post != null && (<PostSquare post={post} imgWidth={imgWidth} />)}
+                                {post != null && (<PostSquare post={post} />)}
                                 </div>
                                 </div>
                             )

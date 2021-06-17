@@ -9,7 +9,6 @@ class PostExplore extends React.Component {
     constructor() {
         super();
         this.state = {
-            imgWidth: 0,
             loading: true,
             showingModal: false,
             modalPostIndex: -1,
@@ -55,7 +54,6 @@ class PostExplore extends React.Component {
         }
         await Promise.all(promises).then(values => {
             this.setState({posts: this.state.posts, loadingNewPosts: false, postsLoaded: this.state.showCount});
-            this.postSquareListRef.current.handleResize();
         });
     }
 

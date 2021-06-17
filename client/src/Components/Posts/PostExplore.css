@@ -6,6 +6,7 @@
 }
 
 .post-container > .loading {
+    margin-top: 60px;
     margin-bottom: 60px;
     display: flex;
     align-items: center;

@@ -12,7 +12,6 @@ class UserProfile extends React.Component {
         super();
         this.state = {
             user: null,
-            imgWidth: 0,
             loading: true,
             showingModal: false,
             modalPostIndex: -1,

@@ -39,6 +39,7 @@
     display: flex;
     margin-left: auto;
     font-size: 18px;
+    flex-wrap: wrap;
 }
 
 .navbar.right > a {

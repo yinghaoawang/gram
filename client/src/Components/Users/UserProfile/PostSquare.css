@@ -4,6 +4,18 @@
     -moz-filter: brightness(70%);
 }
 
+.post-image {
+    height: calc(317.33px);
+    width: calc(317.33px);
+}
+
+@media (max-width: 1000px) {
+    .post-image {
+        height: 32vw;
+        width: 32vw;
+    }
+}
+
 .post-image-container {
     position: relative;
     cursor: pointer;

@@ -31,13 +31,12 @@ class PostSquare extends React.Component {
 
     render() {
         let post = this.props.post;
-        let imgWidth = this.props.imgWidth;
         return (
             <>
                 { post != null
                     ? (
                         <span className="post-image-container">
-                    <img className="post-image" onLoad={() => {post.previewLoaded = true}} style={{width: imgWidth, height: imgWidth}} src={post.img_url}></img>
+                    <img className="post-image" onLoad={() => {post.previewLoaded = true}} src={post.img_url}></img>
                     <span className="post-meta">
                         {
                             post.likes != null &&

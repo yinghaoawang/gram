@@ -5,12 +5,11 @@
 
 .post-row {
     display: flex;
+    align-content: center;
+    justify-content: center;
 }
-/* I know I could have used css grid here, but I wanted to practice and see if I could
- * make it responsive using flexbox */
 
 .post-row > .post-square {
-    width: 32%;
     margin-left: 12px;
     margin-right: 12px;
     margin-bottom: 22px;
@@ -43,17 +42,12 @@
 @media (min-width: 701px) and (max-width: 1000px) {
     .post-row {
         width: 100%;
+
     }
     .post-row > .post-square {
         margin-bottom: 2px;
         margin-left: 4px;
         margin-right: 4px;
-    }
-    .post-square:first-child {
-        margin-left: auto;
-    }
-    .post-square:last-child {
-        margin-right: auto;
     }
 }
 

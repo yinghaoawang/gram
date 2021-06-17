@@ -35,8 +35,9 @@ class PostSquare extends React.Component {
         return (
             <>
                 { post != null
-                    ? (<span className="post-image-container">
-                    <img className="post-image" style={{width: imgWidth, height: imgWidth}} src={post.img_url}></img>
+                    ? (
+                        <span className="post-image-container">
+                    <img className="post-image" onLoad={() => {post.previewLoaded = true}} style={{width: imgWidth, height: imgWidth}} src={post.img_url}></img>
                     <span className="post-meta">
                         {
                             post.likes != null &&
@@ -46,8 +47,9 @@ class PostSquare extends React.Component {
                             post.comments != null &&
                             (<span className="meta comments-meta"><i className="fas fa-lg fa-comment"></i>{post.comments.length}</span>)
                         }
-                </span>
-            </span>)
+                        </span>
+                    </span>
+                    )
                     : <span style={{width: imgWidth, height: imgWidth}}></span>
                 }
             </>

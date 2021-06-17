@@ -4,9 +4,9 @@ import './PostSquareList.css';
 
 let range = [0,1,2];
 
-const PostSquareList = ({posts, showModal}) => {
+const PostSquareList = React.forwardRef(({posts, showModal}, ref) => {
     const [imgWidth, setImgWidth] = useState();
-    const [windowSize, setWindowSize] = useState({width: window.innerWidth, height: window.innerHeight});
+    //const [windowSize, setWindowSize] = useState({width: window.innerWidth, height: window.innerHeight});
 
     const handleResize = () => {
         let imageWidth = 0;
@@ -16,6 +16,13 @@ const PostSquareList = ({posts, showModal}) => {
             setImgWidth(imageWidth);
         }
     }
+    const handleResizePtr = handleResize;
+
+    React.useImperativeHandle(ref, () => ({
+        handleResize() {
+            handleResizePtr();
+        }
+    }));
 
     useEffect(() => {
         handleResize();
@@ -26,7 +33,6 @@ const PostSquareList = ({posts, showModal}) => {
     }, []);
 
     return (
-
         <>{
             posts && posts.reduce((a, v, i) => {
                 // reduces the posts to rows of 3
@@ -46,7 +52,8 @@ const PostSquareList = ({posts, showModal}) => {
                     {
                         range.map((i) => {
                             let post = postRow[i];
-                            return (
+                            if (post && post.hidden) return '';
+                            else return (
                                 <div key={'postrow' + i} className="post-square">
                                 <div className="post-image-container-wrapper" onClick={e => showModal(post.index)}>
                                 {post != null && (<PostSquare post={post} imgWidth={imgWidth} />)}
@@ -60,6 +67,6 @@ const PostSquareList = ({posts, showModal}) => {
             })
         }</>
     )
-}
+});
 
 export default PostSquareList;

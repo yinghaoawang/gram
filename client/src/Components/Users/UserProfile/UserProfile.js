@@ -79,23 +79,24 @@ class UserProfile extends React.Component {
                  */
                 post.comments.push(comment);
             };
+            post.user = user;
         }
         user.posts = posts;
 
 
         if (this.mounted) await this.setState({ user, loading: false })
     }
-    componentDidMount() {
-        this.mounted = false;
+    async componentDidMount() {
+        this.mounted = true;
         try {
             this.fetchUser();
-            this.mounted = true;
         } catch (e) {
             console.error("Error: " + e.messsage);
         }
 
     }
     componentWillUnmount() {
+        this.mounted = false;
     }
     render() {
         let user = this.state.user;

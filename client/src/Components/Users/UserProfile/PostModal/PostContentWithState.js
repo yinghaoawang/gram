@@ -76,7 +76,6 @@ class PostContentWithState extends React.Component {
         await this.setState({loading: false})
         this.updateCurrComments();
         if (this.props.onPostLoaded) {
-            console.log('on post loaded');
             this.props.onPostLoaded();
         }
     }
@@ -86,7 +85,6 @@ class PostContentWithState extends React.Component {
         let currUser = this.context.currUser;
         if (currUser == null || currPost == null) return;
 
-        console.log("checking");
         for (let like of currPost.likes) {
             if (like.user_id == currUser.id) {
                 this.setState({userLikesPost: true});
@@ -188,7 +186,6 @@ class PostContentWithState extends React.Component {
     async updateCurrComments() {
         let currPost = this.state.currPost;
         if (this.state.currPost == null) return;
-        console.log("updating comments");
         for (let comment of currPost.comments) {
             if (comment.user == null) {
                 await fetch(apiPath + '/user/' + comment.user_id).then(d => d.json()).then((data) => {

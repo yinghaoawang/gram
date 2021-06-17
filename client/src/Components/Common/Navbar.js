@@ -26,7 +26,7 @@ class Navbar extends React.Component {
                             { value => value.currUser != null ?
                                 <>
                                     <Link to={'/'}>Home</Link>
-                                    <Link to={'/top_accounts'}>Explore</Link>
+                                    <Link to={'/explore'}>Explore</Link>
                                     <Link to={'#'}>Notifications</Link>
                                     <Link to={'#'}>Account</Link>
                                 </> :

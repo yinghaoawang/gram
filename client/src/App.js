@@ -12,6 +12,7 @@ import Terms from './Components/Terms';
 import PostDetails from "./Components/Posts/PostDetails";
 import './App.css';
 import AuthContext from "./AuthContext";
+import PostExplore from "./Components/Posts/PostExplore";
 
 @withRouter
 class App extends React.Component {
@@ -79,6 +80,7 @@ class App extends React.Component {
                             <Route path='/terms' component={Terms} />
                             <Route path='/signup' component={SignUp} />
                             <Route path='/login' component={Login} />
+                            <Route path='/explore' component={PostExplore} />
                             <Route path='/top_accounts' component={TopAccounts} />
                             <Route path='/user/:user_id' component={UserProfile} />
                             <Route path='/post/:post_id' component={PostDetails} />

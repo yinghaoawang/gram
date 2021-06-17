@@ -15,7 +15,6 @@ class PostModal extends React.Component {
         this.postComment = this.postComment.bind(this);
         this.state = {
             postIndex: -1,
-            user: null,
             posts: null,
             userLikesPost: false,
             currCommentsLoaded: false,
@@ -206,7 +205,7 @@ class PostModal extends React.Component {
             this.props.onClose();
         }
         let postIndex = this.state.postIndex;
-        let user = this.props.user;
+        let currPost = this.state.postIndex != -1 ? this.state.posts[this.state.postIndex] : null;
         return (
             <>
                 {show == true &&
@@ -216,7 +215,7 @@ class PostModal extends React.Component {
                             <ModalButtonLeft postIndex={this.state.postIndex} onClick={e => this.goPrevPost()} />
                             <PostContent scrollBoxRef={this.scrollBox} postBoxRef={this.postBox} currPost={posts[postIndex]} currCommentsLoaded={this.state.currCommentsLoaded}
                                 toggleLikeFn={e => this.toggleLike() } userLikesPost={this.state.userLikesPost} clickCommentBtnFn={(e => {this.postBox.current.focus()}).bind(this)}
-                                postCommentFn={this.postComment} commentBeingPosted={this.state.commentBeingPosted} currUser={this.context.currUser} user={user} />
+                                postCommentFn={this.postComment} commentBeingPosted={this.state.commentBeingPosted} currUser={this.context.currUser} user={currPost && currPost.user} />
                             <ModalButtonRight maxIndex={this.state.posts.length - 1} postIndex={this.state.postIndex} onClick={e => this.goNextPost()} />
                         </div>
                     </div>

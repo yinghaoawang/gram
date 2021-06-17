@@ -73,12 +73,10 @@ class Home extends React.Component {
                             posts && this.state.showCount != -1 && posts.map((post, index) => {
                                 if (index >= this.state.showCount) return '';
                                 else return (
-                                    <>{/*this.state.postsLoaded + "/" + this.state.showCount + " ||| " + index + ">" + this.state.showCount + "-" + this.incrementShowCount*/}
-                                        <PostContentWithState hidden={this.state.postsLoaded < this.state.showCount && index > this.state.showCount - this.incrementShowCount - 1}
-                                          key={'homepost' + post.id}
-                                          onPostLoaded={this.onPostLoaded} useVertical={true}
-                                          postId={post.id}/>
-                                    </>
+                                    <PostContentWithState hidden={this.state.postsLoaded < this.state.showCount && index > this.state.showCount - this.incrementShowCount - 1}
+                                      key={'homepost' + post.id}
+                                      onPostLoaded={this.onPostLoaded} useVertical={true}
+                                      postId={post.id}/>
                                 )
                             })
                         }

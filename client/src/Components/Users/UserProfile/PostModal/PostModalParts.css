@@ -118,6 +118,25 @@ a.infobox-link {
     margin-left: 14px;
 }
 
+@media (max-width: 700px) {
+    .post-inner-right {
+        display: none !important;
+    }
+    .post-inner-left {
+        width: calc(100vw - 100px) !important;
+    }
+    .vertical-post-inner {
+        width: 90vw;
+    }
+}
+
+@media (max-width: 1050px) {
+    .post-inner-right {
+        width: 150px;
+    }
+
+}
+
 .post-inner-right {
     display: flex;
     flex-direction: column;
@@ -299,7 +318,7 @@ a.infobox-link {
 
 @media (max-width: 1050px) {
     .post-inner {
-        width: calc(100% - 80px);
+        width: calc(100vw - 80px);
     }
     .modal-inner-with-buttons {
         width: 100%;

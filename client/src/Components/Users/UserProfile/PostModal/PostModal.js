@@ -190,7 +190,7 @@ class PostModal extends React.Component {
     async goNextPost() {
         await this.setState({
             currCommentsLoaded: false,
-            postIndex: Math.min(this.state.postIndex + 1, this.state.posts.length - 1)
+            postIndex: Math.min(this.state.postIndex + 1, this.props.maxIndex != null ? this.props.maxIndex : this.state.posts.length - 1)
         });
         this.updateUserLikePost();
         this.updateCurrComments();
@@ -216,7 +216,7 @@ class PostModal extends React.Component {
                             <PostContent scrollBoxRef={this.scrollBox} postBoxRef={this.postBox} currPost={posts[postIndex]} currCommentsLoaded={this.state.currCommentsLoaded}
                                 toggleLikeFn={e => this.toggleLike() } userLikesPost={this.state.userLikesPost} clickCommentBtnFn={(e => {this.postBox.current.focus()}).bind(this)}
                                 postCommentFn={this.postComment} commentBeingPosted={this.state.commentBeingPosted} currUser={this.context.currUser} user={currPost && currPost.user} />
-                            <ModalButtonRight maxIndex={this.state.posts.length - 1} postIndex={this.state.postIndex} onClick={e => this.goNextPost()} />
+                            <ModalButtonRight maxIndex={this.props.maxIndex != null ? this.props.maxIndex : this.state.posts.length - 1} postIndex={this.state.postIndex} onClick={e => this.goNextPost()} />
                         </div>
                     </div>
                 }

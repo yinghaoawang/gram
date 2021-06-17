@@ -136,7 +136,7 @@ class PostExplore extends React.Component {
                             <>
 
                                 <PostModal originalUrl={`/explore`} posts={posts} onClose={this.hideModal}
-                                           postIndex={this.state.modalPostIndex} show={this.state.showingModal}/>
+                                           maxIndex={this.state.postsLoaded - 1} postIndex={this.state.modalPostIndex} show={this.state.showingModal}/>
                                 <div className="user-profile outer">
                                     <div className="user-profile bottom posts">
                                         {

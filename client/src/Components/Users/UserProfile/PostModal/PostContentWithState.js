@@ -195,7 +195,7 @@ class PostContentWithState extends React.Component {
         };
 
         await this.setState({currCommentsLoaded: true});
-        this.scrollBox.current.scrollTop = this.scrollBox.current.scrollHeight;
+        if (this.scrollBox.current) this.scrollBox.current.scrollTop = this.scrollBox.current.scrollHeight;
     }
 
     render() {

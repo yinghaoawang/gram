@@ -175,7 +175,7 @@ class PostModal extends React.Component {
         };
 
         if (this.state.postIndex == originalPostIndex) await this.setState({currCommentsLoaded: true});
-        this.scrollBox.current.scrollTop = this.scrollBox.current.scrollHeight;
+        if (this.scrollBox.current) this.scrollBox.current.scrollTop = this.scrollBox.current.scrollHeight;
     }
 
     async goPrevPost() {

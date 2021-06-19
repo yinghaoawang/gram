@@ -8,8 +8,8 @@
 .modal-backdrop {
     position: fixed;
     width: 100%;
-    height: calc(100vh + 10px);
-    margin-top: -80px;
+    height: 120%;
+    margin-top: -120px;
     background-color: rgba(0,0,0, .6);
     overflow: hidden;
 }

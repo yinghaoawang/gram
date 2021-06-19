@@ -31,9 +31,9 @@
         width: 100%;
     }
     .post-row > .post-square {
-        margin-bottom: 2px;
-        margin-left: 4px;
-        margin-right: 4px;
+        margin-bottom: 0px;
+        margin-left: 2px;
+        margin-right: 2px;
     }
 }
 

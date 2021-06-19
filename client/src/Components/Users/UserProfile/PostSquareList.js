@@ -25,12 +25,13 @@ const PostSquareList = React.forwardRef(({posts, showModal}, ref) => {
                     {
                         range.map((i) => {
                             let post = postRow[i];
-                            if (post && post.hidden) return '';
+
+                            if (post && post.hidden) return <div key={'postrow' + i} className="post-square"><div className="post-image-container-wrapper"></div><PostSquare /></div>;
                             else return (
                                 <div key={'postrow' + i} className="post-square">
-                                <div className="post-image-container-wrapper" onClick={e => showModal(post.index)}>
-                                {post != null && (<PostSquare post={post} />)}
-                                </div>
+                                    <div className="post-image-container-wrapper" onClick={e => showModal(post.index)}>
+                                        {post != null && (<PostSquare post={post} />)}
+                                    </div>
                                 </div>
                             )
                         })

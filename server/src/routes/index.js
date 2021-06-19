@@ -43,6 +43,16 @@ router.get('/users/me', async (req, res) => {
     }
 });
 
+router.post('/users/logout', async(req, res) => {
+    try {
+        res.clearCookie('token');
+        res.status(200).send('Logout successful');
+    } catch (e) {
+        console.error(e);
+        res.status(500).send(e.message);
+    }
+});
+
 router.post('/users/login', async (req, res) => {
     try {
         if (req.body.user == null) throw new Error('No user post data');
@@ -334,7 +344,7 @@ function updateRanking(post) {
         return;
     }
     let ranking = calculateRanking(post);
-    console.log('ranking' + ranking);
+    //console.log('ranking' + ranking);
     dataFetch.posts.updatePostById(post.id, { ranking })
 };
 
@@ -343,9 +353,6 @@ function calculateRanking(post) {
     let postDate = utils.timestampToDate(post.created_at);
     let days = utils.diffDaysBetweenDates(postDate, new Date());
     let lambda = Math.log(2)/90;
-    console.log(post);
-    console.log('timestamp', post.created_at);
-    console.log(postDate, days, lambda);
     let baseRanking = 1000 * Math.pow(Math.E, -lambda * days);
     let likes = dataFetch.likes.getLikesByPostId(post.id);
     let likeRankingSum = 0;
@@ -356,8 +363,6 @@ function calculateRanking(post) {
         let likeRanking = 100 * Math.pow(Math.E, -lambda * days);
         likeRankingSum += likeRanking;
     }
-    console.log('base', baseRanking);
-    console.log('like', likeRankingSum);
     let totalRanking = Math.floor(baseRanking + likeRankingSum);
     return totalRanking;
 }

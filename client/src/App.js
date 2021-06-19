@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Redirect, Route, Link, Switch, withRouter} from 'react-router-dom'
+import {Redirect, Route, Switch, withRouter} from 'react-router-dom'
 import React from 'react';
 import Navbar from './Components/Common/Navbar';
 import Footer from './Components/Common/Footer';
@@ -10,9 +10,12 @@ import Login from './Components/Auth/Login';
 import Home from './Components/Users/Home';
 import Terms from './Components/Terms';
 import PostDetails from "./Components/Posts/PostDetails";
-import './App.css';
-import AuthContext from "./AuthContext";
+import UserSettings from "./Components/Users/UserSettings";
 import PostExplore from "./Components/Posts/PostExplore";
+
+import AuthContext from "./AuthContext";
+
+import './App.css';
 
 @withRouter
 class App extends React.Component {
@@ -81,11 +84,12 @@ class App extends React.Component {
                             <Route path='/signup' component={SignUp} />
                             <Route path='/login' component={Login} />
                             <Route path='/explore' component={PostExplore} />
+                            <Route path='/accounts/edit' component={UserSettings} />
                             <Route path='/top_accounts' component={TopAccounts} />
                             <Route path='/user/:user_id' component={UserProfile} />
                             <Route path='/post/:post_id' component={PostDetails} />
                             <Route path='/404' component={PageNotFound} />
-                            <Redirect to='/404' />
+                            <Route path='/' component={PageNotFound} />
                     </Switch>
                     <Footer />
                 </div>

@@ -4,13 +4,15 @@
     -moz-filter: brightness(70%);
 }
 
-.post-image {
+.post-image, .post-image-placeholder {
     height: calc(317.33px);
     width: calc(317.33px);
 }
 
+
+
 @media (max-width: 1000px) {
-    .post-image {
+    .post-image, .post-image-placeholder {
         height: 32vw;
         width: 32vw;
     }

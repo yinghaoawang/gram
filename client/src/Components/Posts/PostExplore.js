@@ -52,6 +52,7 @@ class PostExplore extends React.Component {
                 post.hidden = false;
             }));
         }
+        //await new Promise( res => setTimeout(res, 50000));
         await Promise.all(promises).then(values => {
             this.setState({posts: this.state.posts, loadingNewPosts: false, postsLoaded: this.state.showCount});
         });
@@ -137,21 +138,23 @@ class PostExplore extends React.Component {
 
                                 <PostModal originalUrl={`/explore`} posts={posts} onClose={this.hideModal}
                                            maxIndex={this.state.postsLoaded - 1} postIndex={this.state.modalPostIndex} show={this.state.showingModal}/>
-                                <div className="user-profile outer">
-                                    <div className="user-profile bottom posts">
-                                        {
-                                            posts && posts.length > 0 ?
-                                                <PostSquareList ref={this.postSquareListRef} showModal={this.showModal}
-                                                                posts={posts}/>
-                                                :
-                                                <div className="no-posts">
-                                                    <i className="fas fa-4x fa-camera"></i>
-                                                    <h1>No Posts Yet</h1>
-                                                </div>
-                                        }
-
+                                {
+                                    this.state.postsLoaded >= this.initialShowCount &&
+                                    <div className="user-profile outer">
+                                        <div className="user-profile bottom posts">
+                                            {
+                                                posts && posts.length > 0 ?
+                                                    <PostSquareList ref={this.postSquareListRef} showModal={this.showModal}
+                                                                    posts={posts}/>
+                                                    :
+                                                    <div className="no-posts">
+                                                        <i className="fas fa-4x fa-camera"></i>
+                                                        <h1>No Posts Yet</h1>
+                                                    </div>
+                                            }
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             </>
                         )
                         }
@@ -162,7 +165,9 @@ class PostExplore extends React.Component {
                             </div>
                             }
                         </>
+
                     </div>
+
 
                 </div>
             </>

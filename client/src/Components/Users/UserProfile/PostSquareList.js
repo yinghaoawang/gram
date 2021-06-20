@@ -18,34 +18,45 @@ const PostSquareList = React.forwardRef(({posts, showModal}, ref) => {
                 a[a.length - 1].push(v);
                 return a;
             }, [])
-            .map((postRow, i) => {
-                // display each row of 3
-                return (
-                    <div key={'postrow'+i} className="post-row">
-                    {
-                        range.map((i) => {
-                            let post = postRow[i];
-
-                            if (post == null) return (
-                                <div key={'postrow' + i} className="post-square">
-                                    <div className="post-image-container-wrapper">
-                                        <span className="post-image-placeholder"></span>
-                                    </div>
-                                </div>
-                            );
-                            else if (post && post.hidden) return '';
-                            else return (
-                                <div key={'postrow' + i} className="post-square">
-                                    <div className="post-image-container-wrapper" onClick={e => showModal(post.index)}>
-                                        {post != null && (<PostSquare post={post} />)}
-                                    </div>
-                                </div>
-                            )
-                        })
+                .map((postRow, i) => {
+                    let nonDisplayCount = 0;
+                    for (let j = 0; j < 3; ++j) {
+                        let post = postRow[j];
+                        if (post == null || post.hidden) {
+                            nonDisplayCount++;
+                            continue;
+                        }
                     }
-                    </div>
-                );
-            })
+                    if (nonDisplayCount == 3) return ''
+                    else
+                        // display each row of 3
+                        return (
+                            <div key={'postrow' + i} className="post-row">
+                                {
+                                    range.map((i) => {
+                                        let post = postRow[i];
+
+                                        if (post == null) return (
+                                            <div key={'postrow' + i} className="post-square">
+                                                <div className="post-image-container-wrapper">
+                                                    <span className="post-image-placeholder"></span>
+                                                </div>
+                                            </div>
+                                        );
+                                        else if (post && post.hidden) return '';
+                                        else return (
+                                                <div key={'postrow' + i} className="post-square">
+                                                    <div className="post-image-container-wrapper"
+                                                         onClick={e => showModal(post.index)}>
+                                                        {post != null && (<PostSquare post={post}/>)}
+                                                    </div>
+                                                </div>
+                                            )
+                                    })
+                                }
+                            </div>
+                        );
+                })
         }</>
     )
 });

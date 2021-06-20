@@ -21,7 +21,7 @@ class PostDetails extends React.Component {
     render() {
         return (
             <div className="content">
-                <div className="post-container">
+                <div className="post-details-container">
                     <PostContentWithState postId={this.props.match.params.post_id} />
                 </div>
             </div>

@@ -1,0 +1,193 @@
+.user-settings-container {
+    max-width: 935px;
+    width: 100%;
+    margin-top: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 1px solid rgb(210, 210, 210);
+    border-radius: 3px;
+    color: #444;
+    display: flex;
+}
+
+.user-settings-inner-right {
+    width: 100%;
+}
+
+.user-settings-inner-left {
+    width: 237px;
+    border-right: 1px solid rgb(210, 210, 210);
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-form-info {
+    color: #999;
+    line-height: 1.02rem;
+    letter-spacing: .0025rem;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.settings-tab {
+    display: flex;
+    align-items: stretch;
+}
+
+.settings-right-top {
+    margin-top: 36px;
+}
+
+.settings-tab:hover:not(.selected) {
+    background-color: rgb(248, 248, 248);
+}
+
+.settings-tab > a, .settings-tab > a:visited {
+    align-items: center;
+    padding-left: 40px;
+    height: 12px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #444;
+    width: 100%;
+}
+
+.settings-tab.selected {
+    font-weight: bold;
+    border-left: 2px solid #444;
+}
+
+.settings-tab:hover:not(.selected) {
+    border-left: 2px solid #888;
+}
+
+.settings-tab:active:hover:not(.selected) {
+    border-color: #ccc;
+}
+
+.settings-tab:active:hover > a, .settings-tab:active:hover > a:visited {
+    color: #888;
+}
+
+.settings-tab.selected:active:hover {
+    border-color: #888;
+}
+
+.settings-right-row {
+    margin-bottom: 16px;
+}
+
+.settings-right-row, .settings-right-top {
+    display: flex;
+}
+
+.settings-top-img {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.settings-top-img > img {
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.settings-top-name {
+    height: 45px;
+    font-size: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h4.settings-top-pfp-change {
+    color: rgb(0, 150, 250);
+    margin-top: 2px;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.settings-right-row > div > textarea {
+    resize: vertical;
+}
+
+.settings-form {
+    margin-top: 24px
+}
+
+.settings-form-field > input, .settings-form-field > textarea, .settings-form-info {
+    min-width: 295px;
+    max-width: 355px;
+    width: 100%;
+}
+
+.settings-form-field > input, .settings-form-field > textarea {
+    color: #222;
+    height: 1.8rem;
+}
+.settings-form-field > textarea {
+    height: 3rem;
+}
+
+.settings-form-field {
+    padding-right: 60px;
+    flex-grow: 1;
+}
+
+.settings-form-label {
+    padding-top: 7px;
+}
+
+.settings-form-label-holder {
+    max-width: 130px;
+    word-wrap: break-word;
+}
+
+.settings-top-name > .bigger {
+    font-size: 28px;
+}
+
+.settings-form-label, .settings-right-top > .settings-top-img {
+    display: flex;
+    justify-content: flex-end;
+    padding-left: 35px;
+    padding-right: 35px;
+    text-align: right;
+    flex: 0 0 194px;
+    font-weight: bold;
+}
+
+.settings-top-img {
+    align-self: center;
+}
+
+@media (max-width: 935px) {
+}
+
+@media (max-width: 735px) {
+    .user-settings-inner-left {
+        display: none;
+    }
+
+    .settings-form-field > input, .settings-form-field > textarea {
+
+    }
+
+    .settings-form-field, .settings-form-label, .settings-right-top > .settings-top-img {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .settings-form-label, .settings-right-top > .settings-top-img {
+        text-align: left;
+        flex-basis: 0px;
+        font-weight: bold;
+        align-self: flex-start;
+    }
+
+    .settings-right-row {
+        flex-direction: column;
+    }
+}

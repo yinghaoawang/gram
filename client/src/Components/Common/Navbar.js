@@ -76,7 +76,7 @@ class NavbarAccountDropdown extends React.Component {
                                 <Link to={"/user/" + this.context.currUser.id}
                                       onClick={e => {e.preventDefault(); window.location.href='/user/' + this.context.currUser.id}}>
                                 Profile</Link>
-                                <Link to="/accounts/edit" style={{borderBottom: '1px solid #ddd'}}>Settings</Link>
+                                <Link to="/accounts/edit" style={{borderBottom: '1px solid rgb(210, 210, 210)'}}>Settings</Link>
                                 <a onClick={this.logout}>Log out</a>
                             </div>
                         )

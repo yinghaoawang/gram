@@ -75,7 +75,7 @@
 }
 
 .border-bottom {
-    border-bottom: #ddd 1px solid;
+    border-bottom: 1px solid rgb(210, 210, 210);
 }
 
 .navbar.left {

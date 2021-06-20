@@ -15,7 +15,6 @@ const UserProfileDetails = ({user}) => {
             let res = await fetch(apiPath + '/follows?following_id=' + user.id + '&follower_id=' + context.currUser.id);
             if (res.ok) {
                 let followsData = await res.json();
-                console.log(followsData);
                 if (followsData.follows.length > 0) {
                     // that means i am following
                     setUserIsFollowing(true);

@@ -83,6 +83,7 @@
 /* Posts stuffs go here */
 .user-profile.posts {
     margin-top: 40px;
+    margin-bottom: 30px;
 }
 
 .user-profile.posts > .post-row {

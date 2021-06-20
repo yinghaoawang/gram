@@ -46,19 +46,25 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
+
     }
 
-    componentDidUpdate(prevProps) {
+    loadInitialPosts() {
+        fetch(apiPath + '/posts?follower_id=' + this.context.currUser.id).then(d => d.json()).then((data) => {
+            let posts = data.posts;
+            posts.sort((a, b) => b.ranking-a.ranking);
+            this.setState({posts, showCount: this.initialShowCount});
+        });
+        this.setState({loading: false});
+    }
+
+    async componentDidUpdate(prevProps) {
         if (this.context.userLoaded && this.context.currUser == null) {
             this.props.history.push('/login');
         }
         if (this.context.userLoaded && this.context.currUser != null && this.state.loading == true) {
-            fetch(apiPath + '/posts?follower_id=' + this.context.currUser.id).then(d => d.json()).then((data) => {
-                let posts = data.posts;
-                posts.sort((a, b) => b.ranking-a.ranking);
-                this.setState({posts, showCount: this.initialShowCount});
-            });
-            this.setState({loading: false});
+            //await new Promise( res => setTimeout(res, 50000));
+            this.loadInitialPosts();
         }
     }
 
@@ -84,7 +90,7 @@ class Home extends React.Component {
                     }
                     <>
                     { (loading == true || this.state.postsLoaded < this.state.showCount) &&
-                        <div className={"loading"}>
+                        <div className={"loading"} style={this.state.postsLoaded >= this.initialShowCount ? {marginBottom: '60px'} : {}}>
                             <div className="loader-small"></div>
                         </div>
                     }

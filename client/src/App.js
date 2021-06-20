@@ -10,7 +10,7 @@ import Login from './Components/Auth/Login';
 import Home from './Components/Users/Home';
 import Terms from './Components/Terms';
 import PostDetails from "./Components/Posts/PostDetails";
-import UserSettings from "./Components/Users/UserSettings";
+import UserSettings from "./Components/Users/UserSettings/UserSettings";
 import PostExplore from "./Components/Posts/PostExplore";
 
 import AuthContext from "./AuthContext";
@@ -85,6 +85,7 @@ class App extends React.Component {
                             <Route path='/login' component={Login} />
                             <Route path='/explore' component={PostExplore} />
                             <Route path='/accounts/edit' component={UserSettings} />
+                            <Route path='/accounts/password/change' render={(props) => (<UserSettings {...props} selected='password-change' />)} />
                             <Route path='/top_accounts' component={TopAccounts} />
                             <Route path='/user/:user_id' component={UserProfile} />
                             <Route path='/post/:post_id' component={PostDetails} />

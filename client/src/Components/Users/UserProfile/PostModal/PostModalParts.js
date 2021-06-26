@@ -16,7 +16,7 @@ const printDateDiff = (startDate, endDate) => {
 const ModalButtonLeft = (props) => {
     return <div className="modal-button modal-left-button">
         {
-            props.postIndex > 0 ? (<i onClick={props.onClick} className="fas fa-chevron-left"></i>)
+            props.postIndex > 0 ? (<i ref={props.innerRef} onClick={props.onClick} className="fas fa-chevron-left"></i>)
                 : (<i style={{opacity: 0}} className="fas fa-chevron-left click-through"></i>)
         }
     </div>;
@@ -25,7 +25,7 @@ const ModalButtonLeft = (props) => {
 const ModalButtonRight = (props) => {
     return <div className="modal-button modal-right-button">
         {
-            props.postIndex < props.maxIndex ? <i onClick={props.onClick} className="fas fa-chevron-right"></i>
+            props.postIndex < props.maxIndex ? <i ref={props.innerRef} onClick={props.onClick} className="fas fa-chevron-right"></i>
                 : (<i style={{opacity: 0}} className="fas fa-chevron-left click-through"></i>)
         }
 
@@ -166,10 +166,10 @@ const PostContentVertical = props => {
 const PostContent = props => {
     return <div className="post-inner">
         <div onClick={e => {console.log("TODO remove this"); if (props.currPost) console.log(props.currPost.ranking)}} style={{opacity: 0, position: 'absolute'}}>Ranking:{props.currPost && props.currPost.ranking}</div>
-        <div className="post-inner-left">
+        <div ref={props.innerLeftRef} className="post-inner-left">
             <img className="post-img" src={props.currPost != null ? props.currPost.img_url : ''}></img>
         </div>
-        <div className="post-inner-right">
+        <div ref={props.innerRightRef} className="post-inner-right">
             <div className="infobox-top infobox-border-bottom">
                 <InfoboxPostUserHeaderArea user={props.user} />
 

@@ -3,20 +3,20 @@ const router = express.Router();
 const dataFetch = require('../services/fetchFromCache');
 const utils = require('../utils');
 const hashing = require('../hashing');
-const bodyParser = require('body-parser');
 const config = require('../config/config');
 const jwt = require('jsonwebtoken');
 const { authenticateJWT } = require('../middleware/auth');
 const { check } = require('../validator');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const sharp = require('sharp');
+const axios = require("axios");
 
 const accessTokenSecret = config.jwt.secret;
 const sessionTokenSecret = config.session.secret;
-
-router.use(bodyParser.urlencoded({extended: false}));
-router.use(bodyParser.json());
 router.use(cookieParser());
+
+const defaultExpireTime = '10h';
 
 router.use(session({
     secret: sessionTokenSecret,
@@ -66,7 +66,7 @@ router.post('/users/login', async (req, res) => {
         if (user != null && passwordCorrect) {
             // Generate an access token
             const accessToken = jwt.sign({ id: user.id, username: user.username,  role: user.role }, accessTokenSecret,
-                {expiresIn: '10h'});
+                {expiresIn: defaultExpireTime});
             res.cookie('token', accessToken, { httpOnly: true, sameSite: "strict" });
 
             res.status(200).json({token: accessToken});
@@ -96,7 +96,7 @@ router.post('/users/create', async function(req, res, next) {
         }
         if (user) {
             const accessToken = jwt.sign({ id: user.id, username: user.username,  role: user.role }, accessTokenSecret,
-                {expiresIn: '10s'});
+                {expiresIn: defaultExpireTime});
             res.cookie('token', accessToken, { httpOnly: true, sameSite: "strict" });
             res.status(200).json({token: accessToken});
         } else {
@@ -130,6 +130,76 @@ router.get('/posts', function(req, res, next) {
     posts.map((post) => updateRanking(post));
     res.json({posts});
 
+});
+
+router.post('/posts/create', async function(req, res, next) {
+    try {
+        console.log(req.body);
+        if (req.user == null) {
+            res.status(401).send('Need user to be logged in to create post');
+        } else {
+            let {image_base64, description} = req.body;
+            let parts = image_base64.split(';');
+            let mimType = parts[0].split(':')[1];
+            let imageData = parts[1].split(',')[1];
+            let img = new Buffer(imageData, 'base64');
+
+            let resizedImageBuffer = await sharp(img).resize({width: 600}).toBuffer();
+            let resizedImageData = resizedImageBuffer.toString('base64');
+            let resizedBase64 = `data:${mimType};base64,${resizedImageData}`;
+
+            let url = 'https://api.cloudinary.com/v1_1/'+config.cloud.name+'/image/upload';
+            let formData = {
+                "upload_preset": config.cloud.uploadPreset,
+                "file": resizedBase64
+            };
+
+            try {
+                let result = await axios.post(url, formData);
+                let postData = {
+                    user_id: req.user.id, img_url: result.data.secure_url, description
+                };
+                let post = await dataFetch.posts.addPost(postData);
+                res.status(200).json({post});
+            } catch(error) {
+                if (error.response) {
+                    // Request made and server responded
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                throw new Error(error);
+            }
+
+
+            /*
+            if (req.body.like == null) throw new Error('No like post data');
+            let likeInfo = JSON.parse(req.body.like);
+            let {user_id, post_id} = likeInfo;
+            let like = null;
+            if (Number.isInteger(user_id) && Number.isInteger(post_id)) {
+                let likeExists = await dataFetch.likes.getLikes(likeInfo);
+                console.log('like exists:' + JSON.stringify(likeExists));
+                if (likeExists && likeExists.length == 0) like = await dataFetch.likes.addLike(likeInfo);
+            }
+            if (like) {
+                res.status(200).json({like});
+            } else {
+                res.status(401).send("Unable to create like")
+            }
+             */
+
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
+    }
 });
 
 router.get('/post/:post_id', function(req, res, next) {

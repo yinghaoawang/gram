@@ -72,7 +72,7 @@ class NavbarAccountDropdown extends React.Component {
                     this.state.showMenu
                         ? (
                             <div className="dropdown-items">
-                                <a>Upload</a>
+                                <Link to="/post/upload">Upload</Link>
                                 <Link to={"/user/" + this.context.currUser.id}
                                       onClick={e => {e.preventDefault(); window.location.href='/user/' + this.context.currUser.id}}>
                                 Profile</Link>

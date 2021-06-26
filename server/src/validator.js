@@ -10,7 +10,7 @@ const check = (field) => {
             return re.test(field);
         },
         isUsername: () => {
-            if (field.length < 5 || field.length > 22) return false;
+            if (field.length < 4 || field.length > 22) return false;
             let re = /^[a-zA-Z0-9-_.]+$/;
             return re.test(field);
         },

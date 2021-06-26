@@ -110,6 +110,8 @@ textarea {
     resize: none;
 }
 
+/* spinning loading bar 1 */
+
 .loading {
     height: 100%;
     margin: auto;
@@ -117,10 +119,10 @@ textarea {
 
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+    border-top: 16px solid #555; /* Blue */
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     animation: spin 2s linear infinite;
 }
 
@@ -149,6 +151,7 @@ textarea {
     100% { transform: rotate(360deg); }
 }
 
+/* spinning loading bar 2 */
 
 .floatingBarsG{
     position:relative;

@@ -73,6 +73,22 @@ const removeLike = async (likeData) => {
     }
 }
 
+const addPost = async (postData) => {
+    try {
+        let { user_id, img_url, description } = postData;
+        let values = [user_id, img_url, description];
+        let query = `insert into posts (user_id, img_url, description) values ($1, $2, $3) returning id`;
+        let res = await db.query(query, values);
+        let post_id = res.rows[0].id;
+        let res2 = await db.query('select * from posts where id = $1', [post_id]);
+        posts.push(res2.rows[0]);
+        return res2.rows[0];
+    } catch (err) {
+        console.error("error", err.message);
+        return null;
+    }
+}
+
 const addComment = async (commentData) => {
     try {
         let { user_id, post_id, message } = commentData;
@@ -164,8 +180,8 @@ const getFollows = () => follows;
 const getPosts = () => posts;
 
 module.exports = {
-    getUsers, getFollows, getPosts, getLikes, getComments, //addUsers, addFollows, addPosts, addLikes, addComments,
-    addUser, addLike, addComment, addFollow,
+    getUsers, getFollows, getPosts, getLikes, getComments,
+    addUser, addLike, addComment, addFollow, addPost,
     removeFollow, removeLike,
     updatePostById
 };

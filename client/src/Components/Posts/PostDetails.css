@@ -5,6 +5,11 @@
 }
 
 .post-details-container > div > .post-inner {
+    max-width: 935px;
+    width: auto;
     border: 1px solid rgb(210, 210, 210);
     border-radius: 3px;
+}
+.post-details-container > div > .post-inner > .post-inner-left {
+
 }

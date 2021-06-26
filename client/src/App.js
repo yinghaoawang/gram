@@ -12,6 +12,7 @@ import Terms from './Components/Terms';
 import PostDetails from "./Components/Posts/PostDetails";
 import UserSettings from "./Components/Users/UserSettings/UserSettings";
 import PostExplore from "./Components/Posts/PostExplore";
+import UserPostUpload from "./Components/Users/UserPostUpload";
 
 import AuthContext from "./AuthContext";
 
@@ -88,6 +89,7 @@ class App extends React.Component {
                             <Route path='/accounts/password/change' render={(props) => (<UserSettings {...props} selected='password-change' />)} />
                             <Route path='/top_accounts' component={TopAccounts} />
                             <Route path='/user/:user_id' component={UserProfile} />
+                            <Route path='/post/upload' component={UserPostUpload} />
                             <Route path='/post/:post_id' component={PostDetails} />
                             <Route path='/404' component={PageNotFound} />
                             <Route path='/' component={PageNotFound} />

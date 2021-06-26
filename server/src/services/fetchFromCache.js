@@ -41,6 +41,9 @@ let users = {
 }
 
 let posts = {
+    addPost: async (postData) => {
+        return await cache.addPost(postData);
+    },
     getAll: () => getPostsData(),
     getPostById: (id) => getPostsData().find(post => post.id == id),
     getPostsByUserId: (id) => getPostsData().filter(post => post.user_id == id),

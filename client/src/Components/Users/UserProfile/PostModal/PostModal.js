@@ -2,8 +2,8 @@ import React from 'react';
 import './PostModal.css';
 import {Link, withRouter} from "react-router-dom";
 import AuthContext from "../../../../AuthContext";
+import Modal from "./Modal";
 import {ModalButtonLeft, ModalButtonRight, PostContent} from "./PostModalParts";
-import ReactDOM from "react-dom";
 
 const apiPath = '/api';
 
@@ -23,7 +23,6 @@ class PostModal extends React.Component {
         }
         this.updateUserLikePost = this.updateUserLikePost.bind(this);
         this.updateCurrComments = this.updateCurrComments.bind(this);
-        this.handleClick = this.handleClick.bind(this);
         this.postBox = React.createRef();
         this.scrollBox = React.createRef();
         this.innerLeftRef = React.createRef();
@@ -36,27 +35,16 @@ class PostModal extends React.Component {
 
     componentDidMount() {
         console.log("mount");
-        this.clickedOnce = false;
         this.setState({posts: this.props.posts});
     }
 
     componentWillUnmount() {
-        document.removeEventListener('click', this.handleClick);
     }
 
     async componentDidUpdate(prevProps, prevState) {
         if (this.props.postIndex != prevProps.postIndex) {
             await this.setState({postIndex: this.props.postIndex});
             await this.onPostIndexChange();
-        }
-        if (this.props.show != prevProps.show) {
-            if (this.props.show) {
-                this.clickedOnce = false;
-                document.addEventListener('click', this.handleClick);
-            } else {
-                this.clickedOnce = true;
-                document.removeEventListener('click', this.handleClick);
-            }
         }
     }
 
@@ -208,7 +196,6 @@ class PostModal extends React.Component {
         this.updateUserLikePost();
         this.updateCurrComments();
         window.history.pushState(null, null, `/post/${this.state.posts[this.state.postIndex].id}`)
-        document.addEventListener('click', this.handleClick);
     }
     async goNextPost(e) {
         e.preventDefault();
@@ -221,52 +208,37 @@ class PostModal extends React.Component {
         window.history.pushState(null, null, `/post/${this.state.posts[this.state.postIndex].id}`)
     }
 
-    handleClick(e) {
-        if (!this.clickedOnce) {
-            this.clickedOnce = true;
-            return;
-        }
-        const onClose = () => {
-            console.log("onclose");
-            window.history.pushState(null, null, this.props.originalUrl);
-            this.props.onClose();
-        }
-
-        const domNode = ReactDOM.findDOMNode(this.innerLeftRef.current);
-        const domNode2 = ReactDOM.findDOMNode(this.innerRightRef.current);
-        const domNode3 = ReactDOM.findDOMNode(this.leftButtonRef.current);
-        const domNode4 = ReactDOM.findDOMNode(this.rightButtonRef.current);
-        if ((!domNode || !domNode.contains(e.target)) &&
-            (!domNode2 || !domNode2.contains(e.target)) &&
-            (!domNode3 || !domNode3.contains(e.target)) &&
-            (!domNode4 || !domNode4.contains(e.target))
-        ) {
-            onClose();
-        } else {
-            if (domNode3 && domNode3.contains(e.target)) this.goPrevPost(e);
-            else if (domNode4 && domNode4.contains(e.target)) this.goNextPost(e);
-        }
-    }
-
     render() {
         let posts = this.state.posts;
-        let show = this.props.show;
         let postIndex = this.state.postIndex;
         let currPost = this.state.postIndex != -1 ? this.state.posts[this.state.postIndex] : null;
+
+        const onClose = (e) => {
+            console.log("onclose");
+            window.history.pushState(null, null, this.props.originalUrl);
+            this.props.onClose(e);
+        }
+
         return (
             <>
-                {show == true &&
-                    <div className="modal-container">
-                        <div className="modal-backdrop"></div>
-                        <div className="post-inner-with-buttons">
-                            <ModalButtonLeft innerRef={this.leftButtonRef} postIndex={this.state.postIndex} />
-                            <PostContent innerRightRef={this.innerRightRef} innerLeftRef={this.innerLeftRef} scrollBoxRef={this.scrollBox} postBoxRef={this.postBox} currPost={posts[postIndex]} currCommentsLoaded={this.state.currCommentsLoaded}
-                                toggleLikeFn={e => this.toggleLike() } userLikesPost={this.state.userLikesPost} clickCommentBtnFn={(e => {this.postBox.current.focus()}).bind(this)}
-                                postCommentFn={this.postComment} commentBeingPosted={this.state.commentBeingPosted} currUser={this.context.currUser} user={currPost && currPost.user} />
-                            <ModalButtonRight innerRef={this.rightButtonRef} maxIndex={this.props.maxIndex != null ? this.props.maxIndex : this.state.posts.length - 1} postIndex={this.state.postIndex} />
-                        </div>
-                    </div>
-                }
+                <Modal onClose={onClose} show={this.props.show}>
+                    {this.props.show &&
+                    <div className="post-inner-with-buttons">
+                        <ModalButtonLeft onClick={this.goPrevPost} innerRef={this.leftButtonRef} postIndex={this.state.postIndex}/>
+                        <PostContent innerRightRef={this.innerRightRef} innerLeftRef={this.innerLeftRef}
+                                     scrollBoxRef={this.scrollBox} postBoxRef={this.postBox} currPost={posts[postIndex]}
+                                     currCommentsLoaded={this.state.currCommentsLoaded}
+                                     toggleLikeFn={e => this.toggleLike(e)} userLikesPost={this.state.userLikesPost}
+                                     clickCommentBtnFn={(e => {
+                                         this.postBox.current.focus()
+                                     }).bind(this)}
+                                     postCommentFn={this.postComment} commentBeingPosted={this.state.commentBeingPosted}
+                                     currUser={this.context.currUser} user={currPost && currPost.user}/>
+                        <ModalButtonRight onClick={this.goNextPost} innerRef={this.rightButtonRef}
+                                          maxIndex={this.props.maxIndex != null ? this.props.maxIndex : this.state.posts.length - 1}
+                                          postIndex={this.state.postIndex}/>
+                    </div>}
+                </Modal>
             </>
         );
     }

@@ -1,0 +1,9 @@
+.infobox-dots-holder {
+    display: flex;
+    align-items: center;
+}
+
+.dots-container {
+    pointer-events: auto;
+    cursor: pointer;
+}

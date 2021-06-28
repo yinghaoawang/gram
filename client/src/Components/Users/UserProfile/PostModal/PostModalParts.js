@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import './PostModalParts.css';
+import {Dots} from "../../../Common/Parts";
+import ModalOptions from "../../../Common/ModalOptions";
 
 const printDate = (date) => {
     let d = new Date(date);
@@ -122,15 +124,34 @@ const InfoboxScrollingCommentsArea = props => {
 }
 
 const InfoboxPostUserHeaderArea = props => {
+    const [showModal, setShowModal] = useState(false);
+
+    const closeModalOptions = () => {
+        setShowModal(false);
+        document.body.style.removeProperty('overflow');
+    }
+    const openModalOptions = () => {
+        document.body.style.overflow = "hidden";
+        setShowModal(true);
+    }
     return <>
-        { props.user &&
+        {props.user &&
         <div className={"infobox-header " + (props.useVertical ? 'vertical ' : '')}>
-            <Link to={'/user/' + props.user.id} className="infobox-link infobox-bold infobox-center-items" onClick={e => {e.preventDefault(); window.location.href='/user/' + props.user.id}}>
+            <Link to={'/user/' + props.user.id} className="infobox-link infobox-bold infobox-center-items"
+                  onClick={e => {
+                      e.preventDefault();
+                      window.location.href = '/user/' + props.user.id
+                  }}>
                 <img className="infobox-pfp" src={props.user.pfp_url}></img>
                 <span className="infobox-username">{props.user.username}</span>
             </Link>
+            <div className="infobox-dots-holder"><Dots onClick={openModalOptions}/></div>
+            {
+                showModal && <ModalOptions onClose={closeModalOptions} show={showModal}/>
+            }
         </div>
         }
+
     </>;
 }
 

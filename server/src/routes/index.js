@@ -142,9 +142,17 @@ router.post('/posts/create', async function(req, res, next) {
             let parts = image_base64.split(';');
             let mimType = parts[0].split(':')[1];
             let imageData = parts[1].split(',')[1];
+            const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+            if (!validImageTypes.includes(mimType)) {
+               throw new Error("invalid file type: " + mimType);
+            }
+            console.log('mimtype', mimType);
             let img = new Buffer(imageData, 'base64');
 
-            let resizedImageBuffer = await sharp(img).resize({width: 600}).toBuffer();
+            let resizedImageBuffer = await sharp(img).resize({width: 600})
+                .jpeg()
+                .toBuffer();
+
             let resizedImageData = resizedImageBuffer.toString('base64');
             let resizedBase64 = `data:${mimType};base64,${resizedImageData}`;
 

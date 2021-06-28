@@ -17,6 +17,14 @@
     justify-content: center;
 }
 
+.post-inner-with-buttons, .post-inner, .modal-button {
+    pointer-events: none
+}
+
+.post-inner-left, .post-inner-right, .modal-button > i {
+    pointer-events: auto;
+}
+
 .post-img {
     display: flex;
     justify-content: center;
@@ -79,6 +87,7 @@ i.post-liked {
 }
 
 .infobox-header {
+    display: flex;
     width: 100%;
     padding: 16px;
 }
@@ -86,6 +95,10 @@ i.post-liked {
 .infobox-header.vertical {
     padding-top: 4px;
     padding-bottom: 4px;
+}
+
+.infobox-header > .infobox-dots-holder {
+    margin-left: auto;
 }
 
 .infobox-buttons > i {
@@ -98,7 +111,6 @@ i.post-liked {
 a.infobox-link {
     display: flex;
     height: 100%;
-    width: 100%;
 }
 
 .infobox-bold {

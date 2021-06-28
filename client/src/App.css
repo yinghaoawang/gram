@@ -4,6 +4,7 @@ body {
     font-family: 'Helvetica';
     font-size: 15px;
     margin: 0;
+    position: relative;
     /*
     todo: put this back on
     position: relative;

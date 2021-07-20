@@ -1,8 +1,6 @@
 import React from 'react';
 import './Modal.css';
 import {Link, withRouter} from "react-router-dom";
-import AuthContext from "../../../../AuthContext";
-import {ModalButtonLeft, ModalButtonRight, PostContent} from "./PostModalParts";
 import ReactDOM from "react-dom";
 
 const apiPath = '/api';
@@ -23,6 +21,7 @@ class Modal extends React.Component {
     render() {
         let show = this.props.show;
         let domNode = document.body;
+        // use createPortal to put modal in the outermost element so that the absolute element positioning isn't nested
         return ReactDOM.createPortal(
             <>
                 {show == true &&

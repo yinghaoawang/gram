@@ -4,3 +4,12 @@
 .message-button {
     width: 80px;
 }
+
+.row.one > span {
+    display: flex;
+    align-items: center;
+}
+
+.row.one > span > .infobox-dots-holder {
+    padding: 6px;
+}

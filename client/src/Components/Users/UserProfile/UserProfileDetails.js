@@ -1,6 +1,8 @@
 import React from 'react';
 import AuthContext from "../../../AuthContext";
 import './UserProfileDetails.css';
+import {Dots} from "../../Common/Parts";
+import ModalOptions from "../../Common/ModalOptions";
 const apiPath = '/api';
 
 const UserProfileDetails = ({user}) => {
@@ -85,6 +87,23 @@ const UserProfileDetails = ({user}) => {
         }
     }
 
+    const [showModal, setShowModal] = React.useState(false);
+
+    const closeModalOptions = () => {
+        setShowModal(false);
+        document.body.style.removeProperty('overflow');
+    }
+    const openModalOptions = () => {
+        document.body.style.overflow = "hidden";
+        setShowModal(true);
+    }
+
+    /*
+    const options = [
+        "optionFollowUnfollow", "optionCancel"
+    ];
+     */
+
     React.useEffect(async () => {
         await updateUserFollowing();
         setPageLoaded(true);
@@ -114,6 +133,10 @@ const UserProfileDetails = ({user}) => {
                                 <button style={{marginLeft: '8px',}} className="message-button button-lowkey">Message</button>
                             }
                         </span>
+                        }
+                        {/*<span><div className="infobox-dots-holder"><Dots onClick={openModalOptions}/></div></span>*/}
+                        {
+                            showModal && <ModalOptions options={options} user={user} onClose={closeModalOptions} show={showModal}/>
                         }
                     </div>
 

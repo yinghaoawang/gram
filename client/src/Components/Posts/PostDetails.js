@@ -19,10 +19,13 @@ class PostDetails extends React.Component {
     }
 
     render() {
+        const options = [
+            "optionFollowUnfollow", "optionCancel"
+        ];
         return (
             <div className="content">
                 <div className="post-details-container">
-                    <PostContentWithState postId={this.props.match.params.post_id} />
+                    <PostContentWithState dotOptions={options} postId={this.props.match.params.post_id} />
                 </div>
             </div>
         );

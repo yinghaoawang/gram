@@ -134,6 +134,10 @@ const InfoboxPostUserHeaderArea = props => {
         document.body.style.overflow = "hidden";
         setShowModal(true);
     }
+    const defaultOptions = [
+        "optionFollowUnfollow", "optionGoToPost", "optionCancel"
+    ];
+    let options = props.dotOptions || defaultOptions;
     return <>
         {props.user &&
         <div className={"infobox-header " + (props.useVertical ? 'vertical ' : '')}>
@@ -147,7 +151,7 @@ const InfoboxPostUserHeaderArea = props => {
             </Link>
             <div className="infobox-dots-holder"><Dots onClick={openModalOptions}/></div>
             {
-                showModal && <ModalOptions onClose={closeModalOptions} show={showModal}/>
+                showModal && <ModalOptions post={props.currPost} options={options} user={props.user} onClose={closeModalOptions} show={showModal}/>
             }
         </div>
         }
@@ -160,7 +164,7 @@ const PostContentVertical = props => {
         <div onClick={e => {console.log("TODO remove this"); if (props.currPost) console.log(props.currPost.ranking)}} style={{opacity: 0, position: 'absolute'}}>Ranking:{props.currPost && props.currPost.ranking}</div>
         <div className="vertical-post-inner-top">
             <div className="infobox-top infobox-border-bottom vertical">
-                <InfoboxPostUserHeaderArea useVertical={true} user={props.user} />
+                <InfoboxPostUserHeaderArea dotOptions={props.dotOptions} currPost={props.currPost} useVertical={true} user={props.user} />
             </div>
 
         </div>
@@ -192,7 +196,7 @@ const PostContent = props => {
         </div>
         <div ref={props.innerRightRef} className="post-inner-right">
             <div className="infobox-top infobox-border-bottom">
-                <InfoboxPostUserHeaderArea user={props.user} />
+                <InfoboxPostUserHeaderArea dotOptions={props.dotOptions} currPost={props.currPost} user={props.user} />
 
             </div>
             <div className="infobox-bottom">

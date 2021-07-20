@@ -205,11 +205,11 @@ class PostContentWithState extends React.Component {
             <div style={this.props.hidden ? {opacity: 0, position: 'absolute'} : {}}>
             {
                 this.props.useVertical ?
-                    <PostContentVertical scrollBoxRef={this.scrollBox} postBoxRef={this.postBox} currPost={currPost} currCommentsLoaded={this.state.currCommentsLoaded}
+                    <PostContentVertical dotOptions={this.props.dotOptions} scrollBoxRef={this.scrollBox} postBoxRef={this.postBox} currPost={currPost} currCommentsLoaded={this.state.currCommentsLoaded}
                                  toggleLikeFn={e => this.toggleLike() } userLikesPost={this.state.userLikesPost} clickCommentBtnFn={(e => {this.postBox.current.focus()}).bind(this)}
                                  postCommentFn={this.postComment} commentBeingPosted={this.state.commentBeingPosted} currUser={this.context.currUser} user={user} />
 
-                    : <PostContent scrollBoxRef={this.scrollBox} postBoxRef={this.postBox} currPost={currPost} currCommentsLoaded={this.state.currCommentsLoaded}
+                    : <PostContent dotOptions={this.props.dotOptions} scrollBoxRef={this.scrollBox} postBoxRef={this.postBox} currPost={currPost} currCommentsLoaded={this.state.currCommentsLoaded}
                                    toggleLikeFn={e => this.toggleLike() } userLikesPost={this.state.userLikesPost} clickCommentBtnFn={(e => {this.postBox.current.focus()}).bind(this)}
                                    postCommentFn={this.postComment} commentBeingPosted={this.state.commentBeingPosted} currUser={this.context.currUser} user={user} />
             }

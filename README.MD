@@ -260,3 +260,19 @@ refactoring because there is A LOT of prop passing (2-3 levels, but there are ma
       and like being liked state flag.
         - Solved by creating a separate component that holds state for each post. The user details page just holds one of these components, whereas the homepage should
           hold multiple
+		  
+#### Prettying things up
+Holy crap, I haven't updated this production diary in like a month.
+
+I've been really burnt out from this project and a lot of stressful things have happened in person lately, so I am going to try to work on
+this project at least 30 minutes everyday (as opposed to 4-12 hours before) to see if I can get in the groove of working on this again.
+
+Anyway, let's start with what I did in order. 
+- Edited the css to make the website more responsive for smaller windows
+- Created a modular dropdown menu for the navbar (links to user profile, edit profile, logout button, upload button)
+- Did the frontend for edit profile and change password for a user
+- Got logout button on the dropdown menu working
+- Fixed/refactored code in post square sizing to only use css instead of js hacking (the squares when displaying posts)
+- Added user post creation
+- Added image uploading (in post creation) to a cloud service (cloudinary)
+- Added an options button (3 dots button) for all modal posts to allow for following, go to post, etc. (can be nested in modals)

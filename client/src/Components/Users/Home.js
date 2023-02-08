@@ -3,6 +3,7 @@ import './Home.css';
 import AuthContext from "../../AuthContext";
 import PostModal from "./UserProfile/PostModal/PostModal"
 import PostContentWithState from "./UserProfile/PostModal/PostContentWithState";
+import { Link } from 'react-router-dom';
 const apiPath = '/api';
 
 
@@ -14,6 +15,7 @@ class Home extends React.Component {
             showCount: -1,
             posts: [],
             postsLoaded: 0,
+            finishedLoading: false,
         }
         this.loadMore = this.loadMore.bind(this);
         this.onPostLoaded = this.onPostLoaded.bind(this);
@@ -28,12 +30,14 @@ class Home extends React.Component {
     }
 
     loadMore(){
-        if (this.loading) return;
+        if (this.state.loading) return;
         if (window.innerHeight + document.documentElement.scrollTop === document.scrollingElement.scrollHeight
             && this.state.postsLoaded == this.state.showCount) {
             // Do load more content here!
             let nextCount = Math.min(this.state.showCount + this.incrementShowCount, this.state.posts.length);
             this.setState({showCount: nextCount});
+            console.log('loading: ' + this.state.loading + ', postsLoaded: ' + this.state.postsLoaded + ', showCount: ' + nextCount);
+            if (this.state.postsLoaded == this.state.showCount) this.setState({finishedLoading: true});
         }
     }
 
@@ -53,7 +57,13 @@ class Home extends React.Component {
         fetch(apiPath + '/posts?follower_id=' + this.context.currUser.id).then(d => d.json()).then((data) => {
             let posts = data.posts;
             posts.sort((a, b) => b.ranking-a.ranking);
-            this.setState({posts, showCount: this.initialShowCount});
+            this.setState({posts, showCount: Math.min(this.initialShowCount, posts.length)});
+            console.log("heya ");
+            console.log(data);
+            console.log(this.state.postsLoaded, this.state.showCount);
+            if (this.state.showCount <= this.initialShowCount) {
+                this.setState({finishedLoading: true});
+            }
         });
         this.setState({loading: false});
     }
@@ -93,6 +103,14 @@ class Home extends React.Component {
                         <div className={"loading"} style={this.state.postsLoaded >= this.initialShowCount ? {marginBottom: '60px'} : {}}>
                             <div className="loader-small"></div>
                         </div>
+                    }
+                    { (loading == false && this.state.postsLoaded == this.state.showCount && this.state.finishedLoading) &&
+                        <div className="center" style={{marginBottom: '65px'}}>
+                            <h1>Oh no, you're out of feed</h1>
+                            <p>Follow more users to have more content on your feed. Click <Link to='/explore'>explore</Link>&nbsp;
+                                to discover new content or <Link to='top_accounts'>top accounts</Link> to see the highest ranking users.</p>
+                        </div>
+                        
                     }
                     </>
                 </div>

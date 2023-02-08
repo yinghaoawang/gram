@@ -36,7 +36,6 @@ class Home extends React.Component {
             // Do load more content here!
             let nextCount = Math.min(this.state.showCount + this.incrementShowCount, this.state.posts.length);
             this.setState({showCount: nextCount});
-            console.log('loading: ' + this.state.loading + ', postsLoaded: ' + this.state.postsLoaded + ', showCount: ' + nextCount);
             if (this.state.postsLoaded == this.state.showCount) this.setState({finishedLoading: true});
         }
     }
@@ -58,9 +57,6 @@ class Home extends React.Component {
             let posts = data.posts;
             posts.sort((a, b) => b.ranking-a.ranking);
             this.setState({posts, showCount: Math.min(this.initialShowCount, posts.length)});
-            console.log("heya ");
-            console.log(data);
-            console.log(this.state.postsLoaded, this.state.showCount);
             if (this.state.showCount <= this.initialShowCount) {
                 this.setState({finishedLoading: true});
             }

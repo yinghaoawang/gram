@@ -1,4 +1,5 @@
 const db = require('../db/db.js');
+const errObj = require('../err').errObj;
 
 let users = [], comments = [], likes = [], follows = [], posts = [];
 
@@ -32,6 +33,7 @@ const addUser = async (userData) => {
         return res2.rows[0];
     } catch (err) {
         console.error("error", err.message);
+        errObj.err = err;
         return null;
     }
 }

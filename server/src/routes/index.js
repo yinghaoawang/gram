@@ -6,17 +6,19 @@ const hashing = require('../hashing');
 const config = require('../config/config');
 const jwt = require('jsonwebtoken');
 const { authenticateJWT } = require('../middleware/auth');
-const { check } = require('../validator');
+const { check, validatorData } = require('../validator');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const sharp = require('sharp');
 const axios = require("axios");
+const errObj = require('../err').errObj;
 
 const accessTokenSecret = config.jwt.secret;
 const sessionTokenSecret = config.session.secret;
 router.use(cookieParser());
 
 const defaultExpireTime = '10h';
+const errorFlag = null;
 
 router.use(session({
     secret: sessionTokenSecret,
@@ -92,18 +94,29 @@ router.post('/users/create', async function(req, res, next) {
         ) {
             user = await dataFetch.users.addUser(userInfo);
         } else {
-            console.log("User details not valid");
+            console.log(validatorData.msg);
+            res.statusMessage = validatorData.msg; 
+
+            res.status(401).send();
+            return;
         }
-        if (user) {
-            const accessToken = jwt.sign({ id: user.id, username: user.username,  role: user.role }, accessTokenSecret,
-                {expiresIn: defaultExpireTime});
-            res.cookie('token', accessToken, { httpOnly: true, sameSite: "strict" });
-            res.status(200).json({token: accessToken});
-        } else {
-            res.status(401).send('Unable to create user');
+        if (user == null) {
+            if (errObj.err != null && errObj.err.code == 23505) {
+                console.log(errObj.err);
+                if (errObj.err.constraint.includes('email')) res.statusMessage = "Email already exists";
+                else if (errObj.err.constraint.includes('username')) res.statusMessage = "Username already exists";
+                else res.statusMessage = "A field submitted is not unique in the database"
+            }
+            res.status(401).send();
+            return;
         }
+        const accessToken = jwt.sign({ id: user.id, username: user.username,  role: user.role }, accessTokenSecret,
+            {expiresIn: defaultExpireTime});
+        res.cookie('token', accessToken, { httpOnly: true, sameSite: "strict" });
+        res.status(200).json({token: accessToken});
     } catch (err) {
-        res.status(500).send(err.message);
+        res.statusMessage = err.message;
+        res.status(500).send();
     }
 
 });
@@ -134,7 +147,6 @@ router.get('/posts', function(req, res, next) {
 
 router.post('/posts/create', async function(req, res, next) {
     try {
-        console.log(req.body);
         if (req.user == null) {
             res.status(401).send('Need user to be logged in to create post');
         } else {
@@ -146,7 +158,6 @@ router.post('/posts/create', async function(req, res, next) {
             if (!validImageTypes.includes(mimType)) {
                throw new Error("invalid file type: " + mimType);
             }
-            console.log('mimtype', mimType);
             let img = new Buffer(imageData, 'base64');
 
             let resizedImageBuffer = await sharp(img).resize({width: 600})
@@ -172,15 +183,15 @@ router.post('/posts/create', async function(req, res, next) {
             } catch(error) {
                 if (error.response) {
                     // Request made and server responded
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
+                    // console.log(error.response.data);
+                    // console.log(error.response.status);
+                    // console.log(error.response.headers);
                 } else if (error.request) {
                     // The request was made but no response was received
-                    console.log(error.request);
+                    // console.log(error.request);
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
+                    // console.log('Error', error.message);
                 }
                 throw new Error(error);
             }
@@ -205,7 +216,7 @@ router.post('/posts/create', async function(req, res, next) {
 
         }
     } catch (e) {
-        console.log(e);
+        // console.log(e);
         res.status(500).send(e.message);
     }
 });

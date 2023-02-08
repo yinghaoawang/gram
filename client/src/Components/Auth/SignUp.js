@@ -44,7 +44,10 @@ class SignUp extends React.Component{
                     this.props.history.push('/');
                 });
             } else {
-                console.error('NOT OK');
+                if (res.status === 401) {
+                    alert(res.statusText);
+                }
+                console.error('NOT OK', res);
             }
         }).catch(err => {
             console.error('err', err);

@@ -39,7 +39,8 @@ class Login extends React.Component{
                     this.props.history.push('/');
                 });
             } else {
-                console.error('NOT OK');
+                if (res.status === 400) alert('Incorrect username/password combination');
+                console.error('NOT OK', res);
             }
         }).catch(err => {
             console.error('err', err);

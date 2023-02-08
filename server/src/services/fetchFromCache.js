@@ -19,7 +19,7 @@ let users = {
                 throw new Error("Unable to add user");
             }
         } catch(e) {
-            console.error("Unable to add user: " + userData);
+            console.error("Unable to add user: " + userData.username);
             return null;
         }
 

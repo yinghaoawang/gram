@@ -37,7 +37,6 @@ class App extends React.Component {
             });
             if (res.ok) {
                 let data = await res.json();
-                console.log(data);
                 if (!this.state.currUser || this.state.currUser.id != data.id) {
                     this.setCurrUser(data);
                 }

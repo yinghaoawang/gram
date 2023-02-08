@@ -100,7 +100,7 @@ class Home extends React.Component {
                             <div className="loader-small"></div>
                         </div>
                     }
-                    { (loading == false && this.state.postsLoaded == this.state.showCount && this.state.finishedLoading) &&
+                    { (loading == false && this.state.posts.length == this.state.showCount && this.state.finishedLoading) &&
                         <div className="center" style={{marginBottom: '65px'}}>
                             <h1>Oh no, you're out of feed</h1>
                             <p>Follow more users to have more content on your feed. Click <Link to='/explore'>explore</Link>&nbsp;

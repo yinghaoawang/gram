@@ -115,7 +115,7 @@ class Navbar extends React.Component {
                                 <>
                                     <Link to={'/'}>Home</Link>
                                     <Link to={'/explore'}>Explore</Link>
-                                    <Link to={'#'}>Notifications</Link>
+                                    {/* <Link to={'#'}>Notifications</Link> */}
                                     <NavbarAccountDropdown />
 
                                 </> :

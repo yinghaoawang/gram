@@ -53,7 +53,7 @@ class PostModal extends React.Component {
         this.updateUserLikePost();
         this.updateCurrComments();
         if (this.state.postIndex != -1) {
-            window.history.pushState(null, null, `/post/${this.state.posts[this.state.postIndex].id}`)
+            window.history.pushState(null, null, `/gram/post/${this.state.posts[this.state.postIndex].id}`)
         }
     }
 
@@ -195,7 +195,7 @@ class PostModal extends React.Component {
         });
         this.updateUserLikePost();
         this.updateCurrComments();
-        window.history.pushState(null, null, `/post/${this.state.posts[this.state.postIndex].id}`)
+        window.history.pushState(null, null, `/gram/post/${this.state.posts[this.state.postIndex].id}`)
     }
     async goNextPost(e) {
         e.preventDefault();
@@ -205,7 +205,7 @@ class PostModal extends React.Component {
         });
         this.updateUserLikePost();
         this.updateCurrComments();
-        window.history.pushState(null, null, `/post/${this.state.posts[this.state.postIndex].id}`)
+        window.history.pushState(null, null, `/gram/post/${this.state.posts[this.state.postIndex].id}`)
     }
 
     render() {

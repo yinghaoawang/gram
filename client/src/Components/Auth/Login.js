@@ -17,7 +17,7 @@ class Login extends React.Component{
     static contextType = AuthContext;
     async componentDidUpdate() {
         if (this.context.userLoaded && this.context.currUser != null) {
-            this.props.history.push('/');
+            this.props.history.push('/gram/');
         }
     }
 
@@ -36,7 +36,7 @@ class Login extends React.Component{
                 console.log('OK', res);
                 res.json().then(data => {
                     console.log(data.token);
-                    this.props.history.push('/');
+                    this.props.history.push('/gram/');
                 });
             } else {
                 if (res.status === 400) alert('Incorrect username/password combination');
@@ -66,7 +66,7 @@ class Login extends React.Component{
                         </div>
                     </div>
                     <div className="two auth inner-container">
-                        <span>Don't have an account? <Link to={'/signup'}>Sign Up</Link></span>
+                        <span>Don't have an account? <Link to={'/gram/signup'}>Sign Up</Link></span>
                     </div>
                 </div>
             </div>

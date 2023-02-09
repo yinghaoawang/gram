@@ -10,8 +10,8 @@ class Footer extends React.Component{
                     <div className="footer-links footer-center">
                         <Link to={'#'}>About</Link>
                         <Link to={'#'}>Privacy</Link>
-                        <Link to={'/terms'}>Terms</Link>
-                        <Link to={'/top_accounts'}>Top Accounts</Link>
+                        <Link to={'/gram/terms'}>Terms</Link>
+                        <Link to={'/gram/top_accounts'}>Top Accounts</Link>
                         <Link to={'#'}>Help</Link>
                     </div>
                     <div className="footer-copyright">

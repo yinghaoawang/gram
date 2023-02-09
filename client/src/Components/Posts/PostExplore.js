@@ -136,7 +136,7 @@ class PostExplore extends React.Component {
                         {loading == false && (
                             <>
 
-                                <PostModal originalUrl={`/explore`} posts={posts} onClose={this.hideModal}
+                                <PostModal originalUrl={`/gram/explore`} posts={posts} onClose={this.hideModal}
                                            maxIndex={this.state.postsLoaded - 1} postIndex={this.state.modalPostIndex} show={this.state.showingModal}/>
                                 {
                                     this.state.postsLoaded >= this.initialShowCount &&

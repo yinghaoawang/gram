@@ -1,4 +1,4 @@
-import {Redirect, Route, Switch, withRouter} from 'react-router-dom'
+import {Redirect, Route, Switch, withRouter } from 'react-router-dom'
 import React from 'react';
 import Navbar from './Components/Common/Navbar';
 import Footer from './Components/Common/Footer';
@@ -44,12 +44,13 @@ class App extends React.Component {
                 if (res.status == 400) {
                     alert('Session expired, log in again.');
                     this.setCurrUser(null);
-                    this.props.history.push('/login');
+                    this.props.history.push('/gram/login');
                 }
             }
             this.setUserLoaded(true);
         } catch(err) {
-            console.error('err', err);
+            console.error('err');
+            console.error(err);
             this.setUserLoaded(true);
         };
     }
@@ -78,20 +79,20 @@ class App extends React.Component {
 
                 <Navbar />
                 <div className="outermost-container">
-                    <Switch>
-                            <Route exact path='/' component={Home} />
-                            <Route path='/terms' component={Terms} />
-                            <Route path='/signup' component={SignUp} />
-                            <Route path='/login' component={Login} />
-                            <Route path='/explore' component={PostExplore} />
-                            <Route path='/accounts/edit' component={UserSettings} />
-                            <Route path='/accounts/password/change' render={(props) => (<UserSettings {...props} selected='password-change' />)} />
-                            <Route path='/top_accounts' component={TopAccounts} />
-                            <Route path='/user/:user_id' component={UserProfile} />
-                            <Route path='/post/upload' component={UserPostUpload} />
-                            <Route path='/post/:post_id' component={PostDetails} />
-                            <Route path='/404' component={PageNotFound} />
-                            <Route path='/' component={PageNotFound} />
+                    <Switch basename={'/gram'}>
+                            <Route exact path='/gram' component={Home} />
+                            <Route path='/gram/terms' component={Terms} />
+                            <Route path='/gram/signup' component={SignUp} />
+                            <Route path='/gram/login' component={Login} />
+                            <Route path='/gram/explore' component={PostExplore} />
+                            <Route path='/gram/accounts/edit' component={UserSettings} />
+                            <Route path='/gram/accounts/password/change' render={(props) => (<UserSettings {...props} selected='password-change' />)} />
+                            <Route path='/gram/top_accounts' component={TopAccounts} />
+                            <Route path='/gram/user/:user_id' component={UserProfile} />
+                            <Route path='/gram/post/upload' component={UserPostUpload} />
+                            <Route path='/gram/post/:post_id' component={PostDetails} />
+                            <Route path='/gram/404' component={PageNotFound} />
+                            <Route path='/gram/' component={PageNotFound} />
                     </Switch>
                     <Footer />
                 </div>

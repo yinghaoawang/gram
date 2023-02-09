@@ -55,7 +55,7 @@ class NavbarAccountDropdown extends React.Component {
         }).then(async res => {
             await this.context.setCurrUser(null);
             alert('Log out successful.');
-            this.props.history.push('/login');
+            this.props.history.push('/gram/login');
         }).catch(err => {
             console.error('logout err', err);
         });
@@ -72,11 +72,10 @@ class NavbarAccountDropdown extends React.Component {
                     this.state.showMenu
                         ? (
                             <div className="dropdown-items">
-                                <Link to="/post/upload">Upload</Link>
-                                <Link to={"/user/" + this.context.currUser.id}
-                                      onClick={e => {e.preventDefault(); window.location.href='/user/' + this.context.currUser.id}}>
+                                <Link to={"/gram/user/" + this.context.currUser.id}
+                                      onClick={e => {e.preventDefault(); window.location.href='/gram/user/' + this.context.currUser.id}}>
                                 Profile</Link>
-                                <Link to="/accounts/edit" style={{borderBottom: '1px solid rgb(210, 210, 210)'}}>Settings</Link>
+                                <Link to="/gram/accounts/edit" style={{borderBottom: '1px solid rgb(210, 210, 210)'}}>Settings</Link>
                                 <a onClick={this.logout}>Log out</a>
                             </div>
                         )
@@ -106,22 +105,24 @@ class Navbar extends React.Component {
             <div className="navbar navbar-outermost-container border-bottom">
                 <div className="navbar outer">
                     <div className="navbar left">
-                        <Link to={'/'}>gram</Link>
-                        <Link to={'/'}><img width="50" src="/public/logo.png" /></Link>
+                        <Link to={'/gram/'}>gram</Link>
+                        <Link to={'/gram/'}><img width="50" src="/gram/public/logo.png" /></Link>
                     </div>
                     <div className="navbar right">
                         <AuthContext.Consumer>
                             { value => value.currUser != null ?
                                 <>
-                                    <Link to={'/'}>Home</Link>
-                                    <Link to={'/explore'}>Explore</Link>
+                                    <Link to={'/gram/'}>Home</Link>
+                                    <Link to={'/gram/explore'}>Explore</Link>
                                     {/* <Link to={'#'}>Notifications</Link> */}
+                                    <Link to="/gram/post/upload">Upload</Link>
+
                                     <NavbarAccountDropdown />
 
                                 </> :
                                 <>
-                                    <Link to={'/login'}>Login</Link>
-                                    <Link to={'/signup'}>Sign Up</Link>
+                                    <Link to={'/gram/login'}>Login</Link>
+                                    <Link to={'/gram/signup'}>Sign Up</Link>
                                 </> }
 
                         </AuthContext.Consumer>

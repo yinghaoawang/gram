@@ -37,7 +37,7 @@ class TopAccounts extends React.Component {
                                 {
                                     this.state.users.map((user) => (
                                         <span key={user.id}>
-                                    <Link to={'/user/' + user.id}>{user.username}</Link>
+                                    <Link to={'/gram/user/' + user.id}>{user.username}</Link>
                                 </span>
                                     ))
                                 }

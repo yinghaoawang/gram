@@ -38,7 +38,7 @@ router.get('/users/me', async (req, res) => {
             let user = await dataFetch.users.getUserById(req.user.id);
             res.status(200).json(user);
 
-        } else res.status(401).send('Not logged in');
+        } else res.status(401).json({msg: 'Not logged in'});
     } catch (e) {
         console.error(e);
         res.status(500).send(e.message);
@@ -175,6 +175,7 @@ router.post('/posts/create', async function(req, res, next) {
 
             try {
                 let result = await axios.post(url, formData);
+                console.log(result);
                 let postData = {
                     user_id: req.user.id, img_url: result.data.secure_url, description
                 };
@@ -183,15 +184,15 @@ router.post('/posts/create', async function(req, res, next) {
             } catch(error) {
                 if (error.response) {
                     // Request made and server responded
-                    // console.log(error.response.data);
-                    // console.log(error.response.status);
-                    // console.log(error.response.headers);
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
                 } else if (error.request) {
                     // The request was made but no response was received
-                    // console.log(error.request);
+                    console.log(error.request);
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    // console.log('Error', error.message);
+                    console.log('Error', error.message);
                 }
                 throw new Error(error);
             }
@@ -265,6 +266,7 @@ router.post('/likes/create', async function(req, res, next) {
         console.log(e);
         res.status(500).send(e.message);
     }
+    
 });
 
 router.delete('/likes/delete', async function(req, res, next) {
@@ -314,7 +316,8 @@ router.post('/comments/create', async function(req, res, next) {
         if (comment) {
             res.status(200).json({comment});
         } else {
-            res.status(401).send("Unable to create like")
+            res.statusMessage = "Unable to create like";
+            res.status(401).send('')
         }
     } catch (e) {
         console.log(e);

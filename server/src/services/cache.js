@@ -81,6 +81,8 @@ const addPost = async (postData) => {
         let values = [user_id, img_url, description];
         let query = `insert into posts (user_id, img_url, description) values ($1, $2, $3) returning id`;
         let res = await db.query(query, values);
+        console.log('yoyo');
+        console.log(res);
         let post_id = res.rows[0].id;
         let res2 = await db.query('select * from posts where id = $1', [post_id]);
         posts.push(res2.rows[0]);

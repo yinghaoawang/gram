@@ -24,7 +24,7 @@ class ModalOptions extends React.Component {
     }
 
     async goToPost() {
-        window.history.pushState(null, null, `/post/${this.props.post.id}`);
+        window.history.pushState(null, null, `/gram/post/${this.props.post.id}`);
         window.location.reload();
     }
 

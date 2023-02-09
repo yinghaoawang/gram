@@ -106,7 +106,7 @@ class UserProfile extends React.Component {
                     { loading == false ? (
                         <>
 
-                            <PostModal originalUrl={`/user/${this.props.match.params.user_id}`} user={user} posts={user.posts} onClose={this.hideModal} postIndex={this.state.modalPostIndex} show={this.state.showingModal} />
+                            <PostModal originalUrl={`/gram/user/${this.props.match.params.user_id}`} user={user} posts={user.posts} onClose={this.hideModal} postIndex={this.state.modalPostIndex} show={this.state.showingModal} />
                             <div className="user-profile outer">
                                 <div className="user-profile top info border-bottom">
                                     <UserProfileDetails user={user} />

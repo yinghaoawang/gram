@@ -5,7 +5,7 @@ module.exports = {
     entry:  './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        publicPath: '/',
+        publicPath: '/gram',
         filename: 'index_bundle.js',
     },
     module : {
@@ -25,7 +25,7 @@ module.exports = {
         proxy: {
             "/api": {
                 changeOrigin: true,
-                target: "http://0.0.0.0:3030",
+                target: "http://0.0.0.0:1240",
             }
         }
     },

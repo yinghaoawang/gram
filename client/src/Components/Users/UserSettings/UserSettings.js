@@ -80,10 +80,10 @@ class UserSettings extends React.Component {
                 <div className="user-settings-container">
                     <div className="user-settings-inner-left">
                         <div className={"settings-tab unselectable " + (!this.props.selected || this.props.selected == 'edit' ? 'selected' : '')}>
-                            <a href='/accounts/edit' onClick={e => {e.preventDefault(); window.location.href='/accounts/edit'}}>Edit Profile</a>
+                            <a href='/gram/accounts/edit' onClick={e => {e.preventDefault(); window.location.href='/gram/accounts/edit'}}>Edit Profile</a>
                         </div>
                         <div className={"settings-tab unselectable " + (this.props.selected == 'password-change' ? 'selected' : '')}>
-                            <a href='/accounts/password/change' onClick={e => {e.preventDefault(); window.location.href='/accounts/password/change'}}>Change Password</a>
+                            <a href='/gram/accounts/password/change' onClick={e => {e.preventDefault(); window.location.href='/gram/accounts/password/change'}}>Change Password</a>
                         </div>
                     </div>
                     <div className="user-settings-inner-right">

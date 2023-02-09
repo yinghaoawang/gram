@@ -20,7 +20,7 @@ class SignUp extends React.Component{
     static contextType = AuthContext;
     async componentDidUpdate() {
         if (this.context.userLoaded && this.context.currUser != null) {
-            this.props.history.push('/');
+            this.props.history.push('/gram/');
         }
     }
 
@@ -41,7 +41,7 @@ class SignUp extends React.Component{
                 console.log('OK', res);
                 res.json().then(data => {
                     console.log(data.token);
-                    this.props.history.push('/');
+                    this.props.history.push('/gram/');
                 });
             } else {
                 if (res.status === 401) {
@@ -75,7 +75,7 @@ class SignUp extends React.Component{
                         </div>
                     </div>
                     <div className="two auth inner-container">
-                        <span>Have an account? <Link to={'/login'}>Login</Link></span>
+                        <span>Have an account? <Link to={'/gram/login'}>Login</Link></span>
                     </div>
                 </div>
             </div>

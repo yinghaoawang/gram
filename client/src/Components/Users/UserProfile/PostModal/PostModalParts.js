@@ -99,12 +99,12 @@ const InfoboxScrollingCommentsArea = props => {
                         return (
                             <div key={"post"+props.currPost.id+"comment"+comment.id} className="infobox-comment">
                                 <div className="infobox-comment-left">
-                                    <Link to={'/user/' +comment.user.id} onClick={(e) => {e.preventDefault(); window.location.href='/user/' +comment.user.id}}>
+                                    <Link to={'/gram/user/' +comment.user.id} onClick={(e) => {e.preventDefault(); window.location.href='/gram/user/' +comment.user.id}}>
                                         <img src={comment.user.pfp_url}></img>
                                     </Link>
                                 </div>
                                 <div style={{display:"inline"}} className="infobox-comment-right comment-font">
-                                    <Link to={'/user/' +comment.user.id} onClick={(e) => {e.preventDefault(); window.location.href='/user/' +comment.user.id}}>
+                                    <Link to={'/gram/user/' +comment.user.id} onClick={(e) => {e.preventDefault(); window.location.href='/gram/user/' +comment.user.id}}>
                                         <span className="infobox-bold">{comment.user.username}</span>
                                     </Link>&nbsp;<span>{comment.message}</span>
 
@@ -141,7 +141,7 @@ const InfoboxPostUserHeaderArea = props => {
     return <>
         {props.user &&
         <div className={"infobox-header " + (props.useVertical ? 'vertical ' : '')}>
-            <Link to={'/user/' + props.user.id} className="infobox-link infobox-bold infobox-center-items"
+            <Link to={'/gram/user/' + props.user.id} className="infobox-link infobox-bold infobox-center-items"
                   onClick={e => {
                       e.preventDefault();
                       window.location.href = '/user/' + props.user.id

@@ -1,10 +1,10 @@
 const config = require('../../config/config');
 const { Client, Pool } = require('pg');
 
-const dbname = 'gram';
+const dbname = config.dev.db.database;
 
 let preMakeConfig = Object.assign({}, config.db);
-preMakeConfig.database = 'postgres';
+preMakeConfig.database = config.dev.db.user;
 
 let postMakePool;
 let pool = new Pool(preMakeConfig);
@@ -37,7 +37,6 @@ pool.query(`drop database if exists ${dbname}`
         "ranking" integer,
         "created_at" timestamp default now()
     )`)
-    console.log("created posts");
 }).then(() => 
     postMakePool.query(`create table likes (
         "id" serial primary key,

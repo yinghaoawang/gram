@@ -66,7 +66,7 @@ class Home extends React.Component {
 
     async componentDidUpdate(prevProps) {
         if (this.context.userLoaded && this.context.currUser == null) {
-            this.props.history.push('/login');
+            this.props.history.push('/gram/login');
         }
         if (this.context.userLoaded && this.context.currUser != null && this.state.loading == true) {
             //await new Promise( res => setTimeout(res, 50000));
@@ -103,8 +103,8 @@ class Home extends React.Component {
                     { (loading == false && this.state.posts.length == this.state.showCount && this.state.finishedLoading) &&
                         <div className="center" style={{marginBottom: '65px'}}>
                             <h1>Oh no, you're out of feed</h1>
-                            <p>Follow more users to have more content on your feed. Click <Link to='/explore'>explore</Link>&nbsp;
-                                to discover new content or <Link to='top_accounts'>top accounts</Link> to see the highest ranking users.</p>
+                            <p>Follow more users to have more content on your feed. Click <Link to='/gram/explore'>explore</Link>&nbsp;
+                                to discover new content or <Link to='/gram/top_accounts'>top accounts</Link> to see the highest ranking users.</p>
                         </div>
                         
                     }

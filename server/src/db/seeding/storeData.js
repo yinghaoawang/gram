@@ -40,6 +40,19 @@ let storeData = async (datas, tableName) => {
     return Promise.all(promises);
 }
 
+let resetAutoIncrementAll = async() => {
+    let keys = ['users', 'posts', 'likes', 'follows', 'comments'];
+    for (let key of keys) {
+        try {
+            let query = `SELECT SETVAL('${key}_id_seq', (SELECT MAX(id) FROM ${key}));`;
+            await db.query(query);
+        } catch(err) {
+            console.err(err);
+        }
+    }
+    
+}
+
 let storeAll = async (options) => {
     try {
         let res = await storeData(options.users, 'users');
@@ -47,6 +60,7 @@ let storeAll = async (options) => {
         res = await storeData(options.likes, 'likes');
         res = await storeData(options.follows, 'follows');
         res = await storeData(options.comments, 'comments');
+        await resetAutoIncrementAll();
     } catch(e) {
         console.log(e);
     }

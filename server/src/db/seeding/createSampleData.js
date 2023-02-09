@@ -32,7 +32,7 @@ let randomPosts = [
 
 let users = [
     {
-        id: '1',
+        id: 1,
         username: 'alan',
         email: 'alan@gmail.com',
         role: 'admin',
@@ -40,26 +40,26 @@ let users = [
         created_at: getRandomTimestamp(),
     },
     {
-        id: '2',
+        id: 2,
         username: 'dave',
         email: 'dave@gmail.com',
         pfp_url: getRandomPfp(),
         created_at: getRandomTimestamp(),
     },
     {
-        id: '3',
+        id: 3,
         username: 'RonnyRon',
         pfp_url: getRandomPfp(),
         created_at: getRandomTimestamp(),
     },
     {
-        id: '4',
+        id: 4,
         username: 'LaurieLor',
         pfp_url: getRandomPfp(),
         created_at: getRandomTimestamp(),
     },
     {
-        id: '5',
+        id: 5,
         username: 'AliAj',
         pfp_url: getRandomPfp(),
         created_at: getRandomTimestamp(),
@@ -78,8 +78,8 @@ let beginFetch = async (amt) => {
     let chunk = await axios.get('https://randomuser.me/api/?results=' + amt);
 
     let res = chunk.data.results;
-    for (let i = 0; i < amt; ++i) {
-        let user = {id: i + 6, username: res[i].login.username, pfp_url: res[i].picture.large, created_at: getRandomTimestamp()};
+    for (let i = users.length + 1; i < amt; ++i) {
+        let user = {id: i, username: res[i].login.username, pfp_url: res[i].picture.large, created_at: getRandomTimestamp()};
         user.email = res[i].email;
         user.hashed_password = await hashing.hashPassword(res[i].login.password);
         if (Math.random() > .75) {

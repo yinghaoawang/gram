@@ -30,7 +30,7 @@ class UserPostUpload extends React.Component {
 
     componentDidUpdate() {
         if (this.context.userLoaded && this.context.currUser == null) {
-            this.props.history.push('/login');
+            this.props.history.push('/gram/login');
         }
     }
 
@@ -131,7 +131,7 @@ class UserPostUpload extends React.Component {
                 console.log('OK', res);
                 let data = await res.json();
                 console.log(data);
-                window.history.pushState(null, null, `/post/${data.post.id}`)
+                window.history.pushState(null, null, `/gram/post/${data.post.id}`)
                 window.location.reload();
             } else {
                 console.error('NOT OK');

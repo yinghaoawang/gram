@@ -175,7 +175,6 @@ router.post('/posts/create', async function(req, res, next) {
 
             try {
                 let result = await axios.post(url, formData);
-                console.log(result);
                 let postData = {
                     user_id: req.user.id, img_url: result.data.secure_url, description
                 };
@@ -452,7 +451,7 @@ function calculateRanking(post) {
         let likeDate = utils.timestampToDate(like.created_at);
         let days = utils.diffDaysBetweenDates(likeDate, new Date());
         let lambda = Math.log(2)/90;
-        let likeRanking = 100 * Math.pow(Math.E, -lambda * days);
+        let likeRanking = 8 * Math.pow(Math.E, -lambda * days);
         likeRankingSum += likeRanking;
     }
     let totalRanking = Math.floor(baseRanking + likeRankingSum);

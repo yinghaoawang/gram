@@ -1,10 +1,10 @@
 const config = require('../../config/config');
 const { Client, Pool } = require('pg');
 
-const dbname = config.dev.db.database;
+const dbname = config.db.database;
 
 let preMakeConfig = Object.assign({}, config.db);
-preMakeConfig.database = config.dev.db.user;
+preMakeConfig.database = config.db.user;
 
 let postMakePool;
 let pool = new Pool(preMakeConfig);

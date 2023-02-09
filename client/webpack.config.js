@@ -21,11 +21,19 @@ module.exports = {
     },
     cache: false,
     devServer: {
-        historyApiFallback: true,
+        before: function(app, server) {
+        app.get('/', function(req, res) {
+            res.redirect('/gram'); // here you can try any of the Express JS res options mentioned in the answer below: 
+        });
+        },
+        publicPath: '/gram',
+        historyApiFallback: {
+            index: '/gram/index.html'
+        },
         proxy: {
             "/api": {
                 changeOrigin: true,
-                target: "http://0.0.0.0:1240",
+                target: "http://0.0.0.0:1240/",
             }
         }
     },

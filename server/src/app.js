@@ -20,6 +20,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors.corsHandler);
-app.use('/', indexRouter);
+app.use('/api', indexRouter); // use '/' for digital ocean server
 
 module.exports = app;

@@ -60,7 +60,6 @@ router.post('/users/login', async (req, res) => {
         if (req.body.user == null) throw new Error('No user post data');
         let userInfo = JSON.parse(req.body.user);
         const { username, password } = userInfo;
-
         const user = dataFetch.users.getUserByUsername(username);
         let passwordCorrect = false;
         if (user != null) passwordCorrect = await hashing.checkPassword(password, user.hashed_password);

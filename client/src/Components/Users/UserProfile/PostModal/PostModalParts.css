@@ -36,6 +36,7 @@
     object-fit: contain;
     width: auto;
     height: auto;
+    background-color: white;
 }
 
 .modal-button > i {

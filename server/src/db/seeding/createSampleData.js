@@ -67,8 +67,8 @@ let users = [
 ];
 
 
-let beginFetch = async (amt) => {
-    await fetchPostImages(330);
+let beginFetch = async () => {
+    await fetchPostImages();
     await fetchCommentMessages(20);
 
     for (let i = 0; i < users.length; ++i) {
@@ -167,9 +167,10 @@ let beginFetch = async (amt) => {
     }
 
 }
+const amt600x400 = 330;
 //https://picsum.photos/v2/list?page=2&limit=100
-async function fetchPostImages(amt) {
-    for (let i = 0; i < amt; i++) {
+async function fetchPostImages() {
+    for (let i = 0; i < amt600x400; i++) {
         let download_url = 'https://picsum.photos/id/' + (i) + '/600/400/';
         if (i == 86) continue; // this id doesnt exist on picsum
         randomPosts.push(download_url);
@@ -233,7 +234,7 @@ function getRandomTimestamp() {
 
 /* Begin fetching data */
 
-beginFetch(100).then(() => {
+beginFetch().then(() => {
     let jsonData = {
         users,
         posts,

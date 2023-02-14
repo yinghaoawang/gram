@@ -103,6 +103,7 @@ class Navbar extends React.Component {
     render() {
         return (
             <div className="navbar navbar-outermost-container border-bottom">
+                <div id='console' style={{width: '100%', backgroundColor: 'green', height: '30px', color: 'white'}}></div>
                 <div className="navbar outer">
                     <div className="navbar left">
                         <Link to={'/gram/'}>gram</Link>

@@ -1,9 +1,9 @@
 import React  from 'react';
 import './Home.css';
 import AuthContext from "../../AuthContext";
-import PostModal from "./UserProfile/PostModal/PostModal"
 import PostContentWithState from "./UserProfile/PostModal/PostContentWithState";
 import { Link } from 'react-router-dom';
+import { scrolledToBottom } from '../../Util'
 const apiPath = '/api';
 
 
@@ -31,8 +31,7 @@ class Home extends React.Component {
 
     loadMore(){
         if (this.state.loading) return;
-        if (window.innerHeight + document.documentElement.scrollTop === document.scrollingElement.scrollHeight
-            && this.state.postsLoaded == this.state.showCount) {
+        if (scrolledToBottom() && this.state.postsLoaded == this.state.showCount) {
             // Do load more content here!
             let nextCount = Math.min(this.state.showCount + this.incrementShowCount, this.state.posts.length);
             this.setState({showCount: nextCount});

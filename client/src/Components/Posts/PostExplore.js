@@ -2,6 +2,7 @@ import React, {useImperativeHandle} from 'react';
 import './PostExplore.css';
 import PostSquareList from "../Users/UserProfile/PostSquareList";
 import PostModal from "../Users/UserProfile/PostModal/PostModal";
+import { scrolledToBottom } from '../../Util';
 
 const apiPath = '/api';
 
@@ -28,8 +29,7 @@ class PostExplore extends React.Component {
 
     loadMore() {
         if (this.loading) return;
-        if (window.innerHeight + document.documentElement.scrollTop === document.scrollingElement.scrollHeight
-            && this.state.postsLoaded == this.state.showCount) {
+        if (scrolledToBottom() && this.state.postsLoaded == this.state.showCount) {
             // Do load more content here!
             this.loadNextPosts();
         }

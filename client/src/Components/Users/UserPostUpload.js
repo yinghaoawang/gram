@@ -85,7 +85,8 @@ class UserPostUpload extends React.Component {
                 }
             };
             this.imagePreviewRef.current.onerror = (async e => {
-                console.error("image preview load error")
+                console.error("image preview load error");
+                alert('Image preview failed to load');
                 await this.setState({loadingFile: false});
                 this.unloadImage();
             })
@@ -93,6 +94,7 @@ class UserPostUpload extends React.Component {
         }
         reader.onerror = e => {
             console.error("reader load error");
+            alert('Image preview failed to load');
             this.unloadImage();
         }
         reader.onprogress = (event) => {

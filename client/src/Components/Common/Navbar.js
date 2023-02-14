@@ -3,6 +3,7 @@ import {Link, withRouter} from 'react-router-dom';
 import AuthContext from "../../AuthContext";
 import './Navbar.css';
 import ReactDOM from "react-dom";
+import { DEBUG_MODE } from '../../Util';
 
 class NavbarAccountDropdown extends React.Component {
     constructor(props) {
@@ -103,7 +104,7 @@ class Navbar extends React.Component {
     render() {
         return (
             <div className="navbar navbar-outermost-container border-bottom">
-                <div id='console' style={{width: '100%', backgroundColor: 'green', height: '30px', color: 'white'}}></div>
+                { DEBUG_MODE && <div id='console' style={{width: '100%', backgroundColor: 'green', height: '30px', color: 'white'}}></div> }
                 <div className="navbar outer">
                     <div className="navbar left">
                         <Link to={'/gram/'}>gram</Link>

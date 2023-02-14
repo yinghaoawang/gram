@@ -169,13 +169,17 @@ let beginFetch = async (amt) => {
 }
 //https://picsum.photos/v2/list?page=2&limit=100
 async function fetchPostImages(amt) {
-    let chunk = await axios.get('https://picsum.photos/v2/list?limit=' + amt);
+    for (let i = 0; i < amt; i++) {
+        let download_url = 'https://picsum.photos/id/' + (i + 1) + '/600/400/';
+        randomPosts.push(download_url);
+    }
+    
+    // let chunk = await axios.get('https://picsum.photos/v2/list?limit=' + amt);
+    // let res = chunk.data;
 
-    let res = chunk.data;
-
-    res.forEach((value, i) => {
-        randomPosts.push(value.download_url);
-    });
+    // res.forEach((value, i) => {
+        // randomPosts.push(value.download_url);
+    // });
 
 }
 async function fetchCommentMessages(amt) {

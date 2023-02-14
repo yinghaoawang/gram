@@ -67,7 +67,7 @@ let users = [
 ];
 
 
-let beginFetch = async () => {
+let beginFetch = async (userAmt) => {
     await fetchPostImages();
     await fetchCommentMessages(20);
 
@@ -75,10 +75,10 @@ let beginFetch = async () => {
         users[i].hashed_password = await hashing.hashPassword('password');
     }
 
-    let chunk = await axios.get('https://randomuser.me/api/?results=' + amt);
+    let chunk = await axios.get('https://randomuser.me/api/?results=' + userAmt);
 
     let res = chunk.data.results;
-    for (let i = users.length + 1; i < amt; ++i) {
+    for (let i = users.length + 1; i < userAmt; ++i) {
         let user = {id: i, username: res[i].login.username, pfp_url: res[i].picture.large, created_at: getRandomTimestamp()};
         user.email = res[i].email;
         user.hashed_password = await hashing.hashPassword(res[i].login.password);
@@ -172,7 +172,9 @@ const badIds = [86, 97, 105, 138, 148, 150, 205, 207, 224, 226, 245, 246, 262, 2
 //https://picsum.photos/v2/list?page=2&limit=100
 async function fetchPostImages() {
     for (let i = 0; i <= lastId; i++) {
-        if (badIds.includes(i)) continue; // this id doesnt exist on picsum
+        if (badIds.includes(i)) {
+            continue; // this id doesnt exist on picsum
+        }
         let download_url = 'https://picsum.photos/id/' + (i) + '/600/400/';
         randomPosts.push(download_url);
         download_url = 'https://picsum.photos/id/' + (i) + '/400/400/';
@@ -237,7 +239,7 @@ function getRandomTimestamp() {
 
 /* Begin fetching data */
 
-beginFetch().then(() => {
+beginFetch(100).then(() => {
     let jsonData = {
         users,
         posts,

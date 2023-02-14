@@ -7,6 +7,7 @@
 .post-image, .post-image-placeholder {
     height: calc(317.33px);
     width: calc(317.33px);
+    background-color: black;
 }
 
 

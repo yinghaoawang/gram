@@ -68,7 +68,7 @@ let users = [
 
 
 let beginFetch = async (amt) => {
-    await fetchPostImages(100);
+    await fetchPostImages(330);
     await fetchCommentMessages(20);
 
     for (let i = 0; i < users.length; ++i) {
@@ -170,7 +170,8 @@ let beginFetch = async (amt) => {
 //https://picsum.photos/v2/list?page=2&limit=100
 async function fetchPostImages(amt) {
     for (let i = 0; i < amt; i++) {
-        let download_url = 'https://picsum.photos/id/' + (i + 1) + '/600/400/';
+        let download_url = 'https://picsum.photos/id/' + (i) + '/600/400/';
+        if (i == 86) continue; // this id doesnt exist on picsum
         randomPosts.push(download_url);
     }
     

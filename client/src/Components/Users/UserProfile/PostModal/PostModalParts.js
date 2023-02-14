@@ -144,7 +144,7 @@ const InfoboxPostUserHeaderArea = props => {
             <Link to={'/gram/user/' + props.user.id} className="infobox-link infobox-bold infobox-center-items"
                   onClick={e => {
                       e.preventDefault();
-                      window.location.href = '/user/' + props.user.id
+                      window.location.href = '/gram/user/' + props.user.id
                   }}>
                 <img className="infobox-pfp" src={props.user.pfp_url}></img>
                 <span className="infobox-username">{props.user.username}</span>

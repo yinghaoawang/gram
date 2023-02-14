@@ -167,12 +167,15 @@ let beginFetch = async () => {
     }
 
 }
-const amt600x400 = 330;
+const lastId = 330;
+const badIds = [86, 97, 105, 138, 148, 150, 205, 207, 224, 226, 245, 246, 262, 285, 286, 298, 303];
 //https://picsum.photos/v2/list?page=2&limit=100
 async function fetchPostImages() {
-    for (let i = 0; i < amt600x400; i++) {
+    for (let i = 0; i <= lastId; i++) {
+        if (badIds.includes(i)) continue; // this id doesnt exist on picsum
         let download_url = 'https://picsum.photos/id/' + (i) + '/600/400/';
-        if (i == 86) continue; // this id doesnt exist on picsum
+        randomPosts.push(download_url);
+        download_url = 'https://picsum.photos/id/' + (i) + '/400/400/';
         randomPosts.push(download_url);
     }
     

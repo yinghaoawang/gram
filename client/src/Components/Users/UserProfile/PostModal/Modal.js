@@ -3,7 +3,7 @@ import './Modal.css';
 import {Link, withRouter} from "react-router-dom";
 import ReactDOM from "react-dom";
 
-const apiPath = '/api';
+const apiPath = '/gram-api';
 
 class Modal extends React.Component {
     // this bad, i couldn't think of another way to do this since refs kept referring to the first one created

@@ -3,7 +3,7 @@ import './UserPostUpload.css';
 import AuthContext from "../../AuthContext";
 
 const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
-const apiPath = '/api';
+const apiPath = '/gram-api';
 
 class UserPostUpload extends React.Component {
     constructor(props) {

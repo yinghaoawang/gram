@@ -2,7 +2,7 @@ import React  from 'react';
 import { Link } from 'react-router-dom';
 import './TopAccounts.css';
 
-const apiPath = '/api';
+const apiPath = '/gram-api';
 
 class TopAccounts extends React.Component {
     constructor() {

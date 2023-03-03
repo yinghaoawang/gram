@@ -3,7 +3,7 @@ import AuthContext from "../../../AuthContext";
 import './UserProfileDetails.css';
 import {Dots} from "../../Common/Parts";
 import ModalOptions from "../../Common/ModalOptions";
-const apiPath = '/api';
+const apiPath = '/gram-api';
 
 const UserProfileDetails = ({user}) => {
     const [followerCount, setFollowerCount] = React.useState(user.followers.length);

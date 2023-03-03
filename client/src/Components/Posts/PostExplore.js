@@ -4,7 +4,7 @@ import PostSquareList from "../Users/UserProfile/PostSquareList";
 import PostModal from "../Users/UserProfile/PostModal/PostModal";
 import { scrolledToBottom } from '../../Util';
 
-const apiPath = '/api';
+const apiPath = '/gram-api';
 
 class PostExplore extends React.Component {
     constructor() {
@@ -78,7 +78,11 @@ class PostExplore extends React.Component {
     }
 
     async fetchPosts() {
+        console.log('fetching');
+
         let postData = await fetch(apiPath + '/posts').then(d => d.json());
+        console.log('fetched', postData);
+
         let posts = postData.posts;
         posts.sort((a, b) => b.ranking - a.ranking);
 
@@ -109,16 +113,14 @@ class PostExplore extends React.Component {
     }
 
     async componentDidMount() {
+        window.addEventListener('scroll', this.loadMore);
+
         this.mounted = true;
         try {
             await this.fetchPosts();
         } catch (e) {
             console.error("Error: " + e.messsage);
         }
-    }
-
-    componentWillMount() {
-        window.addEventListener('scroll', this.loadMore);
     }
 
     componentWillUnmount() {

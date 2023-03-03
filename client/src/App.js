@@ -18,6 +18,9 @@ import AuthContext from "./AuthContext";
 
 import './App.css';
 
+
+const apiPath = '/gram-api'
+
 @withRouter
 class App extends React.Component {
     componentDidMount() {
@@ -32,7 +35,7 @@ class App extends React.Component {
     async onRouteChanged() {
         try {
             this.setUserLoaded(false);
-            let res = await fetch('/api/users/me', {
+            let res = await fetch(apiPath + '/users/me', {
                 method: "GET",
             });
             if (res.ok) {

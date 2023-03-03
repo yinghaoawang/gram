@@ -3,7 +3,7 @@ import './UserSettings.css';
 import {withRouter} from 'react-router-dom';
 import AuthContext from "../../../AuthContext";
 
-const apiPath = '/api';
+const apiPath = '/gram-api';
 
 const SettingsRow = (props) => {
     return (

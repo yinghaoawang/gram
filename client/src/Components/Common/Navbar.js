@@ -5,6 +5,8 @@ import './Navbar.css';
 import ReactDOM from "react-dom";
 import { DEBUG_MODE } from '../../Util';
 
+const apiPath = '/gram-api';
+
 class NavbarAccountDropdown extends React.Component {
     constructor(props) {
         super(props);
@@ -51,7 +53,7 @@ class NavbarAccountDropdown extends React.Component {
     }
 
     async logout(e) {
-        fetch('/api/users/logout', {
+        fetch(apiPath + '/users/logout', {
             method: 'POST'
         }).then(async res => {
             await this.context.setCurrUser(null);
@@ -107,14 +109,14 @@ class Navbar extends React.Component {
                 { DEBUG_MODE && <div id='console' style={{width: '100%', backgroundColor: 'green', height: '30px', color: 'white'}}></div> }
                 <div className="navbar outer">
                     <div className="navbar left">
-                        <Link to={'/gram/'}>gram</Link>
-                        <Link to={'/gram/'}><img width="50" src="/gram/public/logo.png" /></Link>
+                        <Link to={'/gram'}>gram</Link>
+                        <Link to={'/gram'}><img width="50" src="/gram/public/logo.png" /></Link>
                     </div>
                     <div className="navbar right">
                         <AuthContext.Consumer>
                             { value => value.currUser != null ?
                                 <>
-                                    <Link to={'/gram/'}>Home</Link>
+                                    <Link to={'/gram'}>Home</Link>
                                     <Link to={'/gram/explore'}>Explore</Link>
                                     {/* <Link to={'#'}>Notifications</Link> */}
                                     <Link to="/gram/post/upload">Upload</Link>

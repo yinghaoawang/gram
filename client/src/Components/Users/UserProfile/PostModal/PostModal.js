@@ -5,7 +5,7 @@ import AuthContext from "../../../../AuthContext";
 import Modal from "./Modal";
 import {ModalButtonLeft, ModalButtonRight, PostContent} from "./PostModalParts";
 
-const apiPath = '/api';
+const apiPath = '/gram-api';
 
 class PostModal extends React.Component {
     constructor(props) {
@@ -34,7 +34,6 @@ class PostModal extends React.Component {
     static contextType = AuthContext;
 
     componentDidMount() {
-        console.log("mount");
         this.setState({posts: this.props.posts});
     }
 
@@ -61,7 +60,6 @@ class PostModal extends React.Component {
         let currPost = this.state.posts[this.state.postIndex];
         let currUser = this.context.currUser;
         if (currUser == null || currPost == null) return;
-        console.log("updating likes");
         for (let like of currPost.likes) {
             if (like.user_id == currUser.id) {
                 this.setState({userLikesPost: true});
@@ -85,7 +83,6 @@ class PostModal extends React.Component {
             method: "POST",
             body: new URLSearchParams({comment: JSON.stringify(data)}),
         }).then(async res => {
-            console.log(res);
             if (res.ok) {
                 console.log('OK', res);
                 let commentData = await res.json();
@@ -127,7 +124,6 @@ class PostModal extends React.Component {
                 method: "DELETE",
                 body: new URLSearchParams({like: JSON.stringify(data)}),
             }).then(async res => {
-                console.log(res);
                 if (res.ok) {
                     console.log('OK', res);
                     currPost.likes.splice(likeIndex, 1);
@@ -149,7 +145,6 @@ class PostModal extends React.Component {
                 method: "POST",
                 body: new URLSearchParams({like: JSON.stringify(data)}),
             }).then(async res => {
-                console.log(res);
                 if (res.ok) {
                     console.log('OK', res);
                     let likeData = await res.json();
@@ -174,7 +169,6 @@ class PostModal extends React.Component {
         if (currPost == null) return;
         let originalPostIndex = this.state.postIndex;
 
-        console.log("updating comments");
         for (let comment of currPost.comments) {
             if (comment.user == null) {
                 await fetch(apiPath + '/user/' + comment.user_id).then(d => d.json()).then((data) => {
@@ -214,7 +208,6 @@ class PostModal extends React.Component {
         let currPost = this.state.postIndex != -1 ? this.state.posts[this.state.postIndex] : null;
 
         const onClose = (e) => {
-            console.log("onclose");
             window.history.pushState(null, null, this.props.originalUrl);
             this.props.onClose(e);
         }

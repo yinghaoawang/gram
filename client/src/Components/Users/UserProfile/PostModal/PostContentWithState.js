@@ -3,7 +3,7 @@ import AuthContext from "../../../../AuthContext";
 import {PostContent, PostContentVertical} from "./PostModalParts";
 
 
-const apiPath = '/api';
+const apiPath = '/gram-api';
 
 class PostContentWithState extends React.Component {
     constructor(props) {

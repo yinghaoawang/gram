@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "devstart": "nodemon ./bin/www",
+    "dev": "nodemon ./bin/www",
     "createDb": "node ./src/db/seeding/createDb",
     "createSampleData": "node ./src/db/seeding/createSampleData",
     "storeData": "node ./src/db/seeding/storeData",

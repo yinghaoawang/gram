@@ -4,8 +4,8 @@ import AuthContext from "../../AuthContext";
 import PostContentWithState from "./UserProfile/PostModal/PostContentWithState";
 import { Link } from 'react-router-dom';
 import { scrolledToBottom } from '../../Util'
-const apiPath = '/api';
 
+const apiPath = '/gram-api';
 
 class Home extends React.Component {
     constructor() {
@@ -39,7 +39,7 @@ class Home extends React.Component {
         }
     }
 
-    componentWillMount(){
+    componentDidMount(){
         window.addEventListener('scroll', this.loadMore);
     }
 
@@ -47,9 +47,6 @@ class Home extends React.Component {
         window.removeEventListener('scroll', this.loadMore);
     }
 
-    componentDidMount() {
-
-    }
 
     loadInitialPosts() {
         fetch(apiPath + '/posts?follower_id=' + this.context.currUser.id).then(d => d.json()).then((data) => {

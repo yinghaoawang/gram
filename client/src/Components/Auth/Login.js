@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Auth.css';
 import AuthContext  from "../../AuthContext";
 
-const apiPath = '/api';
+const apiPath = '/gram-api';
 
 class Login extends React.Component{
     constructor(props) {

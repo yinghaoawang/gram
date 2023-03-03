@@ -212,7 +212,7 @@ parser to modify my middleware to read cookies from the client. In order to set 
 this should be not too hard in production, and in development I had to modify the webpack config to proxy requests to the server. All of this took a lot longer than I thought it would,
 I definitely took for granted create-react-app since it makes proxying a lot less confusing.
 
-So in order to use http-only cookies, I decided to get the user by going to a route on the api on every page to check if the user is logged in. So I go to /api/user/me on every route
+So in order to use http-only cookies, I decided to get the user by going to a route on the api on every page to check if the user is logged in. So I go to /gram-api/user/me on every route
 change, and it sets the global user in UserAuth. 
 
 I also added a spinner loading thing for when a user profile is loading since it takes a while.

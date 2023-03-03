@@ -31,7 +31,7 @@ module.exports = {
             index: '/gram/index.html'
         },
         proxy: {
-            "/api": {
+            "/gram-api": {
                 changeOrigin: true,
                 target: "http://0.0.0.0:1240/",
             }

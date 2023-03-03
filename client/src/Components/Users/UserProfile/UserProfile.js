@@ -5,7 +5,7 @@ import UserProfileDetails from './UserProfileDetails';
 import PostModal from "./PostModal/PostModal";
 
 
-const apiPath = '/api';
+const apiPath = '/gram-api';
 
 class UserProfile extends React.Component {
     constructor() {

@@ -3,7 +3,7 @@ import Modal from "../Users/UserProfile/PostModal/Modal";
 import './ModalOptions.css';
 import AuthContext from "../../AuthContext";
 
-const apiPath = "/api";
+const apiPath = "/gram-api";
 
 class ModalOptions extends React.Component {
     static contextType = AuthContext;

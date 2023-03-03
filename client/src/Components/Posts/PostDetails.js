@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom';
 import PostContentWithState from "../Users/UserProfile/PostModal/PostContentWithState";
 
 
-const apiPath = '/api';
+const apiPath = '/gram-api';
 
 class PostDetails extends React.Component {
     constructor(props) {
